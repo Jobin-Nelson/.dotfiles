@@ -1,7 +1,7 @@
 syntax on 
 set noerrorbells visualbell t_vb=
 set mouse=a
-set clipboard=unnamed
+set clipboard=unnamedplus
 set nocompatible
 set showcmd
 set ignorecase
