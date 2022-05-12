@@ -2,7 +2,7 @@
 window:
  dimensions:
    columns: 100
-   lines: 25
+   lines: 27
  padding:
    x: 6
    y: 6
@@ -22,10 +22,11 @@ font:
     style: Bold
   italic:
     family: JetBrainsMono Nerd Font
-    style: Italic
+    style: Medium Italic
   bold_italic:
     family: JetBrainsMono Nerd Font
     style: Bold Italic
+  size: 13
       
 # Dracula Color Scheme
 colors:
@@ -80,7 +81,7 @@ colors:
     magenta: '#ff92df'
     cyan: '#a4ffff'
     white: '#ffffff'
-      
+
 # Cursor configuration
 cursor:
   style:
