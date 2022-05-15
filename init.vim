@@ -19,6 +19,7 @@ set path+=**
 set wildmenu
 set incsearch
 set nohlsearch
+set encoding=utf-8
 
 let mapleader=" "
 
