@@ -2,7 +2,6 @@ syntax on
 set noerrorbells visualbell t_vb=
 set mouse=a
 set clipboard=unnamedplus
-set nocompatible
 set showcmd
 set ignorecase
 set smartcase
@@ -20,6 +19,7 @@ set wildmenu
 set incsearch
 set nohlsearch
 set encoding=utf-8
+highlight Comment cterm=italic
 
 let mapleader=" "
 
