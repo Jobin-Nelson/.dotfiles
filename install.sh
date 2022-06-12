@@ -5,6 +5,7 @@ echo "Installing packages..."
 sudo apt-get update && sudo apt-get -y full-upgrade
 sudo apt-get -y install alacritty
 sudo apt-get -y install tmux
+sudo apt-get -y install zoxide
 
 # Prepping for symlink
 echo "Creating config directories..."

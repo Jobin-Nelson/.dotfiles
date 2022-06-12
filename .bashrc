@@ -30,11 +30,10 @@ alias less='less -i -R'
 export EDITOR='/usr/bin/nvim'
 export VISUAL='/usr/bin/nvim'
 
+eval "$(zoxide init bash)"
+
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-
-source ~/.dotfiles/z.sh
-
 eval "$(pyenv init -)"
 
 export NVM_DIR="$HOME/.nvm"
