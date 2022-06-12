@@ -29,7 +29,7 @@ vim.opt.signcolumn = 'yes'
 -- Keymaps
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>i', '<cmd>edit ~/.config/nvim/init.lua<CR>')
-vim.keymap.set('n', '<leader>e', '<cmd>Lexplore<bar> vertical resize 30<CR>')
+vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 30<CR>')
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +3<CR>')
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -3<CR>')
 vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
@@ -39,10 +39,9 @@ vim.keymap.set('n', 'H', '<cmd>bprevious<CR>')
 vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
-vim.keymap.set('n', '<C-p>', '<cmd>Telescope find_files<CR>')
 
-vim.cmd('autocmd filetype python nnoremap <F5> <cmd>w <bar> !python %<CR>')
-vim.cmd('autocmd filetype javascript nnoremap <F5> <cmd>w <bar> !node %<CR>')
+vim.cmd('autocmd FileType python nnoremap <F5> <cmd>w <bar> !python %<CR>')
+vim.cmd('autocmd FileType javascript nnoremap <F5> <cmd>w <bar> !node %<CR>')
 
 -- Automatically install packer
 local fn = vim.fn
@@ -65,15 +64,15 @@ require('packer').startup(function(use)
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/cmp-path'
 
-    -- telescope
-    use 'nvim-lua/plenary.nvim'
-    use 'nvim-telescope/telescope.nvim'
-
     -- treesitter
     use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
     }
+
+    -- telescope
+    use 'nvim-lua/plenary.nvim'
+    use 'nvim-telescope/telescope.nvim'
 
     -- git
     use 'lewis6991/gitsigns.nvim'
@@ -83,9 +82,11 @@ require('packer').startup(function(use)
     use 'saadparwaiz1/cmp_luasnip'
 
     -- utilities
+    use 'EdenEast/nightfox.nvim'
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
-    use 'EdenEast/nightfox.nvim'
+    use 'tpope/vim-surround'
+    use 'mattn/emmet-vim'
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
@@ -93,34 +94,6 @@ require('packer').startup(function(use)
         require('packer').sync()
     end
 end)
-
--- Nvim-cmp config
-vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
-local cmp = require'cmp'
-cmp.setup({
-    snippet = {
-        expand = function(args)
-            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        end,
-    },
-    window = {
-        -- completion = cmp.config.window.bordered(),
-        -- documentation = cmp.config.window.bordered(),
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    }),
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-    }, {
-        { name = 'buffer' },
-    })
-})
 
 -- Lsp-installer config
 require("nvim-lsp-installer").setup {}
@@ -141,6 +114,34 @@ require('lspconfig')['pyright'].setup {
     end,
 }
 
+-- Nvim-cmp config
+vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
+local cmp = require'cmp'
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        end,
+    },
+    window = {
+        completion = cmp.config.window.bordered(),
+        -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+    }, {
+        { name = 'buffer' },
+    })
+})
+
 -- Treesitter config
 require('nvim-treesitter.configs').setup {
     ensure_installed = { 'python', 'javascript' },
@@ -150,6 +151,17 @@ require('nvim-treesitter.configs').setup {
         additional_vim_regex_highlighting = true,
     },
 }
+
+-- Telescope config
+vim.keymap.set('n', '<C-p>', '<cmd>Telescope find_files<CR>')
+require('telescope').setup {
+    defaults = {
+        file_ignore_patterns = { 'venv', '__pycache__' }
+    }
+}
+
+-- Gitsigns config
+require('gitsigns').setup()
 
 -- Nightfox config
 require('nightfox').setup({
@@ -178,5 +190,6 @@ require('Comment').setup{
     }
 }
 
--- Gitsigns config
-require('gitsigns').setup()
+-- Emmet config
+-- vim.g.user_emmet_install_global = 0
+-- vim.cmd('autocmd FileType html,css EmmetInstall')
