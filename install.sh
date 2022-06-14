@@ -3,13 +3,12 @@
 # Install packages
 echo "Installing packages..."
 sudo apt-get update && sudo apt-get -y full-upgrade
-sudo apt-get -y install alacritty
-sudo apt-get -y install tmux
-sudo apt-get -y install zoxide
+sudo apt-get -y install alacritty tmux zoxide
 
 # Prepping for symlink
 echo "Creating config directories..."
 mkdir -p $HOME/.config/{nvim,alacritty}
+echo "Backing up default bashrc"
 [ -f $HOME/.bashrc ] && mv $HOME/.bashrc $HOME/.bashrc_backup
 
 # Creating symlinks

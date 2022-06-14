@@ -27,9 +27,10 @@ vim.opt.undofile = true
 vim.opt.signcolumn = 'yes'
 
 -- Keymaps
+vim.keymap.set({'n', 'v'}, '<Space>', '<Nop>', {silent = true})
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>i', '<cmd>edit ~/.config/nvim/init.lua<CR>')
-vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 30<CR>')
+vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 15<CR>')
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +3<CR>')
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -3<CR>')
 vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
@@ -86,7 +87,6 @@ require('packer').startup(function(use)
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
     use 'tpope/vim-surround'
-    use 'mattn/emmet-vim'
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
@@ -100,19 +100,33 @@ require("nvim-lsp-installer").setup {}
 
 -- Lsp config.
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-require('lspconfig')['pyright'].setup {
+local servers = { 'pyright', 'tsserver' }
+for _, server in ipairs(servers) do
+    require('lspconfig')[server].setup {
+        capabilities = capabilities,
+        on_attach = function()
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, {buffer=0})
+            vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, {buffer=0})
+            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer=0})
+            vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, {buffer=0})
+            vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {buffer=0})
+            vim.keymap.set('n', 'gr', vim.lsp.buf.references, {buffer=0})
+            vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, {buffer=0})
+            vim.keymap.set('n', '<leader>ld', vim.diagnostic.show, {buffer=0})
+            vim.keymap.set('n', '<leader>lD', vim.diagnostic.hide, {buffer=0})
+            vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float, {buffer=0})
+            vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, {buffer= 0})
+            vim.keymap.set('n', '<leader>dp', vim.diagnostic.goto_prev, {buffer=0})
+            vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, {buffer=0})
+            vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {buffer=0})
+        end,
+    }
+end
+
+require('lspconfig')['emmet_ls'].setup({
     capabilities = capabilities,
-    on_attach = function()
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, {buffer = 0})
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer = 0})
-        vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, {buffer = 0})
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {buffer = 0})
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, {buffer = 0})
-        vim.keymap.set('n', '<leader>ld', vim.diagnostic.goto_next, {buffer = 0})
-        vim.keymap.set('n', '<leader>lD', vim.diagnostic.goto_prev, {buffer = 0})
-        vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, {buffer = 0})
-    end,
-}
+    filetypes = { 'html', 'htmldjango', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less' },
+})
 
 -- Nvim-cmp config
 vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
@@ -128,7 +142,7 @@ cmp.setup({
         -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-F>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
@@ -144,11 +158,11 @@ cmp.setup({
 
 -- Treesitter config
 require('nvim-treesitter.configs').setup {
-    ensure_installed = { 'python', 'javascript' },
+    ensure_installed = { 'python', 'javascript', 'html' },
     sync_install = false,
     highlight = {
         enable = true,
-        additional_vim_regex_highlighting = true,
+        additional_vim_regex_highlighting = false,
     },
 }
 
@@ -161,6 +175,9 @@ require('telescope').setup {
 }
 
 -- Gitsigns config
+vim.keymap.set('n', '<leader>gn', '<cmd> Gitsigns next_hunk<CR>')
+vim.keymap.set('n', '<leader>gp', '<cmd> Gitsigns prev_hunk<CR>')
+vim.keymap.set('n', '<leader>go', '<cmd> Gitsigns preview_hunk<CR>')
 require('gitsigns').setup()
 
 -- Nightfox config
@@ -173,7 +190,7 @@ require('nightfox').setup({
         }
     }
 })
-vim.cmd('colorscheme terafox')
+vim.cmd('colorscheme nordfox')
 
 -- Autopairs config
 require('nvim-autopairs').setup {}
@@ -189,7 +206,3 @@ require('Comment').setup{
         extra = true,
     }
 }
-
--- Emmet config
--- vim.g.user_emmet_install_global = 0
--- vim.cmd('autocmd FileType html,css EmmetInstall')

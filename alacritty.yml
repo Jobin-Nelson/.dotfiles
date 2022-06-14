@@ -7,9 +7,9 @@ window:
    x: 6
    y: 6
  decorations: none
- opacity: 0.8
+ opacity: 0.9
  scrolling:
-   history: 5000
+   history: 10000
    multiplier: 3
 
 # Font configuration
