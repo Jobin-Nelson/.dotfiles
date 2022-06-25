@@ -30,7 +30,7 @@ vim.opt.signcolumn = 'yes'
 vim.keymap.set({'n', 'v'}, '<Space>', '<Nop>', {silent = true})
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>i', '<cmd>edit ~/.config/nvim/init.lua<CR>')
-vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 15<CR>')
+vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 20<CR>')
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +3<CR>')
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -3<CR>')
 vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
