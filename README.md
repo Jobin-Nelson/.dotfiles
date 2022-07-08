@@ -10,5 +10,5 @@
 ## Dotfiles
 - Setup ssh key with github
 - `git clone --bare git@github.com:Jobin-Nelson/.dotfiles.git $HOME/.dotfiles`
-- `alias df='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'`
-- `df checkout`
+- `alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'`
+- `dot checkout`

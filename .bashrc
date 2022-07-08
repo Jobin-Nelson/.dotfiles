@@ -22,7 +22,7 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias less='less -i -R'
-alias df='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 [ -x /usr/bin/dircolors ] && eval "$(dircolors -b)"
@@ -44,9 +44,9 @@ export NVM_DIR="$HOME/.nvm"
 . "$HOME/.cargo/env"
 
 cat << EOF
-  .-------.
-  |  Hi   |
-  '-------'
+  .----------------.
+  |  Hello Friend  |
+  '----------------'
       ^      (\_/)
       '----- (O.o)
              (> <)
