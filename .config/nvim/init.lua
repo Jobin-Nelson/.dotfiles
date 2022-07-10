@@ -37,7 +37,7 @@ vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
 vim.keymap.set('n', '<C-Left>', '<cmd>vertical resize -3<CR>')
 vim.keymap.set('n', 'L', '<cmd>bnext<CR>')
 vim.keymap.set('n', 'H', '<cmd>bprevious<CR>')
-vim.keymap.set('v', 'p', '"_dP')
+-- vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 
