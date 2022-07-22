@@ -1,4 +1,4 @@
-#!usr/bin/env python3
+#!/usr/bin/env python3
 '''This program helps you with cheatsheet on any language through command line''' 
 from __future__ import annotations
 import requests
