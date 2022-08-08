@@ -174,7 +174,7 @@ require('nvim-treesitter.configs').setup {
 vim.keymap.set('n', '<C-p>', '<cmd>Telescope find_files<CR>')
 require('telescope').setup {
     defaults = {
-        file_ignore_patterns = { 'venv', '__pycache__' }
+        file_ignore_patterns = { 'venv', '__pycache__', 'node_modules' }
     }
 }
 

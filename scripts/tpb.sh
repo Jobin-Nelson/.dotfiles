@@ -1,12 +1,14 @@
 #!/usr/bin/bash
 
-if [ -z $1 ]; then 
+if [[ -z "$1" ]]; then 
 	read -p "Please provide the search term: " query
 else
-	query=$1
+	query="$*"
 fi
 
-query=$(sed 's/ /%20/g' <<<$query)
+query=$(sed 's/ /%20/g' <<<"$query")
+
+echo "query is ${query}"
 
 info_hash=$(curl -s "https://piratebayorg.net/api.php?url=/q.php?q=${query}&cat=200" |
 	jq -r '.[] | .info_hash + ", " + .size + ", [S:" + (.seeders|tostring) + " L:" + .leechers + "], " + .name' |
