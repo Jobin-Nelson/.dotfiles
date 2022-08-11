@@ -1,6 +1,6 @@
 # Environment variables
 HISTCONTROL=ignoreboth
-HISTSIZE=1000
+HISTSIZE=5000
 HISTFILESIZE=2000
 
 # Options
@@ -10,9 +10,7 @@ shopt -s checkwinsize
 shopt -s globstar
 
 # Prompt
-force_color_prompt=yes
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
-unset force_color_prompt
 
 # Aliases
 alias ls='ls --color=auto'

@@ -1,7 +1,7 @@
 -- Options
 HOME = os.getenv('HOME')
 vim.opt.mouse = 'a'
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard:append('unnamedplus')
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.sidescrolloff = 10
@@ -16,7 +16,7 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.path:append('**')
 vim.opt.wildmenu = true
-vim.opt.wildignore:append('**/venv/**')
+vim.opt.wildignore:append{'*/venv/*', '*/node_modules/*'}
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.wrap = false

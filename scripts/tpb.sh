@@ -3,12 +3,10 @@
 if [[ -z "$1" ]]; then 
 	read -p "Please provide the search term: " query
 else
-	query="$*"
+	query=$@
 fi
 
-query=$(sed 's/ /%20/g' <<<"$query")
-
-echo "query is ${query}"
+query="${query[*]// /%20}"
 
 info_hash=$(curl -s "https://piratebayorg.net/api.php?url=/q.php?q=${query}&cat=200" |
 	jq -r '.[] | .info_hash + ", " + .size + ", [S:" + (.seeders|tostring) + " L:" + .leechers + "], " + .name' |
