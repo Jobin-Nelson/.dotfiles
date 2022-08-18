@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+set -euo pipefail
+
 if [[ -z "$1" ]]; then 
 	read -p "Please provide the search term: " query
 else
