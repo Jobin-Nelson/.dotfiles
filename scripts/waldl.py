@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 '''This program downloads wallpaper'''
-from __future__ import annotations
 import aiofiles
 import argparse, asyncio, datetime, sys
 import httpx
@@ -32,7 +31,7 @@ def get_wallpaper_links(query: str) -> list[str]:
         response = httpx.get(SEARCH_URL, params=params)
         response.raise_for_status()
     except Exception as error:
-        print('Could not request for wallpaper links')
+        print('Could not request for wallpaper links', file=sys.stderr)
         print(error)
         sys.exit(1)
 
@@ -44,7 +43,7 @@ async def download_wallpaper(client: httpx.AsyncClient, link: str) -> None:
         response = await client.get(link)
         response.raise_for_status()
     except Exception as error:
-        print(f'Could not download image from {link}')
+        print(f'Could not download image from {link}', file=sys.stderr)
         print(error)
         return
     
