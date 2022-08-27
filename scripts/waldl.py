@@ -7,7 +7,7 @@ from pathlib import Path
 
 TODAY = datetime.date.today()
 SEARCH_URL = 'https://wallhaven.cc/api/v1/search'
-WALLPAPER_PATH = Path.home() / 'Pictures' / 'Wallpapers' / TODAY.strftime('%b_%d')
+WALLPAPER_PATH = Path.home() / 'Pictures' / 'Wallpapers' / TODAY.strftime('%b_%d').lower()
 
 async def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description='Wallpaper downloader')

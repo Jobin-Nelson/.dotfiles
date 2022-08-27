@@ -6,7 +6,7 @@ window:
  padding:
    x: 6
    y: 6
- decorations: none
+ decorations: None
  opacity: 0.9
  scrolling:
    history: 10000
