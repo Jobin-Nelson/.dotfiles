@@ -11,7 +11,7 @@ WALLPAPER_PATH = Path.home() / 'Pictures' / 'Wallpapers' / TODAY.strftime('%b_%d
 
 async def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description='Wallpaper downloader')
-    parser.add_argument('query', nargs='+', help='Wallpapers to search for')
+    parser.add_argument('query', nargs='*', help='Wallpapers to search for')
     args = parser.parse_args(argv)
 
     wallpaper_links = get_wallpaper_links(' '.join(args.query))
