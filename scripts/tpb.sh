@@ -23,7 +23,7 @@ read -p "Do you want to download the file (y/n)? " ans
 echo $magnet | xclip -sel c
 
 if [[ $ans == 'y' ]]; then
-	notify-send "Downloading file"
+	echo "Downloading file"
 	aria2c --seed-ratio=1.0 -d "$HOME/Videos" "$magnet"
 else
 	echo "Magnet link copied to clipboard"

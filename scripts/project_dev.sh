@@ -1,11 +1,9 @@
 #!/usr/bin/bash
 
 if ! tmux has-session -t Rooms; then
-    cd ~/playground/projects/rooms/
-    tmux new -s Rooms -d
-    tmux new-window -t Rooms:1
-    tmux rename-window -t Rooms:0 Editor
-    tmux rename-window -t Rooms:1 Django
+    cd '~/playground/tutorials/pytest_tut/'
+    tmux new-session -s Rooms -n Editor -d
+    tmux new-window -t Rooms -n Django -d
     tmux send-keys -t Rooms:0 '. venv/bin/activate' Enter
     tmux send-keys -t Rooms:1 '. venv/bin/activate' Enter
     tmux send-keys -t Rooms:0 'nvim' Enter

@@ -19,7 +19,7 @@ set incsearch
 set nohlsearch
 set noswapfile
 set nobackup
-set undodir=~/.config/nvim/undodir
+set undodir=~/.config/vim/undodir
 set undofile
 set hidden
 
@@ -34,18 +34,3 @@ nnoremap <C-P> :Telescope find_files<CR>
 
 autocmd filetype python nnoremap <F5> :w <bar> !python %<CR>
 autocmd filetype javascript nnoremap <F5> :w <bar> !node %<CR>
-
-" Plugins
-call plug#begin('~/.config/nvim/plugged')
-" Plug 'sainnhe/gruvbox-material'
-" Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
-" Plug 'tpope/vim-commentary'
-" Plug 'tpope/vim-surround'
-call plug#end()
-
-" Colors
-let g:material_terminal_italics=1
-colorscheme material
-

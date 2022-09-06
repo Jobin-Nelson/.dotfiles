@@ -22,6 +22,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias less='less -i -R'
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
 
 # Nice to have
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -53,6 +54,9 @@ eval "$(zoxide init bash)"
 # Cargo [Rust]
 . "$HOME/.cargo/env"
 
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
 # Greeting
 cat << EOF
   .----------------.
@@ -63,3 +67,4 @@ cat << EOF
              (> <)
               " "
 EOF
+
