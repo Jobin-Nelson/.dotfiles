@@ -8,6 +8,7 @@ set -o vi
 shopt -s histappend
 shopt -s checkwinsize
 shopt -s globstar
+shopt -s extglob
 
 # Prompt
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
@@ -22,7 +23,11 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias less='less -i -R'
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+# WSL
 alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
+alias brave='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
+export SCREENDIR=$HOME/.screen
 
 # Nice to have
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -34,13 +39,11 @@ export EDITOR='/usr/bin/nvim'
 export VISUAL='/usr/bin/nvim'
 
 # Scripts
-if [ -d "$HOME/scripts" ] ; then
-    PATH="$HOME/scripts:$PATH"
-fi
+[ -d "$HOME/scripts" ] && PATH="$HOME/scripts:$PATH"
 
 # Pyenv [Python version manager]
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # Nvm [Node version manager]
