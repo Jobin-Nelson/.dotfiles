@@ -1,7 +1,7 @@
 -- Options
 HOME = os.getenv('HOME')
 vim.opt.mouse = 'a'
-vim.opt.clipboard:append('unnamedplus')
+vim.opt.clipboard = 'unnamedplus'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.sidescrolloff = 10
@@ -25,6 +25,20 @@ vim.opt.swapfile = false
 vim.opt.undodir = HOME .. '/.config/nvim/undodir'
 vim.opt.undofile = true
 vim.opt.signcolumn = 'yes'
+
+-- Wsl clipboard
+vim.g.clipboard = {
+  name = "win32yank-wsl",
+  copy = {
+    ["+"] = "win32yank.exe -i --crlf",
+    ["*"] = "win32yank.exe -i --crlf"
+  },
+  paste = {
+    ["+"] = "win32yank.exe -o --crlf",
+    ["*"] = "win32yank.exe -o --crlf"
+  },
+  cache_enable = 0,
+}
 
 -- Keymaps
 vim.keymap.set({'n', 'v'}, '<Space>', '<Nop>', {silent = true})
