@@ -22,6 +22,7 @@ set nobackup
 set undodir=~/.config/vim/undodir
 set undofile
 set hidden
+set cm=blowfish2
 
 let mapleader=" "
 map Q <Nop>
@@ -34,3 +35,5 @@ nnoremap <C-P> :Telescope find_files<CR>
 
 autocmd filetype python nnoremap <F5> :w <bar> !python %<CR>
 autocmd filetype javascript nnoremap <F5> :w <bar> !node %<CR>
+
+colorscheme elflord

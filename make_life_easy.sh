@@ -2,8 +2,11 @@
 
 # Install packages
 echo "Installing packages..."
-sudo apt-get update && sudo apt-get -y full-upgrade
 sudo apt-get -y install alacritty tmux zoxide git ripgrep
+
+# Starship prompt
+echo "Setting up starship prompt..."
+curl -sS https://starship.rs/install.sh | sh
 
 echo "Done!!!"
 exit 0 

@@ -60,6 +60,9 @@ eval "$(zoxide init bash)"
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
+# Starship prompt
+eval "$(starship init bash)"
+
 # Greeting
 cat << EOF
   .----------------.
