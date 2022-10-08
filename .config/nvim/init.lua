@@ -208,7 +208,7 @@ require('nightfox').setup({
         }
     }
 })
-vim.cmd('colorscheme nordfox')
+vim.cmd('colorscheme duskfox')
 
 -- Autopairs config
 require('nvim-autopairs').setup {}

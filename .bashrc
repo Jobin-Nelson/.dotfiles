@@ -37,6 +37,7 @@ export SCREENDIR=$HOME/.screen
 # Setting editor
 export EDITOR='/usr/bin/nvim'
 export VISUAL='/usr/bin/nvim'
+export COLORTERM="truecolor"
 
 # Scripts
 [ -d "$HOME/scripts" ] && PATH="$HOME/scripts:$PATH"

@@ -6,6 +6,7 @@
 - [nvm](https://github.com/nvm-sh/nvm)
 - [rust](https://rustup.rs/)
 - [neovim](https://github.com/neovim/neovim)
+- [starship](https://starship.rs/)
 
 ## Dotfiles
 - Setup ssh key with github
