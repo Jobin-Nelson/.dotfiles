@@ -55,8 +55,14 @@ vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 
-vim.cmd('autocmd FileType python nnoremap <F5> <cmd>w <bar> !python %<CR>')
-vim.cmd('autocmd FileType javascript nnoremap <F5> <cmd>w <bar> !node %<CR>')
+-- vim.cmd('autocmd FileType python nnoremap <F5> <cmd>w <bar> !python %<CR>')
+-- vim.cmd('autocmd FileType javascript nnoremap <F5> <cmd>w <bar> !node %<CR>')
+local my_group = vim.api.nvim_create_augroup("my_group", {clear = true})
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python", 
+    command = "nnoremap <F5> <cmd>w <bar> !python %<CR>", 
+    group = my_group,
+})
 
 -- Automatically install packer
 local fn = vim.fn
