@@ -51,7 +51,7 @@ vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
 vim.keymap.set('n', '<C-Left>', '<cmd>vertical resize -3<CR>')
 vim.keymap.set('n', 'L', '<cmd>bnext<CR>')
 vim.keymap.set('n', 'H', '<cmd>bprevious<CR>')
-vim.keymap.set('v', 'p', '"_dP')
+-- vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 
@@ -107,6 +107,7 @@ require('packer').startup(function(use)
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
     use 'tpope/vim-surround'
+    use 'dhruvasagar/vim-table-mode'
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
@@ -119,7 +120,7 @@ end)
 require("nvim-lsp-installer").setup {}
 
 -- Lsp config.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local servers = { 
     'pyright', 
     'tsserver',
@@ -147,6 +148,7 @@ for _, server in ipairs(servers) do
     }
 end
 
+-- Emmet config
 require('lspconfig')['emmet_ls'].setup({
     capabilities = capabilities,
     filetypes = { 'html', 'htmldjango', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less' },
@@ -182,7 +184,7 @@ cmp.setup({
 
 -- Treesitter config
 require('nvim-treesitter.configs').setup {
-    ensure_installed = { 'python', 'javascript', 'html', 'rust' },
+    ensure_installed = { 'python', 'javascript', 'html', 'rust', 'markdown', 'markdown_inline' },
     sync_install = false,
     highlight = {
         enable = true,
@@ -194,7 +196,7 @@ require('nvim-treesitter.configs').setup {
 vim.keymap.set('n', '<C-p>', '<cmd>Telescope find_files<CR>')
 require('telescope').setup {
     defaults = {
-        file_ignore_patterns = { 'venv', '__pycache__', 'node_modules' }
+        file_ignore_patterns = { 'venv', '__pycache__', 'node_modules', 'target' }
     }
 }
 
@@ -230,3 +232,4 @@ require('Comment').setup{
         extra = true,
     }
 }
+
