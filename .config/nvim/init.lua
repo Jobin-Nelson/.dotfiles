@@ -57,10 +57,10 @@ vim.keymap.set('v', '>', '>gv')
 
 -- vim.cmd('autocmd FileType python nnoremap <F5> <cmd>w <bar> !python %<CR>')
 -- vim.cmd('autocmd FileType javascript nnoremap <F5> <cmd>w <bar> !node %<CR>')
-local my_group = vim.api.nvim_create_augroup("my_group", {clear = true})
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "python", 
-    command = "nnoremap <F5> <cmd>w <bar> !python %<CR>", 
+local my_group = vim.api.nvim_create_augroup('my_group', {clear = true})
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'python', 
+    command = 'nnoremap <F5> <cmd>w <bar> !python %<CR>', 
     group = my_group,
 })
 
@@ -77,7 +77,8 @@ require('packer').startup(function(use)
 
     -- lsp
     use 'neovim/nvim-lspconfig'
-    use 'williamboman/nvim-lsp-installer'
+    use 'williamboman/mason.nvim'
+    use 'williamboman/mason-lspconfig.nvim'
 
     -- cmp
     use 'hrsh7th/nvim-cmp'
@@ -116,8 +117,11 @@ require('packer').startup(function(use)
     end
 end)
 
--- Lsp-installer config
-require("nvim-lsp-installer").setup {}
+-- Mason(lsp installer) setup
+require('mason').setup()
+require('mason-lspconfig').setup({
+    ensure_installed = { 'pyright', 'tsserver' }
+})
 
 -- Lsp config.
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
