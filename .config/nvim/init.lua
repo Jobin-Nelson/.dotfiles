@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 -- Options
 HOME = os.getenv('HOME')
 vim.opt.mouse = 'a'
@@ -25,6 +26,7 @@ vim.opt.swapfile = false
 vim.opt.undodir = HOME .. '/.config/nvim/undodir'
 vim.opt.undofile = true
 vim.opt.signcolumn = 'yes'
+vim.opt.termguicolors = true
 
 -- Wsl clipboard
 vim.g.clipboard = {
@@ -59,8 +61,8 @@ vim.keymap.set('v', '>', '>gv')
 -- vim.cmd('autocmd FileType javascript nnoremap <F5> <cmd>w <bar> !node %<CR>')
 local my_group = vim.api.nvim_create_augroup('my_group', {clear = true})
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'python', 
-    command = 'nnoremap <F5> <cmd>w <bar> !python %<CR>', 
+    pattern = 'python',
+    command = 'nnoremap <F5> <cmd>w <bar> !python %<CR>',
     group = my_group,
 })
 
@@ -76,9 +78,9 @@ require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
 
     -- lsp
-    use 'neovim/nvim-lspconfig'
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
+    use 'neovim/nvim-lspconfig'
 
     -- cmp
     use 'hrsh7th/nvim-cmp'
@@ -104,7 +106,7 @@ require('packer').startup(function(use)
     use 'saadparwaiz1/cmp_luasnip'
 
     -- utilities
-    use 'EdenEast/nightfox.nvim'
+    use {'catppuccin/nvim', as = 'catppuccin'}
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
     use 'tpope/vim-surround'
@@ -125,8 +127,8 @@ require('mason-lspconfig').setup({
 
 -- Lsp config.
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local servers = { 
-    'pyright', 
+local servers = {
+    'pyright',
     'tsserver',
     'rust_analyzer',
 }
@@ -151,12 +153,6 @@ for _, server in ipairs(servers) do
         end,
     }
 end
-
--- Emmet config
-require('lspconfig')['emmet_ls'].setup({
-    capabilities = capabilities,
-    filetypes = { 'html', 'htmldjango', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less' },
-})
 
 -- Nvim-cmp config
 vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
@@ -210,17 +206,48 @@ vim.keymap.set('n', '<leader>gp', '<cmd> Gitsigns prev_hunk<CR>')
 vim.keymap.set('n', '<leader>go', '<cmd> Gitsigns preview_hunk<CR>')
 require('gitsigns').setup()
 
--- Nightfox config
-require('nightfox').setup({
-    options = {
-        transparent = true,
-        styles = {
-            comments = 'italic',
-            keywords = 'bold',
-        }
+-- Catppuccin config
+require('catppuccin').setup({
+    flavour = 'mocha',
+    background = {
+        light = 'latte',
+        dark = 'mocha',
+    },
+    dim_inactive = {
+        enabled = true,
+        shade = 'dark',
+        percentage = 0.15,
+    },
+    transaprent_background = false,
+    term_colors = false,
+    styles = {
+        comments = { 'italic' },
+        conditionals = {},
+        loops = {},
+        functions = {},
+        keywords = { 'bold' },
+        strings = {},
+        variables = {},
+        numbers = {},
+        booleans = { 'bold' },
+        properties = {},
+        types = {},
+        operators = {},
+    },
+    integrations = {
+        cmp = true,
+        gitsigns = true,
+        telescope = true,
+        treesitter = true,
     }
 })
-vim.cmd('colorscheme duskfox')
+vim.cmd('colorscheme catppuccin')
+
+-- Emmet config
+require('lspconfig')['emmet_ls'].setup({
+    capabilities = capabilities,
+    filetypes = { 'html', 'htmldjango', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less' },
+})
 
 -- Autopairs config
 require('nvim-autopairs').setup {}
