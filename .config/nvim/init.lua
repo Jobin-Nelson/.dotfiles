@@ -46,7 +46,7 @@ vim.g.clipboard = {
 vim.keymap.set({'n', 'v'}, '<Space>', '<Nop>', {silent = true})
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>i', '<cmd>edit ~/.config/nvim/init.lua<CR>')
-vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 20<CR>')
+vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 25<CR>')
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +3<CR>')
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -3<CR>')
 vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
@@ -101,12 +101,16 @@ require('packer').startup(function(use)
     -- git
     use 'lewis6991/gitsigns.nvim'
 
-    -- snippet
+    -- snippets
     use 'L3MON4D3/LuaSnip'
     use 'saadparwaiz1/cmp_luasnip'
 
+    -- statusline
+    use 'nvim-lualine/lualine.nvim'
+
     -- utilities
     use {'catppuccin/nvim', as = 'catppuccin'}
+    use 'kyazdani42/nvim-web-devicons'
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
     use 'tpope/vim-surround'
@@ -184,7 +188,20 @@ cmp.setup({
 
 -- Treesitter config
 require('nvim-treesitter.configs').setup {
-    ensure_installed = { 'python', 'javascript', 'html', 'rust', 'markdown', 'markdown_inline' },
+    ensure_installed = { 
+        'rust',
+        'python',
+        'bash',
+        'markdown',
+        'markdown_inline',
+        'json',
+        'yaml',
+        'lua',
+        'toml',
+        'make',
+        'html',
+        'javascript',
+    },
     sync_install = false,
     highlight = {
         enable = true,
@@ -242,6 +259,11 @@ require('catppuccin').setup({
     }
 })
 vim.cmd('colorscheme catppuccin')
+
+-- Lualine config
+require('lualine').setup({
+    options = { theme = 'catppuccin' }
+})
 
 -- Emmet config
 require('lspconfig')['emmet_ls'].setup({
