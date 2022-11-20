@@ -1,7 +1,7 @@
 # Environment variables
 HISTCONTROL=ignoreboth
 HISTSIZE=5000
-HISTFILESIZE=2000
+HISTFILESIZE=5000
 
 # Options
 set -o vi

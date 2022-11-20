@@ -22,10 +22,13 @@ vim.opt.splitright = true
 vim.opt.wrap = false
 vim.opt.hidden = true
 vim.opt.swapfile = false
-vim.opt.undodir = HOME .. '/.config/nvim/undodir'
 vim.opt.undofile = true
+vim.opt.undodir = HOME .. '/.config/nvim/undodir'
 vim.opt.signcolumn = 'yes'
 vim.opt.termguicolors = true
+vim.opt.background = 'dark'
+vim.g.netrw_altv = 1
+vim.g.netrw_liststyle = 3
 vim.g.python3_host_prog = '/home/jobin/.pyenv/versions/3.11.0/bin/python'
 
 -- Wsl clipboard
@@ -41,6 +44,7 @@ vim.g.clipboard = {
     },
     cache_enable = 0,
 }
+
 -- Keymaps
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
@@ -56,8 +60,7 @@ vim.keymap.set('n', 'H', '<cmd>bprevious<CR>')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 
--- vim.cmd('autocmd FileType python nnoremap <F5> <cmd>w <bar> !python %<CR>')
--- vim.cmd('autocmd FileType javascript nnoremap <F5> <cmd>w <bar> !node %<CR>')
+-- Autocommands
 local my_group = vim.api.nvim_create_augroup('my_group', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'python',
@@ -66,7 +69,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'netrw',
-    command = 'setl bufhidden=delete',
+    command = 'setlocal bufhidden=wipe',
     group = my_group,
 })
 
@@ -124,6 +127,8 @@ require('packer').startup(function(use)
 
     -- utilities
     use { 'catppuccin/nvim', as = 'catppuccin' }
+    use 'sainnhe/gruvbox-material'
+    use 'szw/vim-maximizer'
     use 'kyazdani42/nvim-web-devicons'
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
@@ -179,7 +184,6 @@ require('mason-lspconfig').setup({
         'tsserver',
         'sumneko_lua',
         'emmet_ls',
-        'html',
     }
 })
 
@@ -258,10 +262,14 @@ require('nvim-treesitter.configs').setup {
         enable = true,
         additional_vim_regex_highlighting = false,
     },
+    indent = {
+        enable = true,
+    }
 }
 
 -- Telescope config
 vim.keymap.set('n', '<C-p>', '<cmd>Telescope find_files<CR>')
+vim.keymap.set('n', '<leader>of', '<cmd>Telescope oldfiles<CR>')
 require('telescope').setup {
     defaults = {
         file_ignore_patterns = { 'venv', '__pycache__', 'node_modules', 'target' }
@@ -309,11 +317,18 @@ require('catppuccin').setup({
         treesitter = true,
     }
 })
-vim.cmd('colorscheme catppuccin')
+
+-- Gruvbox-material config
+vim.g.gruvbox_material_background = 'medium'
+vim.g.gruvbox_material_enable_bold = 1
+vim.g.gruvbox_material_enable_italic = 1
+vim.g.gruvbox_material_better_performance = 1
+vim.g.gruvbox_material_diagnostic_text_highlight = 1
+vim.cmd('colorscheme gruvbox-material')
 
 -- Lualine config
 require('lualine').setup({
-    options = { theme = 'catppuccin' }
+    options = { theme = 'gruvbox-material' }
 })
 
 -- Autopairs config
@@ -330,3 +345,7 @@ require('Comment').setup {
         extra = true,
     }
 }
+
+-- Vim-maximizer config
+vim.keymap.set('n', '<leader>z', '<cmd>MaximizerToggle<CR>')
+
