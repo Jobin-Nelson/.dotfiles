@@ -27,6 +27,7 @@ vim.opt.undodir = HOME .. '/.config/nvim/undodir'
 vim.opt.signcolumn = 'yes'
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
+vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
 vim.g.netrw_altv = 1
 vim.g.netrw_liststyle = 3
 vim.g.python3_host_prog = '/home/jobin/.pyenv/versions/3.11.0/bin/python'
@@ -62,14 +63,24 @@ vim.keymap.set('v', '>', '>gv')
 
 -- Autocommands
 local my_group = vim.api.nvim_create_augroup('my_group', { clear = true })
-vim.api.nvim_create_autocmd('FileType', {
+vim.api.nvim_create_autocmd('FileType', { -- for quick execution of python files
     pattern = 'python',
     command = 'nnoremap <F5> <cmd>w <bar> !python %<CR>',
     group = my_group,
 })
-vim.api.nvim_create_autocmd('FileType', {
+vim.api.nvim_create_autocmd('FileType', { -- for removing empty netrw buffers
     pattern = 'netrw',
     command = 'setlocal bufhidden=wipe',
+    group = my_group,
+})
+vim.api.nvim_create_autocmd('FileType', { -- for pretty markdown syntax
+    pattern = 'markdown',
+    command = 'setlocal conceallevel=2',
+    group = my_group,
+})
+vim.api.nvim_create_autocmd('BufEnter', { -- for setting formatoptions only when in second_brain directory
+    pattern = '*/second_brain*',
+    command = 'setlocal formatoptions+=a',
     group = my_group,
 })
 
@@ -101,7 +112,6 @@ require('packer').startup(function(use)
     use 'williamboman/mason-lspconfig.nvim'
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/cmp-nvim-lsp'
-    use 'onsails/lspkind.nvim'
 
     -- snippets
     use 'L3MON4D3/LuaSnip'
@@ -126,13 +136,11 @@ require('packer').startup(function(use)
     use 'nvim-lualine/lualine.nvim'
 
     -- utilities
-    use { 'catppuccin/nvim', as = 'catppuccin' }
     use 'sainnhe/gruvbox-material'
-    use 'szw/vim-maximizer'
-    use 'kyazdani42/nvim-web-devicons'
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
     use 'tpope/vim-surround'
+    use 'szw/vim-maximizer'
     use 'dhruvasagar/vim-table-mode'
 
     -- Automatically set up your configuration after cloning packer.nvim
@@ -168,12 +176,6 @@ cmp.setup({
         { name = 'path' },
         { name = 'buffer' },
     }),
-    formatting = {
-        format = require('lspkind').cmp_format({
-            max_width = 50,
-            ellipsis_char = '...',
-        })
-    }
 })
 
 -- Mason(lsp installer) setup
@@ -193,8 +195,8 @@ local on_attach = function()
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = 0 })
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = 0 })
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = 0 })
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = 0 })
+    vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, { buffer = 0 })
+    vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, { buffer = 0 })
     vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, { buffer = 0 })
     vim.keymap.set('n', '<leader>ld', vim.diagnostic.show, { buffer = 0 })
     vim.keymap.set('n', '<leader>lD', vim.diagnostic.hide, { buffer = 0 })
@@ -262,9 +264,6 @@ require('nvim-treesitter.configs').setup {
         enable = true,
         additional_vim_regex_highlighting = false,
     },
-    indent = {
-        enable = true,
-    }
 }
 
 -- Telescope config
@@ -281,42 +280,6 @@ vim.keymap.set('n', '<leader>gn', '<cmd>Gitsigns next_hunk<CR>')
 vim.keymap.set('n', '<leader>gp', '<cmd>Gitsigns prev_hunk<CR>')
 vim.keymap.set('n', '<leader>go', '<cmd>Gitsigns preview_hunk<CR>')
 require('gitsigns').setup()
-
--- Catppuccin config
-require('catppuccin').setup({
-    flavour = 'mocha',
-    background = {
-        light = 'latte',
-        dark = 'mocha',
-    },
-    dim_inactive = {
-        enabled = true,
-        shade = 'dark',
-        percentage = 0.15,
-    },
-    transaprent_background = false,
-    term_colors = false,
-    styles = {
-        comments = { 'italic' },
-        conditionals = {},
-        loops = {},
-        functions = {},
-        keywords = { 'bold' },
-        strings = {},
-        variables = {},
-        numbers = {},
-        booleans = { 'bold' },
-        properties = {},
-        types = {},
-        operators = {},
-    },
-    integrations = {
-        cmp = true,
-        gitsigns = true,
-        telescope = true,
-        treesitter = true,
-    }
-})
 
 -- Gruvbox-material config
 vim.g.gruvbox_material_background = 'medium'
