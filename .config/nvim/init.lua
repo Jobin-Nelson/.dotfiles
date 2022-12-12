@@ -30,7 +30,7 @@ vim.opt.background = 'dark'
 vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
 vim.g.netrw_altv = 1
 vim.g.netrw_liststyle = 3
-vim.g.python3_host_prog = '/home/jobin/.pyenv/versions/3.11.0/bin/python'
+vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.0/bin/python'
 
 -- Wsl clipboard
 vim.g.clipboard = {
@@ -78,9 +78,9 @@ vim.api.nvim_create_autocmd('FileType', { -- for pretty markdown syntax
     command = 'setlocal conceallevel=2',
     group = my_group,
 })
-vim.api.nvim_create_autocmd('BufEnter', { -- for setting formatoptions only when in second_brain directory
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, { -- for setting formatoptions only when in second_brain directory
     pattern = '*/second_brain*',
-    command = 'setlocal formatoptions+=a',
+    command = 'setlocal formatoptions+=a colorcolumn=80',
     group = my_group,
 })
 
@@ -137,10 +137,11 @@ require('packer').startup(function(use)
 
     -- utilities
     use 'sainnhe/gruvbox-material'
+    use { 'catppuccin/nvim', as = 'catppuccin' }
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
     use 'tpope/vim-surround'
-    use 'szw/vim-maximizer'
+    use 'dhruvasagar/vim-zoom'
     use 'dhruvasagar/vim-table-mode'
 
     -- Automatically set up your configuration after cloning packer.nvim
@@ -182,6 +183,7 @@ cmp.setup({
 require('mason').setup()
 require('mason-lspconfig').setup({
     ensure_installed = {
+        'bashls',
         'pyright',
         'tsserver',
         'sumneko_lua',
@@ -203,10 +205,11 @@ local on_attach = function()
     vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float, { buffer = 0 })
     vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, { buffer = 0 })
     vim.keymap.set('n', '<leader>dp', vim.diagnostic.goto_prev, { buffer = 0 })
-    vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { buffer = 0 })
+    vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format, { buffer = 0 })
     vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = 0 })
 end
 local servers = {
+    'bashls',
     'pyright',
     'tsserver',
     'rust_analyzer',
@@ -260,6 +263,7 @@ require('nvim-treesitter.configs').setup {
         'javascript',
     },
     sync_install = false,
+    auto_install = true,
     highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
@@ -267,8 +271,11 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Telescope config
-vim.keymap.set('n', '<C-p>', '<cmd>Telescope find_files<CR>')
-vim.keymap.set('n', '<leader>of', '<cmd>Telescope oldfiles<CR>')
+vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<CR>')
+vim.keymap.set('n', '<leader>fo', '<cmd>Telescope oldfiles<CR>')
+vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<CR>')
+vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<CR>')
+vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<CR>')
 require('telescope').setup {
     defaults = {
         file_ignore_patterns = { 'venv', '__pycache__', 'node_modules', 'target' }
@@ -281,17 +288,55 @@ vim.keymap.set('n', '<leader>gp', '<cmd>Gitsigns prev_hunk<CR>')
 vim.keymap.set('n', '<leader>go', '<cmd>Gitsigns preview_hunk<CR>')
 require('gitsigns').setup()
 
+-- Catppuccing config
+require('catppuccin').setup({
+    flavour = 'mocha',
+    background = {
+        light = 'latte',
+        dark = 'mocha',
+    },
+    transparent_background = true;
+    term_colors = false,
+    dim_inactive = {
+        enabled = false,
+        shade = "dark",
+        percentage = 0.15,
+    },
+    styles = {
+        comments = { 'italic' },
+        conditionals = {},
+        loops = {},
+        functions = {},
+        keywords = { 'bold' },
+        strings = {},
+        variables = {},
+        numbers = {},
+        booleans = { 'bold' },
+        properties = {},
+        types = {},
+        operators = {},
+    },
+    integrations = {
+        cmp = true,
+        gitsigns = true,
+        nvimtree = true,
+        telescope = true,
+        mason = true,
+        treesitter = true,
+    },
+})
+vim.cmd('colorscheme catppuccin')
+
 -- Gruvbox-material config
 vim.g.gruvbox_material_background = 'medium'
 vim.g.gruvbox_material_enable_bold = 1
 vim.g.gruvbox_material_enable_italic = 1
 vim.g.gruvbox_material_better_performance = 1
 vim.g.gruvbox_material_diagnostic_text_highlight = 1
-vim.cmd('colorscheme gruvbox-material')
 
 -- Lualine config
 require('lualine').setup({
-    options = { theme = 'gruvbox-material' }
+    options = { theme = 'catppuccin' }
 })
 
 -- Autopairs config
@@ -308,7 +353,4 @@ require('Comment').setup {
         extra = true,
     }
 }
-
--- Vim-maximizer config
-vim.keymap.set('n', '<leader>z', '<cmd>MaximizerToggle<CR>')
 

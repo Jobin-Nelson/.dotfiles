@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-DEST_DIR="$HOME/playground/tutorials/pytest"
+DEST_DIR="$HOME/playground/projects/todo"
 
 cd "$DEST_DIR"
 
