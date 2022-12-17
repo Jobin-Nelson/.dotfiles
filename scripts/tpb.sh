@@ -5,10 +5,10 @@ set -euo pipefail
 if [[ -z "$1" ]]; then 
 	read -p "Please provide the search term: " query
 else
-	query=$@
+	query=$*
 fi
 
-query="${query[*]// /%20}"
+query="${query// /%20}"
 
 info_hash=$(curl -s "https://piratebayorg.net/api.php?url=/q.php?q=${query}&cat=200" |
 	jq -r '.[] | .info_hash + ", " + .size + ", [S:" + (.seeders|tostring) + " L:" + .leechers + "], " + .name' |
@@ -20,7 +20,7 @@ magnet="magnet:?xt=urn:btih:${info_hash}"
 
 read -p "Do you want to download the file (y/n)? " ans
 
-echo $magnet | xclip -sel c
+echo "$magnet" | xclip -sel c
 
 if [[ $ans == 'y' ]]; then
 	echo "Downloading file"

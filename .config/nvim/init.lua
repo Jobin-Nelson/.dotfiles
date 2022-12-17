@@ -63,22 +63,26 @@ vim.keymap.set('v', '>', '>gv')
 
 -- Autocommands
 local my_group = vim.api.nvim_create_augroup('my_group', { clear = true })
-vim.api.nvim_create_autocmd('FileType', { -- for quick execution of python files
+ -- for quick execution of python files
+vim.api.nvim_create_autocmd('FileType', {
     pattern = 'python',
     command = 'nnoremap <F5> <cmd>w <bar> !python %<CR>',
     group = my_group,
 })
-vim.api.nvim_create_autocmd('FileType', { -- for removing empty netrw buffers
+ -- for removing empty netrw buffers
+vim.api.nvim_create_autocmd('FileType', {
     pattern = 'netrw',
     command = 'setlocal bufhidden=wipe',
     group = my_group,
 })
-vim.api.nvim_create_autocmd('FileType', { -- for pretty markdown syntax
+ -- for pretty markdown syntax
+vim.api.nvim_create_autocmd('FileType', {
     pattern = 'markdown',
     command = 'setlocal conceallevel=2',
     group = my_group,
 })
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, { -- for setting formatoptions only when in second_brain directory
+ -- for setting formatoptions only when in second_brain directory
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
     pattern = '*/second_brain*',
     command = 'setlocal formatoptions+=a colorcolumn=80',
     group = my_group,
@@ -136,7 +140,6 @@ require('packer').startup(function(use)
     use 'nvim-lualine/lualine.nvim'
 
     -- utilities
-    use 'sainnhe/gruvbox-material'
     use { 'catppuccin/nvim', as = 'catppuccin' }
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
@@ -150,6 +153,15 @@ require('packer').startup(function(use)
         require('packer').sync()
     end
 end)
+
+if packer_bootstrap then
+    print '=================================='
+    print '    Plugins are being installed'
+    print '    Wait until Packer completes,'
+    print '       then restart nvim'
+    print '=================================='
+    return
+end
 
 -- Nvim-cmp config
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
@@ -193,20 +205,30 @@ require('mason-lspconfig').setup({
 
 -- Lsp config.
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local on_attach = function()
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = 0 })
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = 0 })
-    vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, { buffer = 0 })
-    vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, { buffer = 0 })
-    vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, { buffer = 0 })
-    vim.keymap.set('n', '<leader>ld', vim.diagnostic.show, { buffer = 0 })
-    vim.keymap.set('n', '<leader>lD', vim.diagnostic.hide, { buffer = 0 })
-    vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float, { buffer = 0 })
-    vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, { buffer = 0 })
-    vim.keymap.set('n', '<leader>dp', vim.diagnostic.goto_prev, { buffer = 0 })
-    vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format, { buffer = 0 })
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = 0 })
+local on_attach = function(_, bufnr)
+    local nmap = function(keys, func, desc)
+        if desc then
+            desc = 'LSP: ' .. desc
+        end
+
+        vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+    end
+    nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+    nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+    nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('<leader>gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+    nmap('<leader>gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+    nmap('<leader>lr', vim.lsp.buf.rename, '[R]e[n]ame')
+    nmap('<leader>ld', vim.diagnostic.show, 'Show Diagnostic')
+    nmap('<leader>lD', vim.diagnostic.hide, 'Hide Diagnostic')
+    nmap('<leader>do', vim.diagnostic.open_float, 'Open Diagnostic')
+    nmap('<leader>dn', vim.diagnostic.goto_next, 'Next Diagnostic')
+    nmap('<leader>dp', vim.diagnostic.goto_prev, 'Previous Diagnostic')
+    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+    nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    nmap('<leader>wl', function() vim.pretty_print(vim.lsp.buf.list_workspace_folders()) end, '[W]orkspace [L]ist [F]olders')
+    nmap('<leader>lf', vim.lsp.buf.format, 'Format buffer')
+    nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 end
 local servers = {
     'bashls',
@@ -222,20 +244,27 @@ for _, server in ipairs(servers) do
     }
 end
 
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init..lua')
+
 require('lspconfig')['sumneko_lua'].setup {
     capabilities = capabilities,
     on_attach = on_attach,
     settings = {
         Lua = {
+            runtime = {
+                version = 'LuaJIT',
+                path = runtime_path,
+            },
             diagnostics = {
                 globals = { 'vim' },
             },
             workspace = {
-                library = {
-                    [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                    [vim.fn.expand('config') .. '/lua'] = true,
-                }
-            }
+                library = vim.api.nvim_get_runtime_file('', true),
+                checkThirdParty = false,
+            },
+            telemetry = { enable = false },
         }
     }
 }
@@ -261,12 +290,65 @@ require('nvim-treesitter.configs').setup {
         'make',
         'html',
         'javascript',
+        'help',
     },
     sync_install = false,
     auto_install = true,
     highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
+    },
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = '<C-space>',
+            node_incremental = '<C-space>',
+            scope_incremental = '<C-s>',
+            node_decremental = '<C-backspace>',
+        },
+    },
+    textobjects = {
+        select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+                ['aa'] = '@parameter.outer',
+                ['ia'] = '@parameter.inner',
+                ['af'] = '@function.outer',
+                ['if'] = '@function.inner',
+                ['ac'] = '@class.outer',
+                ['ic'] = '@class.inner',
+            },
+        },
+        move = {
+            enable = true,
+            set_jumps = false,
+            goto_next_start = {
+                [']m'] = '@function.outer',
+                [']]'] = '@class.outer',
+            },
+            goto_next_end = {
+                [']M'] = '@function.outer',
+                [']['] = '@class.outer',
+            },
+            goto_previous_start = {
+                ['[m'] = '@function.outer',
+                ['[['] = '@class.outer,'
+            },
+            goto_previous_end = {
+                ['[M'] = '@function.outer',
+                ['[]'] = '@class.outer',
+            },
+        },
+        swap = {
+            enable = true,
+            swap_next = {
+                ['<leader>a'] = '@parameter.inner',
+            },
+            swap_previous = {
+                ['<leader>A'] = '@parameter.inner',
+            },
+        },
     },
 }
 
@@ -319,7 +401,6 @@ require('catppuccin').setup({
     integrations = {
         cmp = true,
         gitsigns = true,
-        nvimtree = true,
         telescope = true,
         mason = true,
         treesitter = true,
@@ -327,12 +408,6 @@ require('catppuccin').setup({
 })
 vim.cmd('colorscheme catppuccin')
 
--- Gruvbox-material config
-vim.g.gruvbox_material_background = 'medium'
-vim.g.gruvbox_material_enable_bold = 1
-vim.g.gruvbox_material_enable_italic = 1
-vim.g.gruvbox_material_better_performance = 1
-vim.g.gruvbox_material_diagnostic_text_highlight = 1
 
 -- Lualine config
 require('lualine').setup({
@@ -353,4 +428,3 @@ require('Comment').setup {
         extra = true,
     }
 }
-
