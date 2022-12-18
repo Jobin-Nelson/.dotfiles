@@ -2,13 +2,16 @@
 
 set -euo pipefail
 
-cd "$(zoxide query -l | fzf)"
+selected_dir="$(zoxide query -l | fzf)"
+
+[[ -z $selected_dir ]] && exit 1
+
+cd "$selected_dir"
 
 session_name=$(basename "$PWD")
 
 if ! tmux has-session -t "$session_name"; then
-    tmux new-session -s "$session_name" -n editor -d
-    tmux send-keys -t "${session_name}":0 'nvim' Enter
+    tmux new-session -s "$session_name" -n editor -d 'nvim'
 fi
 
 tmux attach -t "$session_name"

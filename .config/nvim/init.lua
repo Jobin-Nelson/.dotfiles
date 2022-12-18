@@ -49,7 +49,7 @@ vim.g.clipboard = {
 -- Keymaps
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
-vim.keymap.set('n', '<leader>i', '<cmd>edit ~/.config/nvim/init.lua<CR>')
+vim.keymap.set('n', '<leader>i', '<cmd>edit $MYVIMRC<CR>')
 vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 25<CR>')
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +3<CR>')
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -3<CR>')
@@ -57,6 +57,7 @@ vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
 vim.keymap.set('n', '<C-Left>', '<cmd>vertical resize -3<CR>')
 vim.keymap.set('n', 'L', '<cmd>bnext<CR>')
 vim.keymap.set('n', 'H', '<cmd>bprevious<CR>')
+vim.keymap.set('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
 -- vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
@@ -174,11 +175,11 @@ cmp.setup({
     },
     window = {
         completion = cmp.config.window.bordered(),
-        -- documentation = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-F>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
         ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
@@ -407,7 +408,6 @@ require('catppuccin').setup({
     },
 })
 vim.cmd('colorscheme catppuccin')
-
 
 -- Lualine config
 require('lualine').setup({
