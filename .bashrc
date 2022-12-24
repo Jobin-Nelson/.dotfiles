@@ -35,8 +35,8 @@ export SCREENDIR=$HOME/.screen
 [ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
 # Setting editor
-export EDITOR='/usr/local/bin/nvim'
-export VISUAL='/usr/local/bin/nvim'
+export EDITOR='/usr/bin/nvim'
+export VISUAL='/usr/bin/nvim'
 export COLORTERM="truecolor"
 
 # Scripts

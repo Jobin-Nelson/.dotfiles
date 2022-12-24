@@ -33,18 +33,18 @@ vim.g.netrw_liststyle = 3
 vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.1/bin/python'
 
 -- Wsl clipboard
--- vim.g.clipboard = {
---     name = "win32yank-wsl",
---     copy = {
---         ["+"] = "win32yank.exe -i --crlf",
---         ["*"] = "win32yank.exe -i --crlf"
---     },
---     paste = {
---         ["+"] = "win32yank.exe -o --crlf",
---         ["*"] = "win32yank.exe -o --crlf"
---     },
---     cache_enable = 0,
--- }
+vim.g.clipboard = {
+    name = "win32yank-wsl",
+    copy = {
+        ["+"] = "win32yank.exe -i --crlf",
+        ["*"] = "win32yank.exe -i --crlf"
+    },
+    paste = {
+        ["+"] = "win32yank.exe -o --crlf",
+        ["*"] = "win32yank.exe -o --crlf"
+    },
+    cache_enable = 0,
+}
 
 -- Keymaps
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -292,6 +292,7 @@ require('nvim-treesitter.configs').setup {
         'html',
         'javascript',
         'help',
+        'vim',
     },
     sync_install = false,
     auto_install = true,

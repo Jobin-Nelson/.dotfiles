@@ -2,7 +2,7 @@
 
 # Install packages
 echo "Installing packages..."
-sudo apt-get -y install alacritty tmux zoxide git ripgrep fzf
+sudo apt-get -y install curl build-essential libfuse2 unzip git tmux zoxide ripgrep fzf 
 
 # Installing Pyenv
 curl https://pyenv.run | bash
@@ -23,13 +23,13 @@ pyenv global 3.11.1
 nvm install node
 nvm use node
 
-mkdir -p ~/playground/open_source/ && cd $_
-git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git && cd rust-analyzer
+mkdir -p ~/playground/open_source/ && cd "$_" || exit 1
+git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git && cd rust-analyzer || exit 1
 cargo xtask install --server
 
 # Configuring pop-os settings
-echo 1 | sudo tee /sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00/conservation_mode
-gsettings set org.gnome.shell.app-switcher current-workspace-only true
+# echo 1 | sudo tee /sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00/conservation_mode
+# gsettings set org.gnome.shell.app-switcher current-workspace-only true
 
 # Starship prompt
 echo "Setting up starship prompt..."
