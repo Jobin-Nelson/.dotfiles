@@ -44,7 +44,7 @@ export COLORTERM="truecolor"
 
 # Pyenv [Python version manager]
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv > /dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # Nvm [Node version manager]

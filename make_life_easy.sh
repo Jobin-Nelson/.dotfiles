@@ -49,7 +49,7 @@ echo -e '\nInstalling node...\n'
 nvm install node && nvm use node
 
 echo -e '\nInstalling rust-analyzer...\n'
-mkdir -p ~/playground/open_source/ && cd "$_" || exit 1
+mkdir -p "$HOME/playground/open_source/" && cd "$_" || exit 1
 git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git && cd rust-analyzer || exit 1
 cargo xtask install --server
 
