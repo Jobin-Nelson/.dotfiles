@@ -27,6 +27,7 @@ vim.opt.undodir = HOME .. '/.config/nvim/undodir'
 vim.opt.signcolumn = 'yes'
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
+vim.opt.fileformat = 'unix'
 vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
 vim.g.netrw_altv = 1
 vim.g.netrw_liststyle = 3
@@ -197,6 +198,7 @@ require('mason').setup()
 require('mason-lspconfig').setup({
     ensure_installed = {
         'bashls',
+        'clangd',
         'pyright',
         'tsserver',
         'sumneko_lua',
@@ -233,6 +235,7 @@ local on_attach = function(_, bufnr)
 end
 local servers = {
     'bashls',
+    'clangd',
     'pyright',
     'tsserver',
     'rust_analyzer',

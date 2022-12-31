@@ -8,7 +8,8 @@ selected_dir="$(zoxide query -l | fzf)"
 
 cd "$selected_dir"
 
-session_name=$(basename "$PWD")
+# session_name=$(basename "$PWD")
+read -p "Session Name: " session_name
 
 if ! tmux has-session -t "$session_name"; then
     tmux new-session -s "$session_name" -n editor -d 'nvim'

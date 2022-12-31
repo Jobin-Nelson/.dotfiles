@@ -19,7 +19,8 @@ sudo apt-get -y install \
     tmux \
     zoxide \
     ripgrep \
-    fzf 
+    fzf \
+    shellcheck
 
 # Installing Pyenv
 echo -e '\nInstalling pyenv...\n'

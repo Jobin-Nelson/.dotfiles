@@ -1,4 +1,4 @@
-format = "$all$fill$cmd_duration$jobs$time$battery$line_break$character"
+format = "$all$fill$cmd_duration$jobs$time$line_break$character"
 
 [directory]
 read_only = " "
