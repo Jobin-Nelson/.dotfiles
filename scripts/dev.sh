@@ -1,13 +1,10 @@
 #!/usr/bin/bash
 
-set -euo pipefail
 
 DEST_DIR="$HOME/playground/projects/todo"
 
-cd "$DEST_DIR"
-
 if ! tmux has-session -t Rooms; then
-    tmux new-session -s Rooms -n Editor -d
+    tmux new-session -s Rooms -c "$DEST_DIR" -n Editor -d
     tmux new-window -t Rooms -n Django -d
     tmux send-keys -t Rooms:0 '. venv/bin/activate' Enter
     tmux send-keys -t Rooms:1 '. venv/bin/activate' Enter
