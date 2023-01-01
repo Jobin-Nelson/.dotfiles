@@ -23,13 +23,13 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias less='less -i -R'
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date +%Y-%m-%d).txt"
+alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date --date \"\$([[ \$(date +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
 
 # WSL
 alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
 alias brave='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 export SCREENDIR=$HOME/.screen
-service cron status || sudo service cron start
+service cron status &> /dev/null || sudo service cron start
 
 # Nice to have
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
