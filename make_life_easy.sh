@@ -6,6 +6,7 @@ sudo apt-get -y install \
     git \
     curl \
     libfuse2 \
+    make \
     build-essential \
     zlib1g-dev \
     libffi-dev \

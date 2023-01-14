@@ -23,7 +23,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias less='less -i -R'
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date --date \"\$([[ \$(date +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
+alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date -d \"\$([[ \$(date -d '+6 hours' +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
 
 # WSL
 alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
