@@ -41,7 +41,7 @@ curl -sS "https://starship.rs/install.sh" | sh
 
 # Setting up pyenv, nvm, rust-analyzer
 echo -e '\nSourcing .bashrc...\n'
-source ~/.bashrc
+source "$HOME/.bashrc"
 
 pyenv update
 echo -e '\nInstalling python...\n'
@@ -51,13 +51,15 @@ echo -e '\nInstalling node...\n'
 nvm install node && nvm use node
 
 echo -e '\nInstalling rust-analyzer...\n'
-mkdir -p "$HOME/playground/open_source/" && cd "$_" || exit 1
-git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git && cd rust-analyzer || exit 1
+OPEN_SOURCE_DIR="$HOME/playground/open_source"
+mkdir -p "$OPEN_SOURCE_DIR" 
+git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git "$OPEN_SOURCE_DIR/rust-analyzer" && \
+    cd "$OPEN_SOURCE_DIR/rust-analyzer" || exit 1
 cargo xtask install --server
 
 # Configuring pop-os settings
 # echo 1 | sudo tee /sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00/conservation_mode
 # gsettings set org.gnome.shell.app-switcher current-workspace-only true
 
-echo "Done!!!"
+echo -e "\nSetup Done!!!\n"
 exit 0 
