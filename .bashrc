@@ -22,14 +22,15 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias less='less -i -R'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date -d \"\$([[ \$(date -d '+6 hours' +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
 
 # WSL
-alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
-alias brave='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
-export SCREENDIR=$HOME/.screen
-service cron status &> /dev/null || sudo service cron start
+# alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
+# alias brave='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
+# export SCREENDIR=$HOME/.screen
+# service cron status &> /dev/null || sudo service cron start
 
 # Nice to have
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -42,7 +43,7 @@ export VISUAL='/usr/bin/nvim'
 export COLORTERM="truecolor"
 
 # Scripts
-[ -d "$HOME/scripts" ] && PATH="$HOME/scripts:$PATH"
+[[ -d "$HOME/scripts" ]] && PATH="$HOME/scripts:$PATH"
 
 # Pyenv [Python version manager]
 export PYENV_ROOT="$HOME/.pyenv"
