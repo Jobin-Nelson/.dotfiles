@@ -57,6 +57,11 @@ git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git "$OPEN_SOURCE
     cd "$OPEN_SOURCE_DIR/rust-analyzer" || exit 1
 cargo xtask install --server
 
+echo -e '\nInstalling Neovim...\n'
+curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage" -o "$HOME/Downloads/nvim"
+chmod +x "$HOME/Downloads/nvim"
+sudo mv "$HOME/Downloads/nvim" /usr/bin/
+
 # Install fonts
 function install_fonts() {
     FONTS=(\
@@ -78,6 +83,8 @@ function install_fonts() {
         unzip "${DOWNLOAD_DIR}/${font}.zip" -d "${FONT_DIR}/${font}" -x '*Windows*'
         rm "${DOWNLOAD_DIR}/${font}.zip"
     done
+
+    fc-cache
 }
 
 # Cloning useful repos
@@ -104,15 +111,15 @@ function setup_repos() {
 
 # Downloading favourite wallpapers
 function download_wallpapers() {
-    links=(\
+    WALLPAPERS=(\
         'https://w.wallhaven.cc/full/m9/wallhaven-m96d8m.jpg' \
         'https://w.wallhaven.cc/full/49/wallhaven-49m5d1.jpg' \
     )
     DOWNLOAD_DIR="$HOME/Pictures/wallpapers"
     mkdir -p "$DOWNLOAD_DIR"
 
-    for link in "${links[@]}"; do
-        curl "$link" -o "${DOWNLOAD_DIR}/${link##*/}"
+    for wallpaper in "${WALLPAPERS[@]}"; do
+        curl "$wallpaper" -o "${DOWNLOAD_DIR}/${wallpaper##*/}"
     done
 }
 
