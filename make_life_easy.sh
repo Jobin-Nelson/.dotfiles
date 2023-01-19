@@ -1,79 +1,101 @@
 #!/bin/bash
 
-# Install packages
-echo -e '\nInstalling packages...\n'
-sudo apt-get -y install \
-    git \
-    curl \
-    libfuse2 \
-    make \
-    build-essential \
-    zlib1g-dev \
-    libffi-dev \
-    libssl-dev \
-    libbz2-dev \
-    libreadline-dev \
-    libsqlite3-dev \
-    liblzma-dev \
-    tk-dev \
-    unzip \
-    tmux \
-    zoxide \
-    ripgrep \
-    fzf \
-    shellcheck
+function banner() {
+    local termwidth padding_len padding 
+    termwidth="$(tput cols)"
+    padding_len="$(((termwidth - 2 - ${#1})/2))" 
+    padding=$(printf '%0.1s' ={1..500})
 
-# Installing Pyenv
-echo -e '\nInstalling pyenv...\n'
-curl https://pyenv.run | bash
+    tput setaf 3
+    printf '※%.0s' ※$(seq 1 "${termwidth}")
+    echo
+    printf '%*.*s %s %*.*s\n' 0 "${padding_len}" "${padding}" "$1" 0 "${padding_len}" "${padding}"
+    printf '※%.0s' ※$(seq 1 "${termwidth}")
+    echo -e "\n"
+    tput sgr0
+}
 
-# Installing NVM
-echo -e '\nInstalling nvm...\n'
-curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh" | bash
+function install_packages() {
+    banner 'Installing packages'
+    sudo apt-get -y install \
+        git \
+        curl \
+        libfuse2 \
+        make \
+        build-essential \
+        zlib1g-dev \
+        libffi-dev \
+        libssl-dev \
+        libbz2-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        liblzma-dev \
+        tk-dev \
+        unzip \
+        tmux \
+        zoxide \
+        fzf \
+        ripgrep \
+        shellcheck
+}
 
-# Install Rustup
-echo -e '\nInstalling rustup...\n'
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+function install_pyenv_nvm_rustup() {
+    # Installing Pyenv
+    banner 'Installing pyenv'
+    curl https://pyenv.run | bash
 
-# Starship prompt
-echo -e '\nInstalling up starship prompt...\n'
-curl -sS "https://starship.rs/install.sh" | sh
+    # Installing NVM
+    banner 'Installing nvm'
+    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh" | bash
 
-# Setting up pyenv, nvm, rust-analyzer
-echo -e '\nSourcing .bashrc...\n'
-. "$HOME/.bashrc"
+    # Install Rustup
+    banner 'Installing rustup'
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-pyenv update
-echo -e '\nInstalling python...\n'
-pyenv install 3.11.1 && pyenv global 3.11.1
+    # Starship prompt
+    banner 'Installing starship prompt'
+    curl -sS "https://starship.rs/install.sh" | sh
 
-echo -e '\nInstalling node...\n'
-nvm install node && nvm use node
+    # Setting up pyenv, nvm, rust-analyzer
+    banner 'Sourcing .bashrc'
+    . "$HOME/.bashrc"
+}
 
-echo -e '\nInstalling rust-analyzer...\n'
-OPEN_SOURCE_DIR="$HOME/playground/open_source"
-mkdir -p "$OPEN_SOURCE_DIR" 
-git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git "$OPEN_SOURCE_DIR/rust-analyzer" && \
-    cd "$OPEN_SOURCE_DIR/rust-analyzer" || exit 1
-cargo xtask install --server
+function setup_python_node_rustanalyzer() {
+    banner 'Installing python'
+    pyenv install 3.11.1 && pyenv global 3.11.1
 
-echo -e '\nInstalling Neovim...\n'
-curl -L "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage" -o "$HOME/Downloads/nvim"
-chmod +x "$HOME/Downloads/nvim"
-sudo mv "$HOME/Downloads/nvim" /usr/bin/
+    banner 'Installing node'
+    nvm install node && nvm use node
 
-# Install fonts
+    banner 'Installing rust-analyzer'
+    mkdir -p "$OPEN_SOURCE_DIR" 
+    git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git "$OPEN_SOURCE_DIR/rust-analyzer" && \
+        cd "$OPEN_SOURCE_DIR/rust-analyzer" || exit 1
+    cargo xtask install --server
+}
+
+function install_neovim() {
+    banner 'Installing Neovim'
+    curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb -o "$NEOVIM"
+    sudo dpkg -i "$NEOVIM"
+    rm "$NEOVIM"
+}
+
 function install_fonts() {
+    local FONTS BASE_URL DOWNLOAD_DIR FONT_DIR
+    banner 'Installing Fonts'
     FONTS=(\
-        "JetBrainsMono" \
-        "Hack" \
-        "Meslo" \
+        'JetBrainsMono' \
+        'Hack' \
+        'Meslo' \
+        'SourceCodePro' \
     )
 
     BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2'
     DOWNLOAD_DIR="$HOME/Downloads"
     FONT_DIR="$HOME/.local/share/fonts"
-    mkdir -p "$DOWNLOAD_DIR" "$FONT_DIR" 
+    mkdir -p "${DOWNLOAD_DIR}" "${FONT_DIR}" 
 
     for font in "${FONTS[@]}"; do
         echo -e "\nDownloading font ${font}\n"
@@ -87,30 +109,32 @@ function install_fonts() {
     fc-cache
 }
 
-# Cloning useful repos
 function setup_repos() {
+    local REPOS PROJECT_DIR
+    banner 'Setting Up Repositories'
     REPOS=(\
-        "leet_daily" \
-        "second_brain" \
-        "email_updater" \
-        "aoclib" \
-        "exercism_rust_track" \
-        "todo" \
+        'leet_daily' \
+        'second_brain' \
+        'email_updater' \
+        'aoclib' \
+        'exercism_rust_track' \
+        'todo' \
     )
 
     PROJECT_DIR="$HOME/playground/projects"
 
-    mkdir -p "$PROJECT_DIR"
+    mkdir -p "${PROJECT_DIR}"
 
     for repo in "${REPOS[@]}"; do
-        git clone --depth 1 "git@github.com:Jobin-Nelson/$repo" "${PROJECT_DIR}/$repo"
+        git clone --depth 1 "git@github.com:Jobin-Nelson/${repo}" "${PROJECT_DIR}/${repo}"
     done
 
     git clone --depth 1 "git@github.com:Jobin-Nelson/learn" "$HOME/playground/learn"
 }
 
-# Downloading favourite wallpapers
 function download_wallpapers() {
+    local WALLPAPERS DOWNLOAD_DIR
+    banner 'Downloading Wallpapers'
     WALLPAPERS=(\
         'https://w.wallhaven.cc/full/m9/wallhaven-m96d8m.jpg' \
         'https://w.wallhaven.cc/full/49/wallhaven-49m5d1.jpg' \
@@ -123,14 +147,34 @@ function download_wallpapers() {
     done
 }
 
-install_fonts
-setup_repos
-download_wallpapers
+function configure_pop_os() {
+    banner 'Configuring POP-OS'
+    # echo 1 | sudo tee '/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode'
+    gsettings set org.gnome.shell.app-switcher current-workspace-only true
+    gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Pictures/wallpapers/wallhaven-m96d8m.jpg"
+    sudo apt-get install alacritty zathura mpv 
+}
 
-# Configuring pop-os settings
-# echo 1 | sudo tee /sys/bus/platform/drivers/ideapad_acpi/VPC2004\:00/conservation_mode
-# gsettings set org.gnome.shell.app-switcher current-workspace-only true
-# gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Pictures/wallpapers/wallhaven-m96d8m.jpg"
+function main() {
+    local OPEN_SOURCE_DIR NEOVIM
+    OPEN_SOURCE_DIR="$HOME/playground/open_source"
+    NEOVIM="$HOME/Downloads/nvim-linux64.deb"
 
-echo -e "\nSetup Done!!!\n"
-exit 0 
+    install_packages
+    install_pyenv_nvm_rustup
+    setup_python_node_rustanalyzer
+    install_neovim
+    setup_repos
+
+    if [[ -z $WSL ]]; then
+        install_fonts
+        download_wallpapers
+        configure_pop_os
+    fi
+
+    echo -e "\n****************** Setup Done!!! ******************\n"
+    echo -e "\n***** Restart shell for effects to take place *****\n"
+    exit 0 
+}
+
+main

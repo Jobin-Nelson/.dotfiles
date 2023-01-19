@@ -9,7 +9,13 @@
 To Setup everything
 
 ```
-. ./make_life_easy.sh
+. $HOME/make_life_easy.sh
+```
+
+if running on WSL
+
+```
+WSL=1 . $HOME/make_life_easy.sh
 ```
 
 ## Install packages
