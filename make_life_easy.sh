@@ -156,7 +156,17 @@ function configure_pop_os() {
 }
 
 function install_i3wm() {
-    sudo apt-get install -y i3 polybar dmenu alacritty feh brightnessctl
+    sudo apt-get install -y \
+        i3 \
+        i3lock \
+        polybar \
+        dmenu \
+        alacritty \
+        feh \
+        brightnessctl \
+        compton
+
+    sudo gpasswd -a "${USER}" video
 }
 
 function main() {

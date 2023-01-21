@@ -12,7 +12,7 @@ To Setup everything
 . $HOME/make_life_easy.sh
 ```
 
-if running on WSL
+- if running on WSL
 
 ```
 WSL=1 . $HOME/make_life_easy.sh
@@ -27,3 +27,17 @@ WSL=1 . $HOME/make_life_easy.sh
 - [neovim](https://github.com/neovim/neovim)
 - [starship](https://starship.rs/)
 
+## I3WM
+
+- Set Natural Scrolling and tapping for trackpad by editing `/usr/share/X11/xorg.conf.d/40-libinput.conf`
+
+```
+Section "InputClass"
+        Identifier "libinput touchpad catchall"
+        MatchIsTouchpad "on"
+        MatchDevicePath "/dev/input/event*"
+        Driver "libinput"
+        Option "NaturalScrolling" "True"
+        Option "Tapping" "on"
+EndSection
+```
