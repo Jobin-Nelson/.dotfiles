@@ -155,6 +155,10 @@ function configure_pop_os() {
     sudo apt-get install alacritty zathura mpv 
 }
 
+function install_i3wm() {
+    sudo apt-get install -y i3 polybar dmenu alacritty feh brightnessctl
+}
+
 function main() {
     local OPEN_SOURCE_DIR NEOVIM
     OPEN_SOURCE_DIR="$HOME/playground/open_source"
@@ -166,15 +170,15 @@ function main() {
     install_neovim
     setup_repos
 
-    if [[ -z $WSL ]]; then
-        install_fonts
-        download_wallpapers
-        configure_pop_os
-    fi
+    [[ -z $WSL ]] || return 0
 
-    echo -e "\n****************** Setup Done!!! ******************\n"
-    echo -e "\n***** Restart shell for effects to take place *****\n"
-    exit 0 
+    install_fonts
+    download_wallpapers
+    configure_pop_os
+    install_i3wm
 }
 
 main
+
+echo -e "\n****************** Setup Done!!! ******************\n"
+echo -e "\n***** Restart shell for effects to take place *****\n"
