@@ -4,10 +4,10 @@ window:
    columns: 100
    lines: 27
  padding:
-   x: 6
-   y: 6
+   x: 3
+   y: 3
  decorations: None
- opacity: 0.8
+ opacity: 0.9
  scrolling:
    history: 10000
    multiplier: 3

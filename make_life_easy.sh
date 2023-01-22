@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 function banner() {
     local termwidth padding_len padding 
     termwidth="$(tput cols)"
@@ -36,7 +38,8 @@ function install_packages() {
         zoxide \
         fzf \
         ripgrep \
-        shellcheck
+        shellcheck \
+        jq
 }
 
 function install_pyenv_nvm_rustup() {
@@ -85,11 +88,11 @@ function install_neovim() {
 function install_fonts() {
     local FONTS BASE_URL DOWNLOAD_DIR FONT_DIR
     banner 'Installing Fonts'
-    FONTS=(\
-        'JetBrainsMono' \
-        'Hack' \
-        'Meslo' \
-        'SourceCodePro' \
+    FONTS=(
+        'JetBrainsMono'
+        'Hack'
+        'Meslo'
+        'SourceCodePro'
     )
 
     BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2'
@@ -112,13 +115,13 @@ function install_fonts() {
 function setup_repos() {
     local REPOS PROJECT_DIR
     banner 'Setting Up Repositories'
-    REPOS=(\
-        'leet_daily' \
-        'second_brain' \
-        'email_updater' \
-        'aoclib' \
-        'exercism_rust_track' \
-        'todo' \
+    REPOS=(
+        'leet_daily'
+        'second_brain'
+        'email_updater'
+        'aoclib'
+        'exercism_rust_track'
+        'todo'
     )
 
     PROJECT_DIR="$HOME/playground/projects"
@@ -135,9 +138,9 @@ function setup_repos() {
 function download_wallpapers() {
     local WALLPAPERS DOWNLOAD_DIR
     banner 'Downloading Wallpapers'
-    WALLPAPERS=(\
-        'https://w.wallhaven.cc/full/m9/wallhaven-m96d8m.jpg' \
-        'https://w.wallhaven.cc/full/49/wallhaven-49m5d1.jpg' \
+    WALLPAPERS=(
+        'https://w.wallhaven.cc/full/m9/wallhaven-m96d8m.jpg'
+        'https://w.wallhaven.cc/full/49/wallhaven-49m5d1.jpg'
     )
     DOWNLOAD_DIR="$HOME/Pictures/wallpapers"
     mkdir -p "$DOWNLOAD_DIR"
@@ -166,7 +169,7 @@ function install_i3wm() {
         brightnessctl \
         compton
 
-    sudo gpasswd -a "${USER}" video
+    sudo usermod -aG video "${USER}"
 }
 
 function main() {
@@ -186,9 +189,9 @@ function main() {
     download_wallpapers
     configure_pop_os
     install_i3wm
+
+    banner 'Setup Done!!!'
 }
 
 main
 
-echo -e "\n****************** Setup Done!!! ******************\n"
-echo -e "\n***** Restart shell for effects to take place *****\n"

@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 '''This program downloads wallpaper'''
-import aiofiles
 import argparse, asyncio, datetime, sys
 import httpx
 from pathlib import Path
 
 TODAY = datetime.date.today()
 SEARCH_URL = 'https://wallhaven.cc/api/v1/search'
-WALLPAPER_PATH = Path.home() / 'Pictures' / 'Wallpapers' / TODAY.strftime('%b_%d').lower()
+WALLPAPER_PATH = Path.home() / 'Pictures' / 'wallpapers' / TODAY.strftime('%b_%d').lower()
 
 async def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description='Wallpaper downloader')
@@ -49,8 +48,8 @@ async def download_wallpaper(client: httpx.AsyncClient, link: str) -> None:
     
     filename = Path(link).name
     print(f'Downloading file -> {filename}')
-    async with aiofiles.open(WALLPAPER_PATH / filename, 'wb') as f:
-        await f.write(response.content)
+    with open(WALLPAPER_PATH / filename, 'wb') as f:
+        f.write(response.content)
 
 if __name__ == '__main__':
     raise SystemExit(asyncio.run(main()))

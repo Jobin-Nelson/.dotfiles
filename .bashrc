@@ -25,7 +25,7 @@ alias less='less -i -R'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date -d \"\$([[ \$(date -d '+6 hours' +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
-alias battery="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to\ full|percentage\""
+alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to\ full|percentage\""
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
@@ -52,6 +52,9 @@ export XDG_STATE_HOME=$HOME/.local/state
 # Scripts
 [[ -d "$HOME/scripts" ]] && PATH="$HOME/scripts:$PATH"
 
+# Fzf completion
+[[ -s "/usr/share/doc/fzf/examples/key-bindings.bash" ]] && \. "/usr/share/doc/fzf/examples/key-bindings.bash" 
+
 # Pyenv [Python version manager]
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -72,7 +75,7 @@ eval "$(zoxide init bash)"
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
 # Starship prompt
-# eval "$(starship init bash)"
+eval "$(starship init bash)"
 
 # Greeting
 cat << EOF

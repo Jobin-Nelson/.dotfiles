@@ -1,5 +1,7 @@
 #!/bin/bash 
 
+set -euo pipefail
+
 if ! [[ $1 =~ ^[+-]?[0-9]+$ ]]; then 
     echo "error: Not a number" >&2
     exit 1 

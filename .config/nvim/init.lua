@@ -432,3 +432,13 @@ require('Comment').setup {
         extra = true,
     }
 }
+
+-- User commands
+function Rename()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local name = vim.fn.input('New name: ')
+
+    vim.fn.saveas(bufnr)
+end
+
+vim.api.nvim_create_user_command('Rename', Rename, {})
