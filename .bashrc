@@ -55,6 +55,7 @@ export XDG_STATE_HOME=$HOME/.local/state
 
 # Fzf completion
 [[ -s "$HOME/.config/fzf/key-bindings.bash" ]] && \. "$HOME/.config/fzf/key-bindings.bash" 
+[[ -s "$HOME/.config/fzf/completion.bash" ]] && \. "$HOME/.config/fzf/completion.bash" 
 
 # Pyenv [Python version manager]
 export PYENV_ROOT="$HOME/.pyenv"
