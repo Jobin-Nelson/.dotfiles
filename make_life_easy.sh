@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
-
 function banner() {
     local termwidth padding_len padding 
     termwidth="$(tput cols)"

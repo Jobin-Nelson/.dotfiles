@@ -1,7 +1,5 @@
 #!/usr/bin/bash
 
-set -euo pipefail
-
 DEST_DIR="$HOME/playground/projects/todo"
 
 if ! tmux has-session -t Rooms; then

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
-
 function main() {
     local choice
     declare -a CONFIGS

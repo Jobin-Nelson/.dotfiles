@@ -26,6 +26,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date -d \"\$([[ \$(date -d '+6 hours' +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
 alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to\ full|percentage\""
+alias wl="nsxiv \$HOME/Pictures/wallpapers"
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
@@ -53,7 +54,7 @@ export XDG_STATE_HOME=$HOME/.local/state
 [[ -d "$HOME/scripts" ]] && PATH="$HOME/scripts:$PATH"
 
 # Fzf completion
-[[ -s "/usr/share/doc/fzf/examples/key-bindings.bash" ]] && \. "/usr/share/doc/fzf/examples/key-bindings.bash" 
+[[ -s "$HOME/.config/fzf/key-bindings.bash" ]] && \. "$HOME/.config/fzf/key-bindings.bash" 
 
 # Pyenv [Python version manager]
 export PYENV_ROOT="$HOME/.pyenv"

@@ -9,13 +9,13 @@
 To Setup everything
 
 ```
-. $HOME/make_life_easy.sh
+$HOME/make_life_easy.sh
 ```
 
 - if running on WSL
 
 ```
-WSL=1 . $HOME/make_life_easy.sh
+WSL=1 $HOME/make_life_easy.sh
 ```
 
 ## Install packages
@@ -41,3 +41,11 @@ Section "InputClass"
         Option "Tapping" "on"
 EndSection
 ```
+
+- Disable dunst notification shortcut `cntrl+tilde`
+    - `sudo vi /etc/xdg/dunst/dunstrc`
+    - change history line to `mod4+shift+grave`
+    - `pkill dunst`
+    - `dunstctl set-paused false`
+
+
