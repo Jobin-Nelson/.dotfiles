@@ -17,6 +17,7 @@ function main() {
     "change_brightness - $HOME/scripts/change_brightness.sh"
     "dev - $HOME/scripts/dev.sh"
     "econf - $HOME/scripts/econf.sh"
+    "chfont - $HOME/scripts/chfont.sh"
     "slay - $HOME/scripts/slay.sh"
     "tmuxify - $HOME/scripts/tmuxify.sh"
     "tpb - $HOME/scripts/tpb.sh"

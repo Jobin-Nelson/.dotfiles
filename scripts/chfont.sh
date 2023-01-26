@@ -28,11 +28,11 @@ function set_font() {
 
     sed -i "s/family: .*/family: $choice/" "${ALACRITTY_FILE}"
     sed -Ei "
-    s/set \$font .*/set \$font '${choice}'/
+    s/set [$]font '.*'/set \$font '${choice}'/
     s/font pango:.* ([0-9][0-9]?)/font pango:${choice} \1/
     " "${I3_FILE}"
 
-    echo "Font changed to $font"
+    echo "Font changed to $choice"
 }
 
 function main() {
