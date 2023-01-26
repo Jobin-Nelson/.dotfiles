@@ -65,30 +65,30 @@ vim.keymap.set('v', '>', '>gv')
 
 -- Autocommands
 local my_group = vim.api.nvim_create_augroup('my_group', { clear = true })
- -- for quick execution of python files
+-- for quick execution of python files
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'python',
     command = 'nnoremap <F5> <cmd>w <bar> !python %<CR>',
     group = my_group,
 })
- -- for removing empty netrw buffers
+-- for removing empty netrw buffers
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'netrw',
     command = 'setlocal bufhidden=wipe',
     group = my_group,
 })
- -- for pretty markdown syntax
+-- for pretty markdown syntax
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'markdown',
     command = 'setlocal conceallevel=2',
     group = my_group,
 })
- -- for setting formatoptions only when in second_brain directory
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-    pattern = '*/second_brain*',
-    command = 'setlocal formatoptions+=a colorcolumn=80',
-    group = my_group,
-})
+-- for setting formatoptions only when in second_brain directory
+-- vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+--     pattern = '*/second_brain*',
+--     command = 'setlocal formatoptions+=a colorcolumn=80',
+--     group = my_group,
+-- })
 
 -- Automatically install packer
 local ensure_packer = function()
@@ -382,7 +382,7 @@ require('catppuccin').setup({
         light = 'latte',
         dark = 'mocha',
     },
-    transparent_background = true;
+    transparent_background = false;
     term_colors = false,
     dim_inactive = {
         enabled = false,

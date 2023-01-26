@@ -22,12 +22,13 @@ function main() {
     "tmuxify - $HOME/scripts/tmuxify.sh"
     "tpb - $HOME/scripts/tpb.sh"
     "waldl - $HOME/scripts/waldl.py"
-    "make_life_easy - $HOME/make_life_easy.sh"
+    "make_life_easy - $HOME/playground/post_install/make_life_easy.sh"
     "tmux - $HOME/.tmux.conf"
     "nsxiv-keyhandler - $HOME/.config/nsxiv/exec/key-handler"
     "nvim - $HOME/.config/nvim/init.lua"
     "vim - $HOME/.vimrc"
     "starship - $HOME/.config/starship.toml"
+    "arch_post_install - $HOME/playground/post_install/arch_post_install.sh"
     )
 
 
