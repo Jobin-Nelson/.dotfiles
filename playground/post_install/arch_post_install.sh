@@ -17,7 +17,7 @@ function banner() {
 
 function install_packages() {
     banner 'Installing packages'
-	sudo pacman -Syyu \
+	sudo pacman -Syyu --no-confirm --needed \
 		pyenv \
 		nodejs \
 		npm \
@@ -35,10 +35,15 @@ function install_packages() {
         alacritty \
         zathura \
         mpv \
-        tk-dev \
+        tk \
+        starship \
+        cronie
 
 	# To setup man pages
 	mandb
+
+    # Enable cron
+    systemctl enable --now cronie.service
 }
 
 function install_neovim() {
@@ -141,6 +146,7 @@ function install_fonts() {
 function configure_gnome() {
     banner 'Configuring Gnome'
     gsettings set org.gnome.shell.app-switcher current-workspace-only true
+    gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
     gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Pictures/wallpapers/wallhaven-m96d8m.jpg"
 }
 
@@ -155,6 +161,12 @@ function setup_aur() {
 	cd "${AUR_DIR}" && makepkg -si
 }
 
+function configure_package_manager() {
+    banner 'Configuring package managers'
+    sudo sed -i 's/^#MAKEFLAGS=.*/MAKEFLAGS="-j8"/' /etc/makepkg.conf
+    sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
+}
+
 function switch_to_integrated_graphics() {
     banner 'Switching to integrated graphics'
 	yay -s envycontrol
@@ -163,15 +175,16 @@ function switch_to_integrated_graphics() {
 
 function main() {
 
-	install_packages
+    install_packages
     install_neovim
     install_python_rust
     setup_repos
     download_wallpapers
     install_fonts
     configure_gnome
-	setup_aur
-	switch_to_integrated_graphics
+    setup_aur
+    configure_package_manager
+    switch_to_integrated_graphics
 
     banner 'Setup Done!!!'
 }

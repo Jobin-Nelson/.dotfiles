@@ -25,9 +25,10 @@ alias less='less -i -R'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date -d \"\$([[ \$(date -d '+6 hours' +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
-alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to\ full|percentage\""
-alias wl="nsxiv \$HOME/Pictures/wallpapers"
-alias rwl="feh --randomize --bg-scale \$HOME/Pictures/wallpapers/*"
+alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to full|percentage\""
+alias wl='nsxiv $HOME/Pictures/wallpapers'
+# alias rwl="feh --randomize --bg-scale \$HOME/Pictures/wallpapers/*"
+alias rwl='gsettings set org.gnome.desktop.background picture-uri-dark file://$(find $HOME/Pictures/wallpapers -type f | shuf -n 1)'
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
@@ -63,22 +64,14 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-# Nvm [Node version manager]
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 # Directory jumper
 eval "$(zoxide init bash)"
 
 # Cargo [Rust]
 . "$HOME/.cargo/env"
 
-# Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
-
 # Starship prompt
-# eval "$(starship init bash)"
+eval "$(starship init bash)"
 
 # Greeting
 cat << EOF

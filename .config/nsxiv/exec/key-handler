@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# "C-w")      while read file; do gsettings set org.gnome.desktop.background picture-uri-dark "file://$(readlink -e $file)"; done;;
+# "C-w")      while read file; do feh --bg-scale "$(readlink -e $file)"; done ;;
 
 # while read file; do
 #     case "$1" in
@@ -18,6 +18,6 @@
 case "$1" in
 "C-x")      xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
 "C-c")      while read file; do xclip -selection clipboard -target image/png "$file"; done ;;
-"C-w")      while read file; do feh --bg-scale "$(readlink -e $file)"; done ;;
+"C-w")      while read file; do gsettings set org.gnome.desktop.background picture-uri-dark "file://$(readlink -e $file)"; done;;
 "C-d")      while read file; do rm "$(readlink -e $file)"; done ;;
 esac
