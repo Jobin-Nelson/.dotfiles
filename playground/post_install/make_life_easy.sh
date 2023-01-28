@@ -70,10 +70,7 @@ function setup_python_node_rustanalyzer() {
     nvm install node && nvm use node
 
     banner 'Installing rust-analyzer'
-    mkdir -p "$OPEN_SOURCE_DIR" 
-    git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git "$OPEN_SOURCE_DIR/rust-analyzer" && \
-        cd "$OPEN_SOURCE_DIR/rust-analyzer" || exit 1
-    cargo xtask install --server
+    rustup component run rust-analyzer
 }
 
 function install_neovim() {

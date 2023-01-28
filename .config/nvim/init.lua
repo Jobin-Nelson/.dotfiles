@@ -90,6 +90,15 @@ vim.api.nvim_create_autocmd('FileType', {
 --     group = my_group,
 -- })
 
+-- User commands
+vim.api.nvim_create_user_command('Rename', function ()
+    local new_name = vim.fn.input('New name: ')
+    local old_name = vim.fn.expand('%:p')
+    vim.cmd({cmd='saveas', args={new_name}})
+    vim.fn.delete(old_name)
+    vim.cmd({cmd='bdelete', args={'#'}})
+end , {})
+
 -- Automatically install packer
 local ensure_packer = function()
     local fn = vim.fn
@@ -238,7 +247,6 @@ local servers = {
     'clangd',
     'pyright',
     'tsserver',
-    'rust_analyzer',
 }
 
 for _, server in ipairs(servers) do
@@ -247,6 +255,14 @@ for _, server in ipairs(servers) do
         on_attach = on_attach,
     }
 end
+
+require('lspconfig')['rust_analyzer'].setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    cmd = {
+        "rustup", "run", "stable", "rust-analyzer"
+    }
+}
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
@@ -433,12 +449,3 @@ require('Comment').setup {
     }
 }
 
--- User commands
-function Rename()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local name = vim.fn.input('New name: ')
-
-    vim.fn.saveas(bufnr)
-end
-
-vim.api.nvim_create_user_command('Rename', Rename, {})

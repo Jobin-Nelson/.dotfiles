@@ -3,7 +3,7 @@
 function banner() {
     local termwidth padding_len padding 
     termwidth="$(tput cols)"
-    padding_len="$(((termwidth - 2 - ${#1})/2))" 
+    padding_len="$(( (termwidth - 2 - ${#1})/2 ))" 
     padding=$(printf '%0.1s' ={1..500})
 
     tput setaf 3
@@ -17,7 +17,7 @@ function banner() {
 
 function install_packages() {
     banner 'Installing packages'
-	sudo pacman -Syyu --no-confirm --needed \
+	sudo pacman -Syyu --no-confirm \
 		pyenv \
 		nodejs \
 		npm \
@@ -65,23 +65,14 @@ function install_python_rust() {
 
     banner 'Installing rust'
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-    banner 'Installing rust analyzer'
-    local OPEN_SOURCE_DIR RUST_ANALYZER_DIR
-
-	OPEN_SOURCE_DIR="$HOME/playground/open_source"
-	RUST_ANALYZER_DIR="${OPEN_SOURCE_DIR}/rust-analyzer"
-
-	mkdir -p "${OPEN_SOURCE_DIR}" 
-	git clone --depth 1 https://github.com/rust-lang/rust-analyzer.git "${RUST_ANALYZER_DIR}" && \
-		cd "${RUST_ANALYZER_DIR}" || exit 1
-	cargo xtask install --server
+    rustup component add rust-analyzer
 }
 
 function setup_repos() {
     local REPOS PROJECT_DIR
     banner 'Setting Up Repositories'
     REPOS=(
+        'learn'
         'leet_daily'
         'second_brain'
         'email_updater'
@@ -97,8 +88,6 @@ function setup_repos() {
     for repo in "${REPOS[@]}"; do
         git clone --depth 1 "git@github.com:Jobin-Nelson/${repo}" "${PROJECT_DIR}/${repo}"
     done
-
-    git clone --depth 1 "git@github.com:Jobin-Nelson/learn" "$HOME/playground/learn"
 }
 
 function download_wallpapers() {
@@ -189,4 +178,5 @@ function main() {
     banner 'Setup Done!!!'
 }
 
-main
+# main
+banner testing

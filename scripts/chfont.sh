@@ -22,8 +22,8 @@ function get_font() {
 function set_font() {
     local ALACRITTY_FILE I3_FILE choice
 
-    ALACRITTY_FILE=$HOME/.config/alacritty/alacritty.yml
-    I3_FILE=$HOME/.config/i3/config
+    ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.yml"
+    I3_FILE="$HOME/.config/i3/config"
     choice=$1
 
     sed -i "s/family: .*/family: $choice/" "${ALACRITTY_FILE}"
