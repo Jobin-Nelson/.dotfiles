@@ -15,7 +15,7 @@ PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]: \[\033[01;34m\]\w\[\033[0
 
 # Aliases
 alias ls='ls --color=auto'
-alias ll='ls -alFh'
+alias ll='ls -alFh --group-directories-first'
 alias la='ls -A'
 alias l='ls -CF'
 alias grep='grep --color=auto'

@@ -18,26 +18,8 @@ function banner() {
 function install_packages() {
     banner 'Installing packages'
 	sudo pacman -Syyu --no-confirm \
-		pyenv \
-		nodejs \
-		npm \
-		man-db \
-		man-pages \
-		curl \
-		unzip \
-		tmux \
-		zoxide \
-		fzf \
-		ripgrep \
-		shellcheck \
-		jq \
-		neovim \
-        alacritty \
-        zathura \
-        mpv \
-        tk \
-        starship \
-        cronie
+		pyenv nodejs npm man-db man-pages curl unzip tmux zoxide fzf ripgrep \
+		shellcheck jq neovim alacritty zathura mpv tk starship cronie podman
 
 	# To setup man pages
 	mandb
@@ -47,8 +29,8 @@ function install_packages() {
 }
 
 function install_neovim() {
-    local DOWNLOAD_DIR NEOVIM_DIR
     banner 'install neovim'
+    local DOWNLOAD_DIR NEOVIM_DIR
 
     DOWNLOAD_DIR="$HOME/Downloads"
     NEOVIM_DIR="${DOWNLOAD_DIR}/nvim-linux64"
@@ -65,12 +47,13 @@ function install_python_rust() {
 
     banner 'Installing rust'
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    . "$HOME/.cargo/env"
     rustup component add rust-analyzer
 }
 
 function setup_repos() {
-    local REPOS PROJECT_DIR
     banner 'Setting Up Repositories'
+    local REPOS PROJECT_DIR
     REPOS=(
         'learn'
         'leet_daily'
@@ -83,7 +66,7 @@ function setup_repos() {
 
     PROJECT_DIR="$HOME/playground/projects"
 
-    mkdir -p "${PROJECT_DIR}"
+    mkdir -pv "${PROJECT_DIR}"
 
     for repo in "${REPOS[@]}"; do
         git clone --depth 1 "git@github.com:Jobin-Nelson/${repo}" "${PROJECT_DIR}/${repo}"
@@ -91,23 +74,23 @@ function setup_repos() {
 }
 
 function download_wallpapers() {
-    local WALLPAPERS DOWNLOAD_DIR
     banner 'Downloading Wallpapers'
+    local WALLPAPERS WALLPAPER_DIR
     WALLPAPERS=(
         'https://w.wallhaven.cc/full/m9/wallhaven-m96d8m.jpg'
         'https://w.wallhaven.cc/full/49/wallhaven-49m5d1.jpg'
     )
-    DOWNLOAD_DIR="$HOME/Pictures/wallpapers"
-    mkdir -p "$DOWNLOAD_DIR"
+    WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+    mkdir -pv "${WALLPAPER_DIR}"
 
     for wallpaper in "${WALLPAPERS[@]}"; do
-        curl "$wallpaper" -o "${DOWNLOAD_DIR}/${wallpaper##*/}"
+        curl "$wallpaper" -o "${WALLPAPER_DIR}/${wallpaper##*/}"
     done
 }
 
 function install_fonts() {
-    local FONTS BASE_URL DOWNLOAD_DIR FONT_DIR
     banner 'Installing Fonts'
+    local FONTS BASE_URL DOWNLOAD_DIR FONT_DIR
     FONTS=(
         'JetBrainsMono'
         'Hack'
@@ -118,7 +101,7 @@ function install_fonts() {
     BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2'
     DOWNLOAD_DIR="$HOME/Downloads"
     FONT_DIR="$HOME/.local/share/fonts"
-    mkdir -p "${DOWNLOAD_DIR}" "${FONT_DIR}" 
+    mkdir -pv "${DOWNLOAD_DIR}" "${FONT_DIR}" 
 
     for font in "${FONTS[@]}"; do
         echo -e "\nDownloading font ${font}\n"
@@ -141,13 +124,14 @@ function configure_gnome() {
 
 function setup_aur() {
     banner 'Setting up AUR'
-	local OPEN_SOURCE_DIR AUR_DIR
+	local YAY_DIR
 
-	OPEN_SOURCE_DIR="$HOME/playground/open_source"
-	AUR_DIR="${OPEN_SOURCE_DIR}/yay"
+	YAY_DIR="$HOME/playground/open_source/yay"
 
-	git clone 'https://aur.archlinux.org/yay.git' "${AUR_DIR}"
-	cd "${AUR_DIR}" && makepkg -si
+    mkdir -pv "${YAY_DIR%/*}"
+
+	git clone 'https://aur.archlinux.org/yay.git' "${YAY_DIR}"
+	cd "${YAY_DIR}" && makepkg -si
 }
 
 function configure_package_manager() {
@@ -178,5 +162,4 @@ function main() {
     banner 'Setup Done!!!'
 }
 
-# main
-banner testing
+main
