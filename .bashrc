@@ -29,6 +29,7 @@ alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to full|percent
 alias wl='nsxiv $HOME/Pictures/wallpapers'
 # alias rwl="feh --randomize --bg-scale \$HOME/Pictures/wallpapers/*"
 alias rwl='gsettings set org.gnome.desktop.background picture-uri-dark file://$(find $HOME/Pictures/wallpapers -type f | shuf -n 1)'
+alias docker='podman'
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
@@ -45,6 +46,7 @@ alias rwl='gsettings set org.gnome.desktop.background picture-uri-dark file://$(
 export EDITOR='/usr/bin/nvim'
 export VISUAL='/usr/bin/nvim'
 export COLORTERM="truecolor"
+# export MANPAGER='nvim +Man!'
 
 # XDG
 export XDG_CACHE_HOME="$HOME/.cache"

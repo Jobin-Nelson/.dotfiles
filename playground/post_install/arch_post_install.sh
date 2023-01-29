@@ -19,7 +19,8 @@ function install_packages() {
     banner 'Installing packages'
 	sudo pacman -Syyu --no-confirm \
 		pyenv nodejs npm man-db man-pages curl unzip tmux zoxide fzf ripgrep \
-		shellcheck jq neovim alacritty zathura mpv tk starship cronie podman
+		shellcheck jq neovim alacritty zathura zathura-pdf-poppler mpv tk \
+        starship cronie podman
 
 	# To setup man pages
 	mandb
@@ -130,7 +131,7 @@ function setup_aur() {
 
     mkdir -pv "${YAY_DIR%/*}"
 
-	git clone 'https://aur.archlinux.org/yay.git' "${YAY_DIR}"
+	git clone --depth 1 'https://aur.archlinux.org/yay.git' "${YAY_DIR}"
 	cd "${YAY_DIR}" && makepkg -si
 }
 

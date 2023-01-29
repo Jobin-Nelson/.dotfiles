@@ -31,7 +31,7 @@ font:
     style: Bold Italic
   size: 11.5
 
-# Colors
+# Colors (Dracula)
 colors:
   primary:
     background: '#282a36'
@@ -84,7 +84,7 @@ colors:
     magenta: '#ff92df'
     cyan: '#a4ffff'
     white: '#ffffff'
-      
+
 # Cursor configuration
 cursor:
   style:
