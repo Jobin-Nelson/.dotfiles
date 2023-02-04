@@ -29,6 +29,7 @@ vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 vim.opt.fileformat = 'unix'
 vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
+vim.opt.autoread = true
 vim.g.netrw_altv = 1
 vim.g.netrw_liststyle = 3
 vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.1/bin/python'

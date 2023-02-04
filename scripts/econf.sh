@@ -21,6 +21,7 @@ function main() {
     "slay - $HOME/scripts/slay.sh"
     "tmuxify - $HOME/scripts/tmuxify.sh"
     "tpb - $HOME/scripts/tpb.sh"
+    "tpb3 - $HOME/scripts/tpb3.sh"
     "waldl - $HOME/scripts/waldl.py"
     "make_life_easy - $HOME/playground/post_install/make_life_easy.sh"
     "tmux - $HOME/.tmux.conf"

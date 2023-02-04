@@ -118,6 +118,7 @@ function install_fonts() {
 
 function configure_gnome() {
     banner 'Configuring Gnome'
+    # echo 1 | sudo tee '/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode'
     gsettings set org.gnome.shell.app-switcher current-workspace-only true
     gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
     gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Pictures/wallpapers/wallhaven-m96d8m.jpg"

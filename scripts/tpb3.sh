@@ -43,7 +43,7 @@ function get_movie() {
 function download_movie() {
     echo -e '\nDownloading file\n'
     while read -r link; do
-        aria2c --seed-ratio=0.0 -d "${DOWNLOAD_DIR}" "${link}"
+        aria2c --seed-time=0 -d "${DOWNLOAD_DIR}" "${link}"
     done <<< "${magnet_links}"
 }
 
@@ -51,26 +51,23 @@ function main() {
     local CACHE_DIR SEARCH_RESULTS PARSED_RESULTS DOWNLOAD_DIR
     local query magnet_links can_download
 
-    query=$1
-    [[ -z $query ]] && read -rp 'Enter a search term: ' query
-    [[ -z $query ]] && { echo 'No input. Aborting!'; exit 1; }
-    query=${query// /+}
-
     CACHE_DIR="${HOME}/.cache/tpb3"
     SEARCH_RESULTS="${CACHE_DIR}/search_results.html"
     PARSED_RESULTS="${CACHE_DIR}/parsed_results.csv"
     DOWNLOAD_DIR="${HOME}/Videos"
 
+    query=$*
+    [[ -z $query ]] && read -rp 'Enter a search term: ' query
+    [[ -z $query ]] && { echo 'No input. Aborting!'; exit 1; }
+    query="${query// /+}"
+
     download_html
     parse_html
 
     magnet_links=$(get_movie)
+	[[ -z $magnet_links ]] && { echo 'None selected. Aborting'; exit 1; }
     read -rp 'Do you wish to download the file (y/N): ' can_download
-
-    if [[ $can_download == 'y' ]]; then
-        [[ -z $magnet_links ]] && { echo 'None selected. Aborting'; exit 1; }
-        download_movie
-    fi
+    [[ $can_download == 'y' ]] && download_movie
 }
 
 main "$*"
