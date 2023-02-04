@@ -130,3 +130,10 @@ dev=/dev/sda
 
 - `sudo snapper-rollback 5`: rollback to snapshot 5
 - `reboot`: reboot to finish
+
+## Screensharing
+
+- It is hard to screen share on wayland, switch to X11 to solve this issue
+- `sudo vim /etc/gdm/custom.conf`: uncomment the line "#WaylandEnable = False"
+- Restart to switch to X11
+

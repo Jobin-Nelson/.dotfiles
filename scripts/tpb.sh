@@ -1,7 +1,8 @@
 #!/usr/bin/bash
 
+# https://www1.thepiratebay3.to/torrent/54184594/Arcane_S01_1080p_WEBRip_x265
 if [[ -z "$1" ]]; then 
-	read -p "Please provide the search term: " query
+	read -rp "Please provide the search term: " query
 else
 	query=$*
 fi
@@ -14,9 +15,11 @@ info_hash=$(curl -s "https://piratebayorg.net/api.php?url=/q.php?q=${query}&cat=
 	fzf -d ',' --with-nth 2.. |
 	cut -d ',' -f 1)
 
+[[ -z $info_hash ]] && { echo 'None selected. Aborting!'; exit 1; }
+
 magnet="magnet:?xt=urn:btih:${info_hash}"
 
-read -p "Do you want to download the file (y/n)? " ans
+read -rp "Do you want to download the file (y/N)? " ans
 
 echo "$magnet" | xclip -sel c
 

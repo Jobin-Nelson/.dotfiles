@@ -55,7 +55,12 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
 # Scripts
-[[ -d "$HOME/scripts" ]] && PATH="$HOME/scripts:$PATH"
+case ":${PATH}:" in
+    *:"${HOME}/scripts":*)
+        ;;
+    *)
+        [[ -d "$HOME/scripts" ]] && PATH="$HOME/scripts:$PATH";;
+esac
 
 # Fzf completion
 [[ -s "$HOME/.config/fzf/key-bindings.bash" ]] && \. "$HOME/.config/fzf/key-bindings.bash" 
@@ -63,7 +68,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 # Pyenv [Python version manager]
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+command -v pyenv > /dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # Directory jumper
