@@ -20,7 +20,7 @@ function install_packages() {
 	sudo pacman -Syyu --no-confirm \
 		pyenv nodejs npm man-db man-pages curl unzip tmux zoxide fzf ripgrep \
 		shellcheck jq neovim alacritty zathura zathura-pdf-poppler mpv tk \
-        starship cronie podman
+        starship cronie podman aria2
 
 	# To setup man pages
 	mandb
@@ -147,6 +147,11 @@ function switch_to_integrated_graphics() {
 	envycontrol -s integrated
 }
 
+function switch_to_X11() {
+    banner 'Switching to X11'
+    sudo sed -Ei 's/#(WaylandEnable=false)/\1/' /etc/gdm/custom.conf
+}
+
 function main() {
 
     install_packages
@@ -159,6 +164,7 @@ function main() {
     setup_aur
     configure_package_manager
     switch_to_integrated_graphics
+    switch_to_X11
 
     banner 'Setup Done!!!'
 }
