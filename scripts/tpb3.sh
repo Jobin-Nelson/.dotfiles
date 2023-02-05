@@ -36,20 +36,23 @@ function parse_html() {
 function get_movie() {
     local choices
 
-    choices=$(fzf -d ',' --with-nth '2..' --tac --no-sort --multi < "${PARSED_RESULTS}" | cut -d ',' -f 1)
+    choices=$(column -t -s ',' "${PARSED_RESULTS}" |
+        fzf --with-nth '2..' --tac --no-sort --multi |
+        cut -d ' ' -f 1)
     echo "${choices}"
 }
 
 function download_movie() {
     echo -e '\nDownloading file\n'
-    while read -r link; do
+    for link in "${magnet_links[@]}"; do
         aria2c --seed-time=0 -d "${DOWNLOAD_DIR}" "${link}"
-    done <<< "${magnet_links}"
+    done
 }
 
 function main() {
     local CACHE_DIR SEARCH_RESULTS PARSED_RESULTS DOWNLOAD_DIR
-    local query magnet_links can_download
+    local query can_download
+    declare -a magnet_links
 
     CACHE_DIR="${HOME}/.cache/tpb3"
     SEARCH_RESULTS="${CACHE_DIR}/search_results.html"
@@ -64,8 +67,9 @@ function main() {
     download_html
     parse_html
 
-    magnet_links=$(get_movie)
-	[[ -z $magnet_links ]] && { echo 'None selected. Aborting'; exit 1; }
+    readarray -t magnet_links < <(get_movie)
+
+    (( ${#magnet_links[@]} == 0 )) && { echo 'None selected. Aborting'; exit 1; }
     read -rp 'Do you wish to download the file (y/N): ' can_download
     [[ $can_download == 'y' ]] && download_movie
 }
