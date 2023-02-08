@@ -2,9 +2,9 @@
 
 function main() {
     local choice
-    declare -a CONFIGS
+    declare -a FILES
 
-    CONFIGS=(
+    FILES=(
     "alacritty - $HOME/.config/alacritty/alacritty.yml"
     "i3 - $HOME/.config/i3/config"
     "i3-status - $HOME/.config/i3/i3status.conf"
@@ -22,6 +22,7 @@ function main() {
     "tmuxify - $HOME/scripts/tmuxify.sh"
     "tpb3 - $HOME/scripts/tpb3.sh"
     "waldl - $HOME/scripts/waldl.py"
+    "paclear - $HOME/scripts/paclear.sh"
     "make_life_easy - $HOME/playground/post_install/make_life_easy.sh"
     "tmux - $HOME/.config/tmux/tmux.conf"
     "nsxiv-keyhandler - $HOME/.config/nsxiv/exec/key-handler"
@@ -32,7 +33,7 @@ function main() {
     )
 
 
-    choice=$(printf '%s\n' "${CONFIGS[@]}" \
+    choice=$(printf '%s\n' "${FILES[@]}" \
         | fzf --prompt "Edit config: " \
         | cut -d ' ' -f3)
 
