@@ -30,6 +30,7 @@ alias wl='nsxiv $HOME/Pictures/wallpapers'
 # alias rwl="feh --randomize --bg-scale \$HOME/Pictures/wallpapers/*"
 alias rwl='gsettings set org.gnome.desktop.background picture-uri-dark file://$(find $HOME/Pictures/wallpapers -type f | shuf -n 1)'
 alias docker='podman'
+alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'

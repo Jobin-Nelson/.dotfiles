@@ -23,7 +23,7 @@ function main() {
     "tpb3 - $HOME/scripts/tpb3.sh"
     "waldl - $HOME/scripts/waldl.py"
     "make_life_easy - $HOME/playground/post_install/make_life_easy.sh"
-    "tmux - $HOME/.tmux.conf"
+    "tmux - $HOME/.config/tmux/tmux.conf"
     "nsxiv-keyhandler - $HOME/.config/nsxiv/exec/key-handler"
     "nvim - $HOME/.config/nvim/init.lua"
     "vim - $HOME/.vimrc"

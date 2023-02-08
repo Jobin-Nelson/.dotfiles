@@ -52,7 +52,7 @@ vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.1/bin/python'
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>i', '<cmd>edit $MYVIMRC<CR>')
-vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 25<CR>')
+vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 30<CR>')
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +3<CR>')
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -3<CR>')
 vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')

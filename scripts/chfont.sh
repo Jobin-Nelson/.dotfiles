@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
-
 function get_font() {
     declare -a FONTS
 
@@ -13,8 +11,6 @@ function get_font() {
     )
 
     choice=$(printf '%s\n' "${FONTS[@]}" | fzf)
-
-    [[ -z $choice ]] && { echo 'No font selected, aborting'; exit 1; }
 
     echo "${choice}"
 }
@@ -39,6 +35,7 @@ function main() {
     local font
 
     font=$(get_font)
+    [[ -z $font ]] && { echo "None selected. Aborting!"; exit 1; }
     set_font "${font}"
 }
 
