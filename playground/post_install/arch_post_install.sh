@@ -15,12 +15,29 @@ function banner() {
     tput sgr0
 }
 
+function setup_aur() {
+    banner 'Setting up AUR'
+	local PARU_DIR
+
+	PARU_DIR="$HOME/playground/open_source/paru"
+
+    mkdir -pv "${PARU_DIR%/*}"
+
+    sudo pacman -S --needed base-devel git
+
+	git clone 'https://aur.archlinux.org/paru.git' "${PARU_DIR}"
+	cd "${PARU_DIR}" && makepkg -si
+}
+
 function install_packages() {
     banner 'Installing packages'
-	sudo pacman -Syyu --no-confirm \
+	sudo pacman -Syu --no-confirm \
 		pyenv nodejs npm man-db man-pages curl unzip tmux zoxide fzf ripgrep \
-		shellcheck jq neovim alacritty zathura zathura-pdf-poppler mpv tk \
+		shellcheck jq neovim vim alacritty zathura zathura-pdf-poppler mpv tk \
         starship cronie podman aria2 rsync pacman-contrib
+
+    paru -S --noconfirm \
+        brave-bin google-chrome nsxiv visual-studio-code-bin teams
 
 	# To setup man pages
 	mandb
@@ -124,18 +141,6 @@ function configure_gnome() {
     gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Pictures/wallpapers/wallhaven-m96d8m.jpg"
 }
 
-function setup_aur() {
-    banner 'Setting up AUR'
-	local YAY_DIR
-
-	YAY_DIR="$HOME/playground/open_source/yay"
-
-    mkdir -pv "${YAY_DIR%/*}"
-
-	git clone --depth 1 'https://aur.archlinux.org/yay.git' "${YAY_DIR}"
-	cd "${YAY_DIR}" && makepkg -si
-}
-
 function configure_package_manager() {
     banner 'Configuring package managers'
     sudo sed -i 's/^#MAKEFLAGS=.*/MAKEFLAGS="-j8"/' /etc/makepkg.conf
@@ -144,7 +149,7 @@ function configure_package_manager() {
 
 function switch_to_integrated_graphics() {
     banner 'Switching to integrated graphics'
-	yay -s envycontrol
+	paru -S envycontrol
 	envycontrol -s integrated
 }
 
@@ -155,6 +160,7 @@ function switch_to_X11() {
 
 function main() {
 
+    setup_aur
     install_packages
     install_neovim
     install_python_rust
@@ -162,7 +168,6 @@ function main() {
     download_wallpapers
     install_fonts
     configure_gnome
-    setup_aur
     configure_package_manager
     switch_to_integrated_graphics
     switch_to_X11

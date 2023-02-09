@@ -303,7 +303,7 @@ require('nvim-treesitter.configs').setup {
         'python',
         'bash',
         'markdown',
-        'markdown_inline',
+        -- 'markdown_inline',
         'json',
         'yaml',
         'lua',
