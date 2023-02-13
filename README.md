@@ -1,18 +1,28 @@
 # Dotfiles
 
 - Setup ssh key with github
-- `git clone --depth 10 --bare git@github.com:Jobin-Nelson/.dotfiles.git $HOME/.dotfiles`
+- `git clone --depth 5 --bare git@github.com:Jobin-Nelson/.dotfiles.git $HOME/.dotfiles`
 - `alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'`
 - `dot config --local status.showUntrackedFiles no`
 - `dot checkout`
 
-To Setup everything
+## Post Install
+
+### Arch linux
 
 ```
-$HOME/make_life_easy.sh
+cd /home/jobin/playground/post_install
+./arch_post_install.sh
 ```
 
-- if running on WSL
+### Ubuntu & derivatives
+
+```
+cd /home/jobin/playground/post_install
+./make_life_easy.sh
+```
+
+if running on WSL
 
 ```
 WSL=1 $HOME/make_life_easy.sh

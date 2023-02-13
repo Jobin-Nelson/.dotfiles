@@ -30,9 +30,9 @@ vim.opt.background = 'dark'
 vim.opt.fileformat = 'unix'
 vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
 vim.opt.autoread = true
-vim.g.netrw_altv = 1
-vim.g.netrw_liststyle = 3
 vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.1/bin/python'
+-- vim.g.netrw_altv = 1
+-- vim.g.netrw_liststyle = 3
 
 -- Wsl clipboard
 -- vim.g.clipboard = {
@@ -52,7 +52,7 @@ vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.1/bin/python'
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>i', '<cmd>edit $MYVIMRC<CR>')
-vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 30<CR>')
+-- vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 30<CR>')
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +3<CR>')
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -3<CR>')
 vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
@@ -73,11 +73,11 @@ vim.api.nvim_create_autocmd('FileType', {
     group = my_group,
 })
 -- for removing empty netrw buffers
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'netrw',
-    command = 'setlocal bufhidden=wipe',
-    group = my_group,
-})
+-- vim.api.nvim_create_autocmd('FileType', {
+--     pattern = 'netrw',
+--     command = 'setlocal bufhidden=wipe',
+--     group = my_group,
+-- })
 -- for pretty markdown syntax
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'markdown',
@@ -151,8 +151,12 @@ require('packer').startup(function(use)
     -- statusline
     use 'nvim-lualine/lualine.nvim'
 
+    -- file explorer
+    use 'nvim-tree/nvim-tree.lua'
+
     -- utilities
     use { 'catppuccin/nvim', as = 'catppuccin' }
+    use 'kyazdani42/nvim-web-devicons'
     use 'numToStr/Comment.nvim'
     use 'windwp/nvim-autopairs'
     use 'tpope/vim-surround'
@@ -269,7 +273,7 @@ local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init..lua')
 
-require('lspconfig')['sumneko_lua'].setup {
+require('lspconfig')['lua_ls'].setup {
     capabilities = capabilities,
     on_attach = on_attach,
     settings = {
@@ -450,3 +454,8 @@ require('Comment').setup {
     }
 }
 
+-- Nvim tree config
+vim.g.loaded = 1
+vim.g.loaded_netrwPlugin = 1
+vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<CR>')
+require('nvim-tree').setup()
