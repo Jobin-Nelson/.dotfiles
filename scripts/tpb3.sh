@@ -1,5 +1,20 @@
 #!/bin/bash
 
+CACHE_DIR="${HOME}/.cache/tpb3"
+SEARCH_RESULTS="${CACHE_DIR}/search_results.html"
+PARSED_RESULTS="${CACHE_DIR}/parsed_results.csv"
+
+function help() {
+    echo
+    echo "This script downloads torrent files"
+    echo 
+    echo 'Syntax: tpb3.sh [-h|c] movie name'
+    echo 'options:'
+    echo 'h   Print this help'
+    echo 'c   Download from the cached results'
+    echo
+}
+
 function download_html() {
     local BASE_URL IS_VIDEO
 
@@ -43,35 +58,46 @@ function get_movie() {
 }
 
 function download_movie() {
-    echo -e '\nDownloading file\n'
+    local DOWNLOAD_DIR can_download
+    declare -a magnet_links
+
+    DOWNLOAD_DIR="${HOME}/Videos"
+
+    readarray -t magnet_links < <(get_movie)
+
+    (( ${#magnet_links[@]} == 0 )) && { echo 'None selected. Aborting'; exit 1; }
+    read -rp 'Do you wish to download the file (y/N): ' can_download
+
+    [[ $can_download == 'y' ]] || exit 1
+
     for link in "${magnet_links[@]}"; do
         aria2c --seed-time=0 -d "${DOWNLOAD_DIR}" "${link}"
     done
 }
 
 function main() {
-    local CACHE_DIR SEARCH_RESULTS PARSED_RESULTS DOWNLOAD_DIR
-    local query can_download
-    declare -a magnet_links
-
-    CACHE_DIR="${HOME}/.cache/tpb3"
-    SEARCH_RESULTS="${CACHE_DIR}/search_results.html"
-    PARSED_RESULTS="${CACHE_DIR}/parsed_results.csv"
-    DOWNLOAD_DIR="${HOME}/Videos"
+    local query
 
     query=$*
-    [[ -z $query ]] && read -rp 'Enter a search term: ' query
     [[ -z $query ]] && { echo 'No input. Aborting!'; exit 1; }
     query="${query// /+}"
 
     download_html
     parse_html
-
-    readarray -t magnet_links < <(get_movie)
-
-    (( ${#magnet_links[@]} == 0 )) && { echo 'None selected. Aborting'; exit 1; }
-    read -rp 'Do you wish to download the file (y/N): ' can_download
-    [[ $can_download == 'y' ]] && download_movie
+    download_movie
 }
+
+while getopts 'hc' option; do
+    case $option in
+        h)
+            help
+            exit 0;;
+        c)
+            download_movie
+            exit 0;;
+        *)
+            break;;
+    esac
+done
 
 main "$*"
