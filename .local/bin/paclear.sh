@@ -18,7 +18,7 @@ function main() {
     command -v paccache > /dev/null || { echo 'paccache is not installed. Aborting!'; exit 1; }
 
     pacman_cache_clear
-    aur_cache_clear 'paru'
+    aur_cache_clear 'paru/clone'
 }
 
 main
