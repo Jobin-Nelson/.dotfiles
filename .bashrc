@@ -57,10 +57,10 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 # Scripts
 case ":${PATH}:" in
-    *:"${HOME}/scripts":*)
+    *:"${HOME}/.local/bin":*)
         ;;
     *)
-        [[ -d "$HOME/scripts" ]] && PATH="$HOME/scripts:$PATH";;
+        [[ -d "$HOME/.local/bin" ]] && PATH="$HOME/.local/bin:$PATH";;
 esac
 
 # Fzf completion

@@ -31,7 +31,7 @@ function setup_aur() {
 
 function install_packages() {
     banner 'Installing packages'
-	sudo pacman -Syu --no-confirm \
+	sudo pacman -Syyu --no-confirm \
 		pyenv nodejs npm man-db man-pages curl unzip tmux zoxide fzf ripgrep \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-poppler mpv tk \
         starship cronie podman aria2 rsync pacman-contrib netcat
@@ -170,7 +170,7 @@ function main() {
     configure_gnome
     configure_package_manager
     switch_to_integrated_graphics
-    switch_to_X11
+    # switch_to_X11
 
     banner 'Setup Done!!!'
 }
