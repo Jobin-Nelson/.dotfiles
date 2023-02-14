@@ -34,7 +34,7 @@ function install_packages() {
 	sudo pacman -Syyu --no-confirm \
 		pyenv nodejs npm man-db man-pages curl unzip tmux zoxide fzf ripgrep \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-poppler mpv tk \
-        starship cronie podman aria2 rsync pacman-contrib netcat
+        starship cronie podman aria2 rsync pacman-contrib netcat 
 
     paru -S --noconfirm \
         brave-bin google-chrome nsxiv visual-studio-code-bin teams
@@ -158,6 +158,14 @@ function switch_to_X11() {
     sudo sed -Ei 's/#(WaylandEnable=false)/\1/' /etc/gdm/custom.conf
 }
 
+function install_hyprland() {
+    banner 'Installing Hyprland window manager'
+
+    paru -S --no-confirm \
+        hyprland-git dunst polkit-kde-agent waybar-hyprland-git wl-clipboard \
+        hyprpaper-git grim slurp
+}
+
 function main() {
 
     setup_aur
@@ -171,6 +179,7 @@ function main() {
     configure_package_manager
     switch_to_integrated_graphics
     # switch_to_X11
+    # install_hyprland
 
     banner 'Setup Done!!!'
 }

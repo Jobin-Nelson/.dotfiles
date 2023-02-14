@@ -29,6 +29,8 @@ function main() {
     "vim - $HOME/.vimrc"
     "starship - $HOME/.config/starship.toml"
     "arch_post_install - $HOME/playground/post_install/arch_post_install.sh"
+    "hyprland - $HOME/.config/hypr/hyprland.conf"
+    "waybar - $HOME/.config/waybar/config"
     )
 
 
