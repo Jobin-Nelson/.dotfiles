@@ -163,7 +163,7 @@ function install_hyprland() {
 
     paru -S --no-confirm \
         hyprland-git dunst polkit-kde-agent waybar-hyprland-git wl-clipboard \
-        hyprpaper-git grim slurp brightnessctl
+        hyprpaper-git grim slurp brightnessctl wlr-randr swaylock
 }
 
 function main() {
