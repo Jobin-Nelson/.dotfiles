@@ -28,7 +28,8 @@ alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date -d
 alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to full|percentage\""
 alias wl='nsxiv $HOME/Pictures/wallpapers'
 # alias rwl="feh --randomize --bg-scale \$HOME/Pictures/wallpapers/*"
-alias rwl='gsettings set org.gnome.desktop.background picture-uri-dark file://$(find $HOME/Pictures/wallpapers -type f | shuf -n 1)'
+# alias rwl='gsettings set org.gnome.desktop.background picture-uri-dark file://$(find $HOME/Pictures/wallpapers -type f | shuf -n 1)'
+alias rwl='w=$(find $HOME/Pictures/wallpapers -type f | shuf -n 1) && hyprctl hyprpaper unload all && hyprctl hyprpaper preload "$w" && hyprctl hyprpaper wallpaper "eDP-1,$w" '
 alias docker='podman'
 alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
 
