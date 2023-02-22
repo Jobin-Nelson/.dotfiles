@@ -215,7 +215,7 @@ require('mason-lspconfig').setup({
         'clangd',
         'pyright',
         'tsserver',
-        'sumneko_lua',
+        'lua_ls',
         'emmet_ls',
     }
 })
