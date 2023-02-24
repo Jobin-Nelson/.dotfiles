@@ -22,7 +22,22 @@ function set_font() {
     I3_FILE="$HOME/.config/i3/config"
     choice=$1
 
+    [[ -z $choice ]] && { echo "None selected. Aborting!"; exit 1; }
+
     sed -i "s/family: .*/family: $choice/" "${ALACRITTY_FILE}"
+
+    if [[ $choice == 'JetBrainsMono Nerd Font' ]]; then
+        sed -i "
+        22s/style: .*/style: Medium/
+        28s/style: .*/style: Medium Italic/
+        " "${ALACRITTY_FILE}"
+    else
+        sed -i "
+        22s/style: .*/style: Regular/
+        28s/style: .*/style: Italic/
+        " "${ALACRITTY_FILE}"
+    fi
+
     sed -Ei "
     s/set [$]font '.*'/set \$font '${choice}'/
     s/font pango:.* ([0-9][0-9]?)/font pango:${choice} \1/
@@ -35,7 +50,6 @@ function main() {
     local font
 
     font=$(get_font)
-    [[ -z $font ]] && { echo "None selected. Aborting!"; exit 1; }
     set_font "${font}"
 }
 

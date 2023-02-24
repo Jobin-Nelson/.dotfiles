@@ -396,7 +396,7 @@ vim.keymap.set('n', '<leader>gp', '<cmd>Gitsigns prev_hunk<CR>')
 vim.keymap.set('n', '<leader>go', '<cmd>Gitsigns preview_hunk<CR>')
 require('gitsigns').setup()
 
--- Catppuccing config
+-- Catppuccin config
 require('catppuccin').setup({
     flavour = 'mocha',
     background = {
