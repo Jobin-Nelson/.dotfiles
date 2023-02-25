@@ -36,7 +36,7 @@ function install_packages() {
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-poppler mpv tk \
         starship cronie podman aria2 rsync pacman-contrib netcat neofetch
 
-    paru -S --noconfirm \
+    paru -S --no-confirm \
         brave-bin google-chrome nsxiv visual-studio-code-bin teams
 
 	# To setup man pages
@@ -71,7 +71,7 @@ function install_python_rust() {
 
 function setup_repos() {
     banner 'Setting Up Repositories'
-    local REPOS PROJECT_DIR
+    local REPOS PROJECT_DIR RUST_BINARIES
     REPOS=(
         'learn'
         'leet_daily'
@@ -80,6 +80,12 @@ function setup_repos() {
         'aoclib'
         'exercism_rust_track'
         'todo'
+        'waldl'
+    )
+
+    RUST_BINARIES=(
+        'todo'
+        'waldl'
     )
 
     PROJECT_DIR="$HOME/playground/projects"
@@ -88,6 +94,10 @@ function setup_repos() {
 
     for repo in "${REPOS[@]}"; do
         git clone --depth 1 "git@github.com:Jobin-Nelson/${repo}" "${PROJECT_DIR}/${repo}"
+    done
+
+    for binary in "${RUST_BINARIES[@]}"; do
+        cargo install --path "${PROJECT_DIR}/${binary}"
     done
 }
 
@@ -149,7 +159,7 @@ function configure_package_manager() {
 
 function switch_to_integrated_graphics() {
     banner 'Switching to integrated graphics'
-	paru -S envycontrol
+	paru -S --no-confirm envycontrol
 	envycontrol -s integrated
 }
 
