@@ -65,7 +65,8 @@ function download_movie() {
 
     readarray -t magnet_links < <(get_movie)
 
-    (( ${#magnet_links[@]} == 0 )) && { echo 'None selected. Aborting'; exit 1; }
+    (( ${#magnet_links} == 0 )) && { echo 'None selected. Aborting'; exit 1; }
+
     read -rp 'Do you wish to download the file (y/N): ' can_download
 
     [[ $can_download == 'y' ]] || exit 1

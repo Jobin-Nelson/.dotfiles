@@ -15,17 +15,7 @@ function get_font() {
     echo "${choice}"
 }
 
-function set_font() {
-    local ALACRITTY_FILE I3_FILE choice
-
-    ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.yml"
-    I3_FILE="$HOME/.config/i3/config"
-    choice=$1
-
-    [[ -z $choice ]] && { echo "None selected. Aborting!"; exit 1; }
-
-    sed -i "s/family: .*/family: $choice/" "${ALACRITTY_FILE}"
-
+function set_style() {
     if [[ $choice == 'JetBrainsMono Nerd Font' ]]; then
         sed -i "
         22s/style: .*/style: Medium/
@@ -37,12 +27,25 @@ function set_font() {
         28s/style: .*/style: Italic/
         " "${ALACRITTY_FILE}"
     fi
+}
+
+function set_font() {
+    local ALACRITTY_FILE I3_FILE choice
+
+    ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.yml"
+    I3_FILE="$HOME/.config/i3/config"
+    choice=$1
+
+    [[ -z $choice ]] && { echo "None selected. Aborting!"; exit 1; }
+
+    sed -i "s/family: .*/family: $choice/" "${ALACRITTY_FILE}"
 
     sed -Ei "
     s/set [$]font '.*'/set \$font '${choice}'/
     s/font pango:.* ([0-9][0-9]?)/font pango:${choice} \1/
     " "${I3_FILE}"
 
+    # set_style
     echo "Font changed to $choice"
 }
 
