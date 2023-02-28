@@ -21,8 +21,8 @@ function download_html() {
     BASE_URL='https://www1.thepiratebay3.to/s/?q'
     IS_VIDEO='video=on'
 
-    echo -e "\nFetching results for ${query//+/ }\n"
-    curl -sSfL "${BASE_URL}=${query}&${IS_VIDEO}" --create-dirs -o "${SEARCH_RESULTS}"
+    echo -e "\nFetching results for ${query}\n"
+    curl -sSfL "${BASE_URL}=${query// /+}&${IS_VIDEO}" --create-dirs -o "${SEARCH_RESULTS}"
 }
 
 function parse_html() {
@@ -81,7 +81,6 @@ function main() {
 
     query=$*
     [[ -z $query ]] && { echo 'No input. Aborting!'; exit 1; }
-    query="${query// /+}"
 
     download_html
     parse_html

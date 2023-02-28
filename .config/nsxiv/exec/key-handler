@@ -18,7 +18,7 @@
 case "$1" in
 "C-x")      xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
 "C-c")      while read file; do xclip -selection clipboard -target image/png "$file"; done ;;
-"C-w")      while read file; do hyprctl hyprpaper unload all && hyprctl hyprpaper preload "$file" && hyprctl hyprpaper wallpaper "eDP-1,$file" ; done;;
+"C-w")      while read file; do ff="$(readlink -e "${file}")"; hyprctl hyprpaper unload all && hyprctl hyprpaper preload "$ff" && hyprctl hyprpaper wallpaper "eDP-1,$ff" ; done;;
 # "C-w")      while read file; do gsettings set org.gnome.desktop.background picture-uri-dark "file://$(readlink -e $file)"; done;;
-"C-d")      while read file; do rm "$(readlink -e $file)"; done ;;
+"C-d")      while read file; do rm "$(readlink -e "${file}")"; done ;;
 esac
