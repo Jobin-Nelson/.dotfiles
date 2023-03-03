@@ -33,7 +33,7 @@ function install_packages() {
     banner 'Installing packages'
 	sudo pacman -Syyu --no-confirm \
 		pyenv nodejs npm man-db man-pages curl unzip tmux zoxide fzf ripgrep \
-		shellcheck jq neovim vim alacritty zathura zathura-pdf-poppler mpv tk \
+		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
         starship cronie podman aria2 rsync pacman-contrib netcat neofetch
 
     paru -S --no-confirm \

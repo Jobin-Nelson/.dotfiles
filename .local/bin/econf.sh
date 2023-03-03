@@ -33,7 +33,6 @@ function main() {
     "waybar - $HOME/.config/waybar/config"
     )
 
-
     choice=$(printf '%s\n' "${FILES[@]}" \
         | fzf --prompt "Edit config: " \
         | cut -d ' ' -f3)
