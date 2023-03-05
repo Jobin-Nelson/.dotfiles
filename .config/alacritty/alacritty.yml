@@ -18,16 +18,16 @@ env:
 # Font configuration
 font:
   normal:
-    family: JetBrainsMono Nerd Font
+    family: Hack Nerd Font
     style: Medium
   bold:
-    family: JetBrainsMono Nerd Font
+    family: Hack Nerd Font
     style: Bold
   italic:
-    family: JetBrainsMono Nerd Font
+    family: Hack Nerd Font
     style: Medium Italic
   bold_italic:
-    family: JetBrainsMono Nerd Font
+    family: Hack Nerd Font
     style: Bold Italic
   size: 11.5
 
