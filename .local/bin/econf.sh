@@ -31,6 +31,7 @@ function main() {
     "arch_post_install - $HOME/playground/post_install/arch_post_install.sh"
     "hyprland - $HOME/.config/hypr/hyprland.conf"
     "waybar - $HOME/.config/waybar/config"
+    "deconf - $HOME/.local/bin/deconf.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

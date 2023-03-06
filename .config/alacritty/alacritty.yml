@@ -19,13 +19,13 @@ env:
 font:
   normal:
     family: Hack Nerd Font
-    style: Medium
+    style: Regular
   bold:
     family: Hack Nerd Font
     style: Bold
   italic:
     family: Hack Nerd Font
-    style: Medium Italic
+    style: Italic
   bold_italic:
     family: Hack Nerd Font
     style: Bold Italic

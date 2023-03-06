@@ -406,7 +406,7 @@ require('catppuccin').setup({
     transparent_background = false;
     term_colors = false,
     dim_inactive = {
-        enabled = false,
+        enabled = true,
         shade = "dark",
         percentage = 0.15,
     },
