@@ -217,6 +217,7 @@ require('mason-lspconfig').setup({
         'tsserver',
         'lua_ls',
         'emmet_ls',
+        'marksman',
     }
 })
 
@@ -252,6 +253,7 @@ local servers = {
     'clangd',
     'pyright',
     'tsserver',
+    'marksman',
 }
 
 for _, server in ipairs(servers) do
@@ -307,7 +309,6 @@ require('nvim-treesitter.configs').setup {
         'python',
         'bash',
         'markdown',
-        -- 'markdown_inline',
         'json',
         'yaml',
         'lua',

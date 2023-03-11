@@ -5,7 +5,7 @@
     - `cd yay && makepkg -si`: installing yay
 - `yay -s envycontrol`: install envycontrol
 - `envycontrol -s integrated`: switch graphics to integrated only
-- `sudo vim /usr/share/X11/xorg.conf.d/40-libinput.conf`: add options for touchpad
+- `sudoedit /usr/share/X11/xorg.conf.d/40-libinput.conf`: add options for touchpad
 
 ```
 Section "InputClass"
@@ -86,7 +86,7 @@ run_hook() {
 }
 ```
 
-- `sudo nvim /etc/initcpio/install/switchsnaprotorw`
+- `sudoedit /etc/initcpio/install/switchsnaprotorw`
 
 ```bash
 #!/bin/bash
@@ -106,7 +106,7 @@ HELPEOF
 }
 ```
 
-- `sudo nvim /etc/mkinitcpio.conf`: add the hook in the mkinitcpio config
+- `sudoedit /etc/mkinitcpio.conf`: add the hook in the mkinitcpio config
 
 ```
 ...
@@ -117,7 +117,7 @@ HOOKS=(base udev autodetect keyboard keymap modconf block filesystem fsck switch
 - `sudo mkinitcpio -P`: changes to take effect
 - Now you can load snapshots from the boot menu itself
 
-- `sudo nvim /etc/snapper/snapper-rollback.conf`: edit snapper-rollback config
+- `sudoedit /etc/snapper/snapper-rollback.conf`: edit snapper-rollback config
 
 ```
 ...
@@ -134,6 +134,6 @@ dev=/dev/sda
 ## Screensharing
 
 - It is hard to screen share on wayland, switch to X11 to solve this issue
-- `sudo vim /etc/gdm/custom.conf`: uncomment the line "#WaylandEnable = False"
+- `sudoedit /etc/gdm/custom.conf`: uncomment the line "#WaylandEnable = False"
 - Restart to switch to X11
 
