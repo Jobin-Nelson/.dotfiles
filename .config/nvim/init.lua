@@ -30,6 +30,7 @@ vim.opt.background = 'dark'
 vim.opt.fileformat = 'unix'
 vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
 vim.opt.autoread = true
+vim.opt.cpoptions:append('>')
 vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.1/bin/python'
 -- vim.g.netrw_altv = 1
 -- vim.g.netrw_liststyle = 3
@@ -100,84 +101,84 @@ vim.api.nvim_create_user_command('Rename', function ()
     vim.cmd({cmd='bdelete', args={'#'}})
 end , {})
 
--- Automatically install packer
-local ensure_packer = function()
-    local fn = vim.fn
-    local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-    if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-        vim.cmd [[packadd packer.nvim]]
-        return true
-    end
-    return false
+-- Automatically install lazy
+local lazypath = vim.fn.stdpath('data') .. 'lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        'git',
+        'clone',
+        '--filter=blob:none',
+        'https://github.com/folke/lazy.nvim.git',
+        '--branch=stable',
+        lazypath,
+    })
 end
-
-local packer_bootstrap = ensure_packer()
+vim.opt.rtp:prepend(lazypath)
 
 -- Plugins
-require('packer').startup(function(use)
-    use 'wbthomason/packer.nvim'
-
+require('lazy').setup({
     -- cmp
-    use 'hrsh7th/nvim-cmp'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-path'
+    {
+        'hrsh7th/nvim-cmp',
+        dependencies = {
+            'hrsh7th/cmp-nvim-lsp',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'L3MON4D3/LuaSnip',
+            'saadparwaiz1/cmp_luasnip',
+        },
+    },
 
     -- lsp
-    use 'williamboman/mason.nvim'
-    use 'williamboman/mason-lspconfig.nvim'
-    use 'neovim/nvim-lspconfig'
-    use 'hrsh7th/cmp-nvim-lsp'
-
-    -- snippets
-    use 'L3MON4D3/LuaSnip'
-    use 'saadparwaiz1/cmp_luasnip'
+    {
+        'neovim/nvim-lspconfig',
+        dependencies = {
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
+            {'j-hui/fidget.nvim', opts = {}},
+            'folke/neodev.nvim',
+        },
+    },
 
     -- treesitter
-    use {
+    {
         'nvim-treesitter/nvim-treesitter',
-        run = function()
-            require('nvim-treesitter.install').update({ with_sync = true })
+        config = function()
+            pcall(require('nvim-treesitter.install').update({ with_sync = true }))
         end,
-    }
+    },
 
     -- telescope
-    use 'nvim-lua/plenary.nvim'
-    use 'nvim-telescope/telescope.nvim'
+    {
+        'nvim-telescope/telescope.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+    },
+    {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        cond = function()
+            return vim.fn.executable 'make' == 1
+        end,
+    },
 
     -- git
-    use 'lewis6991/gitsigns.nvim'
+    'lewis6991/gitsigns.nvim',
 
     -- statusline
-    use 'nvim-lualine/lualine.nvim'
+    'nvim-lualine/lualine.nvim',
 
     -- file explorer
-    use 'nvim-tree/nvim-tree.lua'
+    'nvim-tree/nvim-tree.lua',
 
     -- utilities
-    use { 'catppuccin/nvim', as = 'catppuccin' }
-    use 'kyazdani42/nvim-web-devicons'
-    use 'numToStr/Comment.nvim'
-    use 'windwp/nvim-autopairs'
-    use 'tpope/vim-surround'
-    use 'dhruvasagar/vim-zoom'
-    use 'dhruvasagar/vim-table-mode'
-
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if packer_bootstrap then
-        require('packer').sync()
-    end
-end)
-
-if packer_bootstrap then
-    print '=================================='
-    print '    Plugins are being installed'
-    print '    Wait until Packer completes,'
-    print '       then restart nvim'
-    print '=================================='
-    return
-end
+    { 'catppuccin/nvim', name = 'catppuccin' },
+    'nvim-tree/nvim-web-devicons',
+    { 'echasnovski/mini.comment', version = false, config = function() require('mini.comment').setup() end },
+    { 'echasnovski/mini.pairs', version = false, config = function() require('mini.pairs').setup() end },
+    { 'echasnovski/mini.surround', version = false, config = function() require('mini.surround').setup() end },
+    'dhruvasagar/vim-zoom',
+    'dhruvasagar/vim-table-mode',
+}, {})
 
 -- Nvim-cmp config
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
@@ -201,9 +202,9 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        { name = 'luasnip' },
         { name = 'path' },
         { name = 'buffer' },
+        { name = 'luasnip' },
     }),
 })
 
@@ -262,6 +263,7 @@ for _, server in ipairs(servers) do
         on_attach = on_attach,
     }
 end
+require('neodev').setup()
 
 require('lspconfig')['rust_analyzer'].setup {
     capabilities = capabilities,
@@ -271,29 +273,15 @@ require('lspconfig')['rust_analyzer'].setup {
     }
 }
 
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/init..lua')
-
 require('lspconfig')['lua_ls'].setup {
     capabilities = capabilities,
     on_attach = on_attach,
     settings = {
         Lua = {
-            runtime = {
-                version = 'LuaJIT',
-                path = runtime_path,
-            },
-            diagnostics = {
-                globals = { 'vim' },
-            },
-            workspace = {
-                library = vim.api.nvim_get_runtime_file('', true),
-                checkThirdParty = false,
-            },
+            workspace = { checkThirdParty = false },
             telemetry = { enable = false },
-        }
-    }
+        },
+    },
 }
 
 require('lspconfig')['emmet_ls'].setup({
@@ -319,8 +307,7 @@ require('nvim-treesitter.configs').setup {
         'help',
         'vim',
     },
-    sync_install = false,
-    auto_install = true,
+    auto_install = false,
     highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
@@ -390,6 +377,7 @@ require('telescope').setup {
         file_ignore_patterns = { 'venv', '__pycache__', 'node_modules', 'target' }
     }
 }
+require('telescope').load_extension('fzf')
 
 -- Gitsigns config
 vim.keymap.set('n', '<leader>gn', '<cmd>Gitsigns next_hunk<CR>')
@@ -439,21 +427,6 @@ vim.cmd[[colorscheme catppuccin]]
 require('lualine').setup({
     options = { theme = 'catppuccin' }
 })
-
--- Autopairs config
-require('nvim-autopairs').setup {}
-
--- Comment config
-require('Comment').setup {
-    opleader = {
-        line = 'gc',
-        block = 'gb',
-    },
-    mappings = {
-        basic = true,
-        extra = true,
-    }
-}
 
 -- Nvim tree config
 vim.g.loaded = 1
