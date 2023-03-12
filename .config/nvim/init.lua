@@ -143,6 +143,9 @@ require('lazy').setup({
     -- treesitter
     {
         'nvim-treesitter/nvim-treesitter',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter-textobjects',
+        },
         config = function()
             pcall(require('nvim-treesitter.install').update({ with_sync = true }))
         end,
@@ -165,13 +168,20 @@ require('lazy').setup({
     'lewis6991/gitsigns.nvim',
 
     -- statusline
-    'nvim-lualine/lualine.nvim',
+    { 'catppuccin/nvim', name = 'catppuccin' },
+    {
+        'nvim-lualine/lualine.nvim',
+        opts = {
+            options = {
+                theme = 'catppuccin',
+            }
+        }
+    },
 
     -- file explorer
     'nvim-tree/nvim-tree.lua',
 
     -- utilities
-    { 'catppuccin/nvim', name = 'catppuccin' },
     'nvim-tree/nvim-web-devicons',
     { 'echasnovski/mini.comment', version = false, config = function() require('mini.comment').setup() end },
     { 'echasnovski/mini.pairs', version = false, config = function() require('mini.pairs').setup() end },
@@ -241,8 +251,8 @@ local on_attach = function(_, bufnr)
     nmap('<leader>ld', vim.diagnostic.show, 'Show Diagnostic')
     nmap('<leader>lD', vim.diagnostic.hide, 'Hide Diagnostic')
     nmap('<leader>do', vim.diagnostic.open_float, 'Open Diagnostic')
-    nmap('<leader>dn', vim.diagnostic.goto_next, 'Next Diagnostic')
-    nmap('<leader>dp', vim.diagnostic.goto_prev, 'Previous Diagnostic')
+    nmap(']d', vim.diagnostic.goto_next, 'Next Diagnostic')
+    nmap('[d', vim.diagnostic.goto_prev, 'Previous Diagnostic')
     nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
     nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
     nmap('<leader>wl', function() vim.pretty_print(vim.lsp.buf.list_workspace_folders()) end, '[W]orkspace [L]ist [F]olders')
@@ -368,11 +378,14 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Telescope config
-vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<CR>')
-vim.keymap.set('n', '<leader>fo', '<cmd>Telescope oldfiles<CR>')
-vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<CR>')
-vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<CR>')
-vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<CR>')
+local telescope = require('telescope.builtin')
+vim.keymap.set('n', '<leader>sf', telescope.find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>so', telescope.oldfiles, { desc = '[S]earch [O]ld files' })
+vim.keymap.set('n', '<leader>sg', telescope.live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sw', telescope.grep_string, { desc = '[S]earch [W]ord' })
+vim.keymap.set('n', '<leader>sh', telescope.help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sb', telescope.buffers, { desc = '[S]earch [B]uffers' })
+vim.keymap.set('n', '<leader>sd', telescope.diagnostics, { desc = '[S]earch [D]iagnostics' })
 require('telescope').setup {
     defaults = {
         file_ignore_patterns = { 'venv', '__pycache__', 'node_modules', 'target' }
@@ -423,11 +436,6 @@ require('catppuccin').setup({
     },
 })
 vim.cmd[[colorscheme catppuccin]]
-
--- Lualine config
-require('lualine').setup({
-    options = { theme = 'catppuccin' }
-})
 
 -- Nvim tree config
 vim.g.loaded = 1
