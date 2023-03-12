@@ -29,7 +29,7 @@ font:
   bold_italic:
     family: MesloLGS Nerd Font
     style: Bold Italic
-  size: 11.5
+  size: 13
 
 # Colors (Dracula)
 colors:

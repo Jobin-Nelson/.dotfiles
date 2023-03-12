@@ -3,7 +3,7 @@
 function banner() {
     local termwidth padding_len padding 
     termwidth="$(tput cols)"
-    padding_len="$(((termwidth - 2 - ${#1})/2))" 
+    padding_len="$(( (termwidth - 2 - ${#1})/2 ))" 
     padding=$(printf '%0.1s' ={1..500})
 
     tput setaf 3

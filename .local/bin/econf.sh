@@ -10,10 +10,9 @@ function main() {
     "i3-status - $HOME/.config/i3/i3status.conf"
     "i3-layouts - $HOME/.config/i3/layouts"
     "polybar - $HOME/.config/polybar/config"
-    "compton - $HOME/.config/compton/compton.conf"
     "bash - $HOME/.bashrc"
     "econf - $HOME/.local/bin/econf.sh"
-    "cheatsheet - $HOME/.local/bin/cheatsheet.py"
+    "cheat - $HOME/.local/bin/cheat.sh"
     "change_brightness - $HOME/.local/bin/change_brightness.sh"
     "dev - $HOME/.local/bin/dev.sh"
     "chfont - $HOME/.local/bin/chfont.sh"
@@ -40,7 +39,7 @@ function main() {
 
     [[ -z $choice ]] && { echo 'Nothing selected. Aborting'; exit 1; }
 
-    /usr/bin/nvim "${choice}"
+    nvim "${choice}"
 }
 
 main
