@@ -124,9 +124,10 @@ function install_fonts() {
         'Hack'
         'Meslo'
         'SourceCodePro'
+        'CascadiaCode'
     )
 
-    BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2'
+    BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3'
     DOWNLOAD_DIR="$HOME/Downloads"
     FONT_DIR="$HOME/.local/share/fonts"
     mkdir -pv "${DOWNLOAD_DIR}" "${FONT_DIR}" 

@@ -8,6 +8,9 @@ function get_font() {
     'MesloLGS Nerd Font'
     'Hack Nerd Font'
     'SauceCodePro Nerd Font'
+    'Caskaydia Cove Nerd Font'
+    'Ubuntu Mono Nerd Font'
+    'DejaVu Sans Mono Nerd Font'
     )
 
     choice=$(printf '%s\n' "${FONTS[@]}" | fzf)
@@ -16,7 +19,7 @@ function get_font() {
 }
 
 function set_style() {
-    if [[ $choice == 'JetBrainsMono Nerd Font' ]]; then
+    if [[ $font == 'JetBrainsMono Nerd Font' ]]; then
         sed -i "
         22s/style: .*/style: Medium/
         28s/style: .*/style: Medium Italic/
@@ -29,31 +32,37 @@ function set_style() {
     fi
 }
 
+function set_size() {
+    case $font in
+        'Ubuntu Mono Nerd Font')    sed -i 's/size: .*/size: 14/' "${ALACRITTY_FILE}" ;;
+        'Caskaydia Cove Nerd Font')    sed -i 's/size: .*/size: 12/' "${ALACRITTY_FILE}" ;;
+        *)    sed -i 's/size: .*/size: 11.5/' "${ALACRITTY_FILE}" ;;
+    esac
+}
+
 function set_font() {
-    local ALACRITTY_FILE I3_FILE choice
+    [[ -z $font ]] && { echo "None selected. Aborting!"; exit 1; }
 
-    ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.yml"
-    I3_FILE="$HOME/.config/i3/config"
-    choice=$1
-
-    [[ -z $choice ]] && { echo "None selected. Aborting!"; exit 1; }
-
-    sed -i "s/family: .*/family: $choice/" "${ALACRITTY_FILE}"
+    sed -i "s/family: .*/family: $font/" "${ALACRITTY_FILE}"
 
     sed -Ei "
-    s/set [$]font '.*'/set \$font '${choice}'/
-    s/font pango:.* ([0-9][0-9]?)/font pango:${choice} \1/
+    s/set [$]font '.*'/set \$font '${font}'/
+    s/font pango:.* ([0-9][0-9]?)/font pango:${font} \1/
     " "${I3_FILE}"
 
-    # set_style
-    echo "Font changed to $choice"
+    echo "Font changed to $font"
 }
 
 function main() {
-    local font
+    local ALACRITTY_FILE I3_FILE font
+
+    ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.yml"
+    I3_FILE="$HOME/.config/i3/config"
 
     font=$(get_font)
-    set_font "${font}"
+    set_font 
+    # set_style 
+    set_size
 }
 
 main
