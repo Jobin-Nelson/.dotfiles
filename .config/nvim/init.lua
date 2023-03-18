@@ -31,6 +31,7 @@ vim.opt.fileformat = 'unix'
 vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
 vim.opt.autoread = true
 vim.opt.cpoptions:append('>')
+vim.opt.spelllang = 'en_us'
 vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.1/bin/python'
 -- vim.g.netrw_altv = 1
 -- vim.g.netrw_liststyle = 3

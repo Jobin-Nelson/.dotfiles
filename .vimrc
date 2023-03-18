@@ -23,17 +23,19 @@ set undodir=~/.config/vim/undodir
 set undofile
 set hidden
 set cm=blowfish2
+set background=dark
+set spelllang=en_us
 
 let mapleader=" "
 map Q <Nop>
 
 nnoremap <leader>so :source $HOME/.config/nvim/init.vim<CR>
 nnoremap <leader>i :e $HOME/.vimrc<CR>
-nnoremap <leader>e :Lexplore<bar> :vertical resize 30<CR>
+nnoremap <leader>e :Lexplore 30<CR>
 nnoremap <leader>+ :vertical resize +3<CR>
 nnoremap <leader>- :vertical resize -3<CR>
 
 autocmd filetype python nnoremap <F5> :w <bar> !python %<CR>
 autocmd filetype javascript nnoremap <F5> :w <bar> !node %<CR>
 
-colorscheme lunaperche
+colorscheme habamax
