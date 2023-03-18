@@ -125,6 +125,7 @@ function install_fonts() {
         'Meslo'
         'SourceCodePro'
         'CascadiaCode'
+        'UbuntuMono'
     )
 
     BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3'
