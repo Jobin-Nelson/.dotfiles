@@ -61,10 +61,31 @@ vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
 vim.keymap.set('n', '<C-Left>', '<cmd>vertical resize -3<CR>')
 vim.keymap.set('n', 'L', '<cmd>bnext<CR>')
 vim.keymap.set('n', 'H', '<cmd>bprevious<CR>')
-vim.keymap.set('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
 -- vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
+vim.keymap.set('n', '<leader>rs', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
+vim.keymap.set('n', '<leader>rc', "o<CR>### Comments<ESC>mcgg/- Pipeline<CR>yy'co<CR><ESC>pkddmc?### [Veri<CR>jjV/###<CR>kky'cp")
+vim.keymap.set('n', '<leader>rt', 'V/##<CR>kk:s/\\[x\\] //g<CR>gv<:s/\\*//g<CR>')
+vim.keymap.set('n', '<leader>sc', function ()
+    local buf_name = 'scratch'
+    if vim.fn.bufexists(buf_name) == 1 then
+        local buf_nr = vim.fn.bufnr(buf_name)
+        local win_ids =  vim.fn.win_findbuf(buf_nr)
+        if win_ids then
+            vim.fn.win_gotoid(win_ids[1])
+            do return end
+        end
+        vim.cmd('vert sb ' .. buf_nr)
+        do return end
+    end
+
+    vim.cmd.vnew()
+    vim.opt_local.buftype = 'nofile'
+    vim.opt_local.bufhidden = 'hide'
+    vim.opt_local.swapfile = false
+    vim.cmd('keepalt file ' .. buf_name)
+end)
 
 -- Autocommands
 local my_group = vim.api.nvim_create_augroup('my_group', { clear = true })
@@ -92,15 +113,6 @@ vim.api.nvim_create_autocmd('FileType', {
 --     command = 'setlocal formatoptions+=a colorcolumn=80',
 --     group = my_group,
 -- })
-
--- User commands
-vim.api.nvim_create_user_command('Rename', function ()
-    local new_name = vim.fn.input('New name: ')
-    local old_name = vim.fn.expand('%:p')
-    vim.cmd({cmd='saveas', args={new_name}})
-    vim.fn.delete(old_name)
-    vim.cmd({cmd='bdelete', args={'#'}})
-end , {})
 
 -- Automatically install lazy
 local lazypath = vim.fn.stdpath('data') .. 'lazy/lazy.nvim'
@@ -186,7 +198,7 @@ require('lazy').setup({
     'nvim-tree/nvim-web-devicons',
     { 'echasnovski/mini.comment', version = false, config = function() require('mini.comment').setup() end },
     { 'echasnovski/mini.pairs', version = false, config = function() require('mini.pairs').setup() end },
-    { 'echasnovski/mini.surround', version = false, config = function() require('mini.surround').setup() end },
+    'tpope/vim-surround',
     'dhruvasagar/vim-zoom',
     'dhruvasagar/vim-table-mode',
 }, {})
@@ -205,8 +217,8 @@ cmp.setup({
         documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
         ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
