@@ -64,9 +64,7 @@ vim.keymap.set('n', 'H', '<cmd>bprevious<CR>')
 -- vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
-vim.keymap.set('n', '<leader>rs', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
-vim.keymap.set('n', '<leader>rc', "o<CR>### Comments<ESC>mcgg/- Pipeline<CR>yy'co<CR><ESC>pkddmc?### [Veri<CR>jjV/###<CR>kky'cp")
-vim.keymap.set('n', '<leader>rt', 'V/##<CR>kk:s/\\[x\\] //g<CR>gv<:s/\\*//g<CR>')
+vim.keymap.set('n', '<leader>rs', '<cmd>%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
 vim.keymap.set('n', '<leader>sc', function ()
     local buf_name = 'scratch'
     if vim.fn.bufexists(buf_name) == 1 then
@@ -86,6 +84,11 @@ vim.keymap.set('n', '<leader>sc', function ()
     vim.opt_local.swapfile = false
     vim.cmd('keepalt file ' .. buf_name)
 end)
+
+-- Registers
+vim.fn.setreg('r',  [[V/##kk:s/\[x\] //g€kbgv<:s/\*//g]])
+vim.fn.setreg('c', [[o€üD### Commentsmcgg/- Pipelineyy'copkddmc?### [Veri€kb€kb€kb€kbjjV/###kky'cp]])
+vim.fn.setreg('j', [[@c@r?- Pipl€kbeline]])
 
 -- Autocommands
 local my_group = vim.api.nvim_create_augroup('my_group', { clear = true })
