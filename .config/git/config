@@ -1,0 +1,14 @@
+[user]
+	name = Jobin Nelson
+	email = jobinnelson369@gmail.com
+[diff]
+	tool = nvimdiff
+[difftool "nvimdiff"]
+	cmd = nvim -d \"$LOCAL\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd L\"
+[core]
+	editor = nvim
+	excludesfile = /home/jobin/.config/git/.gitignore_global
+[fetch]
+	prune = true
+[commit]
+	template = /home/jobin/.config/git/commit_template.txt
