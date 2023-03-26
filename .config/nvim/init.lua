@@ -28,6 +28,7 @@ vim.opt.signcolumn = 'yes'
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 vim.opt.fileformat = 'unix'
+vim.opt.fileencoding = 'utf-8'
 vim.opt.listchars = { eol = 'â†²', tab = 'â–¸ ', trail = 'Â·' }
 vim.opt.autoread = true
 vim.opt.cpoptions:append('>')
@@ -110,9 +111,9 @@ vim.keymap.set('n', '<leader>sc', function ()
 end)
 
 -- Registers
-vim.fn.setreg('c', [[o€üD### Commentsmcgg/- Pipelineyy'copkddmc?### [Veri€kb€kb€kb€kbjjV/###kky'cp]])
-vim.fn.setreg('r',  [[V/##kk:s/\[x\] //g€kbgv<:s/\*//g]])
-vim.fn.setreg('j', [[@c@r?- Pipl€kbeline]])
+vim.fn.setreg('c', [[oÂ€Ã¼D### Commentsmcgg/- Pipelineyy'copkddmc?### [VeriÂ€kbÂ€kbÂ€kbÂ€kbjjV/###kky'cp]])
+vim.fn.setreg('r', [[V/##kk:s/\[x\] //gÂ€kbgv<:s/\*//g]])
+vim.fn.setreg('j', [[@c@r?- PiplÂ€kbeline]])
 
 -- Commands
 vim.api.nvim_create_user_command('DiffOrig', function()
@@ -242,13 +243,34 @@ require('lazy').setup({
     'dhruvasagar/vim-table-mode',
 }, {})
 
+-- Snippets
+local ls = require('luasnip')
+require('luasnip.loaders.from_lua').load({ paths = "~/.config/nvim/snippets/" })
+vim.keymap.set({'i', 's'}, '<Tab>', function() if ls.jumpable(1) then ls.jump(1) end end)
+vim.keymap.set({'i', 's'}, '<S-Tab>', function() if ls.jumpable(-1) then ls.jump(-1) end end)
+vim.keymap.set({'i', 's'}, '<C-h>', function() if ls.choice_active() then ls.change_choice(-1) end end)
+vim.keymap.set({'i', 's'}, '<C-l>', function() if ls.choice_active() then ls.change_choice(1) end end)
+vim.keymap.set('n', '<leader>sn', require('luasnip.loaders').edit_snippet_files)
+ls.setup({
+    history = true,
+    updateevents = 'TextChanged,TextChangedI',
+    enable_autosnippets = true,
+    ex_opts = {
+        [require('luasnip.util.types').choiceNode] = {
+            active = {
+                hl_group = 'GruvboxOrange'
+            }
+        }
+    }
+})
+
 -- Nvim-cmp config
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 local cmp = require 'cmp'
 cmp.setup({
     snippet = {
         expand = function(args)
-            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+            ls.lsp_expand(args.body) -- For `luasnip` users.
         end,
     },
     window = {
