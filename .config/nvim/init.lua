@@ -54,41 +54,82 @@ vim.g.python3_host_prog = '$HOME/.pyenv/versions/3.11.1/bin/python'
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>i', '<cmd>edit $MYVIMRC<CR>')
--- vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 30<CR>')
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +3<CR>')
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -3<CR>')
 vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize +3<CR>')
 vim.keymap.set('n', '<C-Left>', '<cmd>vertical resize -3<CR>')
 vim.keymap.set('n', 'L', '<cmd>bnext<CR>')
 vim.keymap.set('n', 'H', '<cmd>bprevious<CR>')
--- vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
-vim.keymap.set('n', '<leader>rs', '<cmd>%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
+vim.keymap.set('n', '<leader>rs', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
+vim.keymap.set('n', '<leader>bo', '<cmd>update <bar> %bdelete <bar> edit# <bar> bdelete #<CR>')
+vim.keymap.set('n', '<leader>bv', function ()
+    local all_bufs = vim.tbl_filter(
+        function(buf)
+            return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted
+        end,
+        vim.api.nvim_list_bufs()
+    )
+    local all_wins = vim.api.nvim_list_wins()
+    local visible_bufs = {}
+    for _, win in ipairs(all_wins) do
+        visible_bufs[vim.api.nvim_win_get_buf(win)] = true
+    end
+
+    for _, buf in ipairs(all_bufs) do
+        if visible_bufs[buf] == nil then
+            vim.cmd.bwipeout({ count = buf, bang = true })
+        end
+    end
+    print('All hidden buffers have been deleted')
+end)
 vim.keymap.set('n', '<leader>sc', function ()
     local buf_name = 'scratch'
     if vim.fn.bufexists(buf_name) == 1 then
         local buf_nr = vim.fn.bufnr(buf_name)
         local win_ids =  vim.fn.win_findbuf(buf_nr)
         if win_ids then
-            vim.fn.win_gotoid(win_ids[1])
-            do return end
+            for _, win_id in ipairs(win_ids) do
+                if vim.api.nvim_win_is_valid(win_id) then
+                    vim.fn.win_gotoid(win_id)
+                    do return end
+                end
+            end
         end
-        vim.cmd('vert sb ' .. buf_nr)
+        vim.cmd('vert sbuffer ' .. buf_nr)
         do return end
     end
 
-    vim.cmd.vnew()
+    local buf_nr = vim.api.nvim_create_buf(false, true)
+    vim.cmd('vert sbuffer ' .. buf_nr)
     vim.opt_local.buftype = 'nofile'
     vim.opt_local.bufhidden = 'hide'
     vim.opt_local.swapfile = false
-    vim.cmd('keepalt file ' .. buf_name)
+    vim.api.nvim_buf_set_name(buf_nr, 'scratch')
 end)
 
 -- Registers
-vim.fn.setreg('r',  [[V/##kk:s/\[x\] //g€kbgv<:s/\*//g]])
 vim.fn.setreg('c', [[o€üD### Commentsmcgg/- Pipelineyy'copkddmc?### [Veri€kb€kb€kb€kbjjV/###kky'cp]])
+vim.fn.setreg('r',  [[V/##kk:s/\[x\] //g€kbgv<:s/\*//g]])
 vim.fn.setreg('j', [[@c@r?- Pipl€kbeline]])
+
+-- Commands
+vim.api.nvim_create_user_command('DiffOrig', function()
+    local start = vim.api.nvim_get_current_buf()
+    vim.cmd('vnew | set buftype=nofile | read ++edit # | 0d_ | diffthis')
+    local scratch = vim.api.nvim_get_current_buf()
+
+    vim.cmd('wincmd p | diffthis')
+
+    -- Map `q` for both buffers to exit diff view and delete scratch buffer
+    for _, buf in ipairs({ scratch, start }) do
+        vim.keymap.set('n', 'q', function()
+            vim.api.nvim_buf_delete(scratch, { force = true })
+            vim.keymap.del('n', 'q', { buffer = start })
+        end, { buffer = buf })
+    end
+end, {})
 
 -- Autocommands
 local my_group = vim.api.nvim_create_augroup('my_group', { clear = true })
@@ -98,12 +139,7 @@ vim.api.nvim_create_autocmd('FileType', {
     command = 'nnoremap <F5> <cmd>w <bar> !python %<CR>',
     group = my_group,
 })
--- for removing empty netrw buffers
--- vim.api.nvim_create_autocmd('FileType', {
---     pattern = 'netrw',
---     command = 'setlocal bufhidden=wipe',
---     group = my_group,
--- })
+
 -- for pretty markdown syntax
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'markdown',
@@ -395,13 +431,13 @@ require('nvim-treesitter.configs').setup {
 
 -- Telescope config
 local telescope = require('telescope.builtin')
-vim.keymap.set('n', '<leader>sf', telescope.find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>so', telescope.oldfiles, { desc = '[S]earch [O]ld files' })
-vim.keymap.set('n', '<leader>sg', telescope.live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sw', telescope.grep_string, { desc = '[S]earch [W]ord' })
-vim.keymap.set('n', '<leader>sh', telescope.help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sb', telescope.buffers, { desc = '[S]earch [B]uffers' })
-vim.keymap.set('n', '<leader>sd', telescope.diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = '[F]ind [F]iles' })
+vim.keymap.set('n', '<leader>fo', telescope.oldfiles, { desc = '[F]ind [O]ld files' })
+vim.keymap.set('n', '<leader>fg', telescope.live_grep, { desc = '[F]ind by [G]rep' })
+vim.keymap.set('n', '<leader>fw', telescope.grep_string, { desc = '[F]ind [W]ord' })
+vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc = '[F]ind [H]elp' })
+vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc = '[F]ind [B]uffers' })
+vim.keymap.set('n', '<leader>fd', telescope.diagnostics, { desc = '[F]ind [D]iagnostics' })
 require('telescope').setup {
     defaults = {
         file_ignore_patterns = { 'venv', '__pycache__', 'node_modules', 'target' }
