@@ -31,11 +31,13 @@ local sn = ls.snippet_node
 local fmt = require('luasnip.extras.fmt').fmt
 local rep = require('luasnip.extras').rep
 
-local snippets, autosnippets = {{}}, {{}}
+local autosnippets = {{}}
 
 -- Snippets go here
 
-{}
+local snippets = {{
+    {}
+}}
 
 -- End snippets
 
