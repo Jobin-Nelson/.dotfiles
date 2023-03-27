@@ -1,6 +1,9 @@
 return {
     'L3MON4D3/LuaSnip',
     name = 'luasnip',
+    lazy = false,
+    version = "<CurrentMajor>.*",
+    build = "make install_jsregexp",
     config = function()
         local ls = require('luasnip')
         require('luasnip.loaders.from_lua').load({ paths = "~/.config/nvim/snippets/" })

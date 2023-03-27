@@ -16,7 +16,8 @@ local autosnippets = {}
 -- Snippets go here
 
 local snippets = {
-    s('def',fmt([[
+    s({ trig = 'def', hidden = true },
+    fmt([[
 def main():
     {}
 

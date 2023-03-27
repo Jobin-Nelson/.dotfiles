@@ -16,12 +16,12 @@ local autosnippets = {}
 -- Snippets go here
 
 local snippets = {
-    s('now',
+    s({ trig = 'now', hidden = true },
         f(function()
             return os.date('%H:%M')
         end)
     ),
-    s('today',
+    s({ trig = 'today', hidden = true },
         f(function()
             return os.date('%Y-%m-%d')
         end)

@@ -1,5 +1,16 @@
 return {
     'nvim-telescope/telescope.nvim',
+    cmd = 'Telescope',
+    keys = {
+        {'<leader>ff', '<cmd>Telescope find_files<CR>', { desc = '[F]ind [F]iles' }},
+        {'<leader>fo', '<cmd>Telescope oldfiles<CR>', { desc = '[F]ind [O]ld files' }},
+        {'<leader>fg', '<cmd>Telescope live_grep<CR>', { desc = '[F]ind by [G]rep' }},
+        {'<leader>fw', '<cmd>Telescope grep_string<CR>', { desc = '[F]ind [W]ord' }},
+        {'<leader>fh', '<cmd>Telescope help_tags<CR>', { desc = '[F]ind [H]elp' }},
+        {'<leader>fb', '<cmd>Telescope buffers<CR>', { desc = '[F]ind [B]uffers' }},
+        {'<leader>fd', '<cmd>Telescope diagnostics<CR>', { desc = '[F]ind [D]iagnostics' }},
+        {'<leader>fr', '<cmd>Telescope resume<CR>', { desc = '[F]ind [R]esume' }},
+    },
     dependencies = {
         'nvim-lua/plenary.nvim',
         {
@@ -11,15 +22,6 @@ return {
         },
     },
     config = function()
-        local telescope = require('telescope.builtin')
-        vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = '[F]ind [F]iles' })
-        vim.keymap.set('n', '<leader>fo', telescope.oldfiles, { desc = '[F]ind [O]ld files' })
-        vim.keymap.set('n', '<leader>fg', telescope.live_grep, { desc = '[F]ind by [G]rep' })
-        vim.keymap.set('n', '<leader>fw', telescope.grep_string, { desc = '[F]ind [W]ord' })
-        vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc = '[F]ind [H]elp' })
-        vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc = '[F]ind [B]uffers' })
-        vim.keymap.set('n', '<leader>fd', telescope.diagnostics, { desc = '[F]ind [D]iagnostics' })
-        vim.keymap.set('n', '<leader>fr', telescope.resume, { desc = '[F]ind [R]esume' })
         require('telescope').setup {
             defaults = {
                 file_ignore_patterns = { 'venv', '__pycache__', 'node_modules', 'target' }

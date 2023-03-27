@@ -1,5 +1,7 @@
 return {
     'nvim-treesitter/nvim-treesitter',
+    version = false,
+    event = { 'BufReadPost', 'BufNewFile' },
     build = function()
         require('nvim-treesitter.install').update({ with_sync = true })
     end,
@@ -7,8 +9,6 @@ return {
         'nvim-treesitter/nvim-treesitter-textobjects',
     },
     config = function()
-
-        -- Treesitter config
         require('nvim-treesitter.configs').setup {
             ensure_installed = {
                 'rust',
