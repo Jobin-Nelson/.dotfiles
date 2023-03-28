@@ -1,4 +1,5 @@
 vim.g.mapleader = ' ' -- Lazy.nvim needs them set first
+vim.g.maplocalleader = ' '
 
 -- Automatically install lazy
 local lazypath = vim.fn.stdpath('data') .. 'lazy/lazy.nvim'
@@ -20,7 +21,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 -- Plugins
 require('lazy').setup('jobin.plugins', {
-    defaults = { lazy = true },
+    defaults = { lazy = false },
     performance = {
         rtp = {
             disabled_plugins = {

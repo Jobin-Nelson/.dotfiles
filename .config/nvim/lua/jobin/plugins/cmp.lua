@@ -7,7 +7,6 @@ return {
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-path',
         'saadparwaiz1/cmp_luasnip',
-        'luasnip',
     },
     config = function()
         vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
