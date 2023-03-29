@@ -46,8 +46,22 @@ function install_packages() {
     systemctl enable --now cronie.service
 }
 
+function install_astronvim() {
+    banner 'Installing Astronvim'
+    local CONFIG_DIR DOWNLOAD_DIR
+
+    CONFIG_DIR="$HOME/.config/nvim"
+    DOWNLOAD_DIR="$HOME/Download"
+
+    git clone --depth 1 https://github.com/AstroNvim/AstroNvim "${DOWNLOAD_DIR}/nvim" && \
+        mv "${DOWNLOAD_DIR}/nvim/.git" "${CONFIG_DIR}" && \
+        rm -rf "${DOWNLOAD_DIR}/nvim" && \
+        git -C "${CONFIG_DIR}" restore . && \
+        git clone --depth 1 git@github.com:Jobin-Nelson/astronvim_config.git "${CONFIG_DIR}/lua/user"
+}
+
 function install_neovim() {
-    banner 'install neovim'
+    banner 'Install Neovim'
     local DOWNLOAD_DIR NEOVIM_DIR
 
     DOWNLOAD_DIR="$HOME/Downloads"
@@ -182,7 +196,8 @@ function main() {
 
     setup_aur
     install_packages
-    install_neovim
+    install_astronvim
+    # install_neovim
     install_python_rust
     setup_repos
     download_wallpapers
