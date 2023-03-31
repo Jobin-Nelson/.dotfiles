@@ -197,7 +197,7 @@ function main() {
     setup_aur
     install_packages
     install_astronvim
-    # install_neovim
+    install_neovim
     install_python_rust
     setup_repos
     download_wallpapers

@@ -16,20 +16,32 @@ local autosnippets = {}
 -- Snippets go here
 
 local snippets = {
-    s({ trig = 'def', hidden = true },
+  s({ trig = 'dmain', hidden = true },
     fmt([[
-def main():
+def main(){}:
     {}
 
 if '__main__' == '__name__':
     {}
-]],{i(0, ''),
-    c(1, {
+]], {
+      d(1, function(node)
+        vim.pretty_print(node)
+        if node[1][1] == 'raise SystemExit(main())' then
+          return sn(1, t(' -> int'))
+        end
+        return sn(1, t(''))
+      end, 2),
+      i(0, ''),
+      c(2, {
         t('raise SystemExit(main())'),
         t('main()'),
         i(1, ''),
-        })
-    }))
+      })
+    })
+  ),
+  s({ trig = 'imain', hidden = true },
+    t({ "if '__main__' == '__name__':", '\t' })
+  ),
 }
 
 -- End snippets
