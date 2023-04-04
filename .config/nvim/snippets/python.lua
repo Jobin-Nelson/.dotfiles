@@ -16,12 +16,12 @@ local autosnippets = {}
 -- Snippets go here
 
 local snippets = {
-  s({ trig = 'dmain', hidden = true },
+  s({ trig = 'dmain', hidden = false },
     fmt([[
 def main(){}:
     {}
 
-if '__main__' == '__name__':
+if __name__ == '__main__':
     {}
 ]], {
       d(1, function(node)
@@ -29,7 +29,7 @@ if '__main__' == '__name__':
         if node[1][1] == 'raise SystemExit(main())' then
           return sn(1, t(' -> int'))
         end
-        return sn(1, t(''))
+        return sn(1, t(' -> None'))
       end, 2),
       i(0, ''),
       c(2, {
@@ -39,7 +39,7 @@ if '__main__' == '__name__':
       })
     })
   ),
-  s({ trig = 'imain', hidden = true },
+  s({ trig = 'imain', hidden = false },
     t({ "if '__main__' == '__name__':", '\t' })
   ),
 }

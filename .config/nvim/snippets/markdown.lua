@@ -16,12 +16,15 @@ local autosnippets = {}
 -- Snippets go here
 
 local snippets = {
-    s('title',
-        f(function()
-            local file_name = string.gsub(vim.fn.expand('%:t:r'), '_', ' ')
-            return '# ' .. string.gsub(file_name, '%f[%l].', string.upper)
-        end)
-    )
+  s('title',
+    f(function()
+      local file_name = string.gsub(vim.fn.expand('%:t:r'), '_', ' ')
+      return '# ' .. string.gsub(file_name, '%f[%l].', string.upper)
+    end)
+  ),
+  s('t',
+    t({ '', '- [ ] ' })
+  ),
 }
 
 -- End snippets

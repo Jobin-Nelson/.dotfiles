@@ -18,8 +18,11 @@ function help() {
 function download_html() {
     local BASE_URL IS_VIDEO
 
-    BASE_URL='https://www1.thepiratebay3.to/s/?q'
-    IS_VIDEO='video=on'
+    # https://www1.thepiratebay3.to/s/?q=batman&video=on
+    # https://thepiratebayone.com/search.php?q=robot+season+3&cat=200
+    # https://tpbworking.net/search.php?q=arcane&video=on
+    BASE_URL='https://tpbworking.net/search.php?q'
+    IS_VIDEO='cat=200'
 
     echo -e "\nFetching results for ${query}\n"
     curl -sSfL "${BASE_URL}=${query// /+}&${IS_VIDEO}" --create-dirs -o "${SEARCH_RESULTS}"

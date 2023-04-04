@@ -16,7 +16,7 @@ local autosnippets = {}
 -- Snippets go here
 
 local snippets = {
-    s('snip',
+  s('snip',
     fmt([[
 local ls = require('luasnip')
 local s = ls.s
