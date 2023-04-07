@@ -16,7 +16,7 @@ local autosnippets = {}
 -- Snippets go here
 
 local snippets = {
-  s({ trig = 'dmain', hidden = false },
+  s({ trig = 'dmain', hidden = true },
     fmt([[
 def main(){}:
     {}
@@ -39,7 +39,7 @@ if __name__ == '__main__':
       })
     })
   ),
-  s({ trig = 'imain', hidden = false },
+  s({ trig = 'imain', hidden = true },
     t({ "if '__main__' == '__name__':", '\t' })
   ),
 }
