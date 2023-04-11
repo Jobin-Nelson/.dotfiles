@@ -20,10 +20,10 @@ local snippets = {
     fmt([[
 #[cfg(test)]
 mod tests {{
-  #[test]
-  fn {}() {{
-    {}
-  }}
+    #[test]
+    fn {}() {{
+        {}
+    }}
 }}
     ]], {
       i(1, "test_1"),
