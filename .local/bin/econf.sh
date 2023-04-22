@@ -31,6 +31,7 @@ function main() {
         "hyprland - $HOME/.config/hypr/hyprland.conf"
         "waybar - $HOME/.config/waybar/config"
         "deconf - $HOME/.local/bin/deconf.sh"
+        "git - $HOME/.config/git/config"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
