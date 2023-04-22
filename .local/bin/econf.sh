@@ -32,6 +32,7 @@ function main() {
         "waybar - $HOME/.config/waybar/config"
         "deconf - $HOME/.local/bin/deconf.sh"
         "git - $HOME/.config/git/config"
+        "torz2 - $HOME/.local/bin/torz2.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

@@ -46,8 +46,7 @@ function parse_html() {
   }
 
   END {}
-  ' "${SEARCH_RESULTS}" 
-  # ' "${SEARCH_RESULTS}" > "${PARSED_RESULTS}"
+  ' "${SEARCH_RESULTS}" > "${PARSED_RESULTS}"
 }
 
 function get_movie() {
@@ -85,9 +84,9 @@ function main() {
   query=$*
   [[ -z $query ]] && { echo 'No input. Aborting!'; exit 1; }
 
-  # download_html
+  download_html
   parse_html
-  # download_movie
+  download_movie
 }
 
 while getopts 'hc' option; do
