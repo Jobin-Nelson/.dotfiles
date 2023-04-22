@@ -28,25 +28,26 @@ function parse_html() {
   awk '
   BEGIN {
     RS = "<dl>"
-    FS = "<span>"
+    FS = "</span>"
     OFS = ","
     print "MagnetLink,Title,Date,Size,Seeders,Leechers"
   }
 
   NR > 1 {
-    magnet = gensub(/.*<a href="(magnet:\?xt=urn:btih:[^&]*).*/, "\\1", 1, $2)
+    magnet = gensub(/.*<a href="(magnet:\?xt=urn:btih:[^&]*).*/, "\\1", 1, $1)
     title = gensub(/.*target="_blank">([^<]*).*/, "\\1", 1, $1)
     gsub(",", " ", title)
     date = gensub(/.*<span title=".*">([^<]*).*/, "\\1", 1, $2)
-    size = gensub(/([^<]*).*/, "\\1", 1, $3)
-    seeders = gensub(/([^<]*).*/, "\\1", 1, $4)
-    leechers = gensub(/([^<]*).*/, "\\1", 1, $5)
+    size = substr($3, 7)
+    seeders = substr($4, 7)
+    leechers = substr($5, 7)
 
     print magnet, title, date, size, seeders, leechers
   }
 
   END {}
-  ' "${SEARCH_RESULTS}" > "${PARSED_RESULTS}"
+  ' "${SEARCH_RESULTS}" 
+  # ' "${SEARCH_RESULTS}" > "${PARSED_RESULTS}"
 }
 
 function get_movie() {
@@ -84,9 +85,9 @@ function main() {
   query=$*
   [[ -z $query ]] && { echo 'No input. Aborting!'; exit 1; }
 
-  download_html
+  # download_html
   parse_html
-  download_movie
+  # download_movie
 }
 
 while getopts 'hc' option; do
