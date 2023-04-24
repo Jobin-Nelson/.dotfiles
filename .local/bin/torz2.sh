@@ -50,13 +50,13 @@ function parse_html() {
 }
 
 function get_movie() {
-    local choices
+  local choices
 
-    choices=$(column -t -s ',' "${PARSED_RESULTS}" |
-      fzf --with-nth='2..' --layout=reverse --height=50% --border --ansi --no-sort --multi |
-      cut -d ' ' -f 1)
+  choices=$(column -t -s ',' "${PARSED_RESULTS}" |
+    fzf --with-nth='2..' --layout=reverse --height=50% --border --ansi --no-sort --multi |
+    cut -d ' ' -f 1)
 
-    echo "${choices}"
+  echo "${choices}"
 }
 
 function download_movie() {

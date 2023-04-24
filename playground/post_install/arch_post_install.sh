@@ -95,6 +95,7 @@ function setup_repos() {
         'exercism_rust_track'
         'todo'
         'waldl'
+        'org_files'
     )
 
     RUST_BINARIES=(

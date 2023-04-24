@@ -18,6 +18,23 @@ Section "InputClass"
 EndSection
 ```
 
+## Emacs
+
+Arch linux doesn't export XDG Base directories and for emacs daemon to pickup
+it's init.el file from `~/.config/emacs` directory and not `~/.emacs.d/`. We
+have to export these variables even before the daemon that starts on boot. So
+initialise them in `/etc/profile.d/0000-xdg-dirs.sh`
+
+```bash
+#!/bin/bash
+# /etc/profile.d/0000-xdg-dirs.sh
+
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
+```
+
 ## Snapshots
 
 - btrfs

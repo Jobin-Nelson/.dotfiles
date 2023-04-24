@@ -27,11 +27,13 @@ alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date -d \"\$([[ \$(date -d '+6 hours' +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
 alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to full|percentage\""
 alias wl='nsxiv $HOME/Pictures/wallpapers'
+alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%b_%d | tr "[:upper:]" "[:lower:]")'
 # alias rwl="feh --randomize --bg-scale \$HOME/Pictures/wallpapers/*"
 alias rwl='gsettings set org.gnome.desktop.background picture-uri-dark file://$(find $HOME/Pictures/wallpapers -type f | shuf -n 1)'
 # alias rwl='w=$(find $HOME/Pictures/wallpapers -type f | shuf -n 1) && hyprctl hyprpaper unload all && hyprctl hyprpaper preload "$w" && hyprctl hyprpaper wallpaper "eDP-1,$w" '
 alias docker='podman'
 alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
+alias emacs='emacsclient -nc -a ""'
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
