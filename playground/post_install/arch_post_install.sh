@@ -73,6 +73,16 @@ function install_neovim() {
     rm -rf "${NEOVIM_DIR}" "${NEOVIM_DIR}.tar.gz"
 }
 
+function install_doom_emacs() {
+    banner 'Installing Emacs'
+
+    sudo pacman -Syu --needed --noconfirm \
+        emacs ripgrep fd
+
+    git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+    ~/.config/emacs/bin/doom install
+}
+
 function install_python_rust() {
     banner 'Installing python'
     pyenv install 3.11.1 && pyenv global 3.11.1
