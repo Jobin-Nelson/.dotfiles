@@ -13,7 +13,8 @@ function get_font() {
         'DejaVu Sans Mono Nerd Font'
     )
 
-    choice=$(printf '%s\n' "${FONTS[@]}" | fzf)
+    choice=$(printf '%s\n' "${FONTS[@]}" \
+        | fzf --prompt 'Edit font: ' --layout=reverse --height='50%' --border --ansi)
 
     echo "${choice}"
 }

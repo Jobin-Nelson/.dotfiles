@@ -3,7 +3,8 @@
 function main() {
     local selected_dir session_name
 
-    selected_dir="$(zoxide query -l | fzf)"
+    selected_dir="$(zoxide query -l |
+        fzf --prompt='Select project: ' --layout=reverse --height=50% --border --ansi)"
 
     [[ -z $selected_dir ]] && exit 1
 

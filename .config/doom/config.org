@@ -24,19 +24,22 @@ clients, file templates and snippets. It is optional.
 This determines the style of line numbers in effect. If set to `nil', line
 numbers are disabled. For relative line numbers, set this to `relative'.
 #+BEGIN_SRC emacs-lisp
-(setq display-line-numbers-type 'relative)
-(setq make-backup-files nil)
-(setq auto-save-default nil)
+(setq display-line-numbers-type 'relative
+    make-backup-files nil
+    auto-save-default nil
+    tab-bar-mode +1)
 #+END_SRC
 
 * Doom Settings
 #+BEGIN_SRC emacs-lisp
-(evil-snipe-mode -1)
+(setq projectile-project-search-path '("~/playground/projects/"))
 #+END_SRC
 
 * Fonts
 #+BEGIN_SRC emacs-lisp
-(setq doom-font "MesloLGS Nerd Font")
+(setq doom-font (font-spec :family "Hack Nerd Font" :size 15)
+      doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 20)
+      doom-variable-pitch-font (font-spec :family "Caskaydia Cove Nerd Font" :size 15))
 #+END_SRC
 
 * Themes
@@ -46,5 +49,7 @@ numbers are disabled. For relative line numbers, set this to `relative'.
 
 * Orgmode
 #+BEGIN_SRC emacs-lisp
-(setq org-directory "~/playground/projects/org_files/")
+(setq org-directory "~/playground/projects/org_files/"
+      org-archive-location "~/playground/projects/org_files/archive_file.org::"
+      org-log-done 'time)
 #+END_SRC

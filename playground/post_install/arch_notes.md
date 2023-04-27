@@ -153,6 +153,6 @@ dev=/dev/sda
 ## Screensharing
 
 - It is hard to screen share on wayland, switch to X11 to solve this issue
-- `sudoedit /etc/gdm/custom.conf`: uncomment the line "#WaylandEnable = False"
+- `sudoedit /etc/gdm/custom.conf`: uncomment the line "#WaylandEnable = False" 
 - Restart to switch to X11
 

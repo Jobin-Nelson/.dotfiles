@@ -53,7 +53,7 @@ function get_movie() {
   local choices
 
   choices=$(column -t -s ',' "${PARSED_RESULTS}" |
-    fzf --with-nth='2..' --layout=reverse --height=50% --border --ansi --no-sort --multi |
+    fzf --with-nth='2..' --layout=reverse --height=50% --border --ansi --multi |
     cut -d ' ' -f 1)
 
   echo "${choices}"
