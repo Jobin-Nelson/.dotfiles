@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function main() {
-    local choice
     declare -a FILES
+    local choice
 
     FILES=(
         "alacritty - $HOME/.config/alacritty/alacritty.yml"
@@ -27,21 +27,23 @@ function main() {
         "nvim - $HOME/.config/nvim/init.lua"
         "vim - $HOME/.vimrc"
         "starship - $HOME/.config/starship.toml"
+        "arch_notes - $HOME/playground/post_install/arch_notes.md"
         "arch_post_install - $HOME/playground/post_install/arch_post_install.sh"
         "hyprland - $HOME/.config/hypr/hyprland.conf"
         "waybar - $HOME/.config/waybar/config"
         "deconf - $HOME/.local/bin/deconf.sh"
         "git - $HOME/.config/git/config"
         "torz2 - $HOME/.local/bin/torz2.sh"
+        "emacs - $HOME/.config/doom/config.org"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
-        | fzf --prompt "Edit config: " \
+        | fzf --prompt 'Edit config: ' --layout=reverse --height='50%' --border --ansi \
         | cut -d ' ' -f3)
 
     [[ -z $choice ]] && { echo 'Nothing selected. Aborting'; exit 1; }
 
-    nvim "${choice}"
+    "${EDITOR:-nvim}" "${choice}"
 }
 
 main

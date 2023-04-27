@@ -1,0 +1,50 @@
+#+TITLE: Config
+#+AUTHOR: Jobin Nelson
+#+EMAIL: jobinnelson369@gmail.com
+#+STARTUP: overview
+#+PROPERTY: header-args :tangle yes
+
+* TABLE OF CONTENTS :toc:
+- [[#user-details][User Details]]
+- [[#general-settings][General Settings]]
+- [[#doom-settings][Doom Settings]]
+- [[#fonts][Fonts]]
+- [[#themes][Themes]]
+- [[#orgmode][Orgmode]]
+
+* User Details
+Some functionality uses this to identify you, e.g. GPG configuration, email
+clients, file templates and snippets. It is optional.
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Jobin Nelson"
+      user-mail-address "jobinnelson369@gmail.com")
+#+END_SRC
+
+* General Settings
+This determines the style of line numbers in effect. If set to `nil', line
+numbers are disabled. For relative line numbers, set this to `relative'.
+#+BEGIN_SRC emacs-lisp
+(setq display-line-numbers-type 'relative)
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+#+END_SRC
+
+* Doom Settings
+#+BEGIN_SRC emacs-lisp
+(evil-snipe-mode -1)
+#+END_SRC
+
+* Fonts
+#+BEGIN_SRC emacs-lisp
+(setq doom-font "MesloLGS Nerd Font")
+#+END_SRC
+
+* Themes
+#+BEGIN_SRC emacs-lisp
+(setq doom-theme 'doom-one)
+#+END_SRC
+
+* Orgmode
+#+BEGIN_SRC emacs-lisp
+(setq org-directory "~/playground/projects/org_files/")
+#+END_SRC

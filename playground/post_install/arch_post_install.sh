@@ -209,6 +209,7 @@ function main() {
     install_packages
     install_astronvim
     install_neovim
+    install_doom_emacs
     install_python_rust
     setup_repos
     download_wallpapers
