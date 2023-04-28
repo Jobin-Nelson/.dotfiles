@@ -18,6 +18,24 @@ Section "InputClass"
 EndSection
 ```
 
+## I3WM
+
+- Disable dunst notification shortcut `cntrl+tilde`
+    - `sudo vi /etc/xdg/dunst/dunstrc`
+    - change history line to `mod4+shift+grave`
+    - `pkill dunst`
+    - `dunstctl set-paused false`
+
+## Cronjobs
+
+- `crontab -e`: edit user crontab
+
+```
+0 18 * * Mon-Fri /home/jobin/playground/projects/email_updater/venv/bin/python3 /home/jobin/playground/projects/email_updater/updater.py >> /home/jobin/playground/projects/email_updater/cronjob.logs 2>&1
+@weekly /home/jobin/.local/bin/paclear.sh 
+@weekly cd /home/jobin/playground/projects/learn && git add -A && git commit -m "did leet $(date '+%Y %b %d')" && git push
+```
+
 ## Emacs
 
 Arch linux doesn't export XDG Base directories and for emacs daemon to pickup
