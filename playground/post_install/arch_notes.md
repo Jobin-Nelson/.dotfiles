@@ -32,8 +32,9 @@ EndSection
 
 ```
 0 18 * * Mon-Fri /home/jobin/playground/projects/email_updater/venv/bin/python3 /home/jobin/playground/projects/email_updater/updater.py >> /home/jobin/playground/projects/email_updater/cronjob.logs 2>&1
-@weekly /home/jobin/.local/bin/paclear.sh 
-@weekly cd /home/jobin/playground/projects/learn && git add -A && git commit -m "did leet $(date '+%Y %b %d')" && git push
+0 12 * * Sat /home/jobin/.local/bin/paclear.sh 
+0 12 * * Sun /home/jobin/.local/bin/weekly_jobs.sh
+
 ```
 
 ## Emacs
