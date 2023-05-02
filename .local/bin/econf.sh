@@ -35,6 +35,7 @@ function main() {
         "git - $HOME/.config/git/config"
         "torz2 - $HOME/.local/bin/torz2.sh"
         "emacs - $HOME/.config/doom/config.org"
+        "weekly_jobs - $HOME/.local/bin/weekly_jobs.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
