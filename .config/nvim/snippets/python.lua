@@ -40,7 +40,7 @@ if __name__ == '__main__':
     })
   ),
   s({ trig = 'imain', hidden = true },
-    t({ "if '__main__' == '__name__':", '\t' })
+    t({ "if __name__ == '__main__':", '\t' })
   ),
 }
 

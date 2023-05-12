@@ -12,7 +12,6 @@ function main() {
         "polybar - $HOME/.config/polybar/config"
         "bash - $HOME/.bashrc"
         "econf - $HOME/.local/bin/econf.sh"
-        "cheat - $HOME/.local/bin/cheat.sh"
         "change_brightness - $HOME/.local/bin/change_brightness.sh"
         "dev - $HOME/.local/bin/dev.sh"
         "chfont - $HOME/.local/bin/chfont.sh"
