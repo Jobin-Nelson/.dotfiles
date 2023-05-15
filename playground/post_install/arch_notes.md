@@ -18,14 +18,6 @@ Section "InputClass"
 EndSection
 ```
 
-## I3WM
-
-- Disable dunst notification shortcut `cntrl+tilde`
-    - `sudo vi /etc/xdg/dunst/dunstrc`
-    - change history line to `mod4+shift+grave`
-    - `pkill dunst`
-    - `dunstctl set-paused false`
-
 ## Cronjobs
 
 - `crontab -e`: edit user crontab
@@ -34,8 +26,15 @@ EndSection
 0 18 * * Mon-Fri /home/jobin/playground/projects/email_updater/venv/bin/python3 /home/jobin/playground/projects/email_updater/updater.py >> /home/jobin/playground/projects/email_updater/cronjob.logs 2>&1
 0 12 * * Sat /home/jobin/.local/bin/paclear.sh 
 0 12 * * Sun /home/jobin/.local/bin/weekly_jobs.sh
-
 ```
+
+## I3WM
+
+- Disable dunst notification shortcut `cntrl+tilde`
+    - `sudo vi /etc/xdg/dunst/dunstrc`
+    - change history line to `mod4+shift+grave`
+    - `pkill dunst`
+    - `dunstctl set-paused false`
 
 ## Emacs
 

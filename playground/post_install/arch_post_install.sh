@@ -34,7 +34,7 @@ function install_packages() {
 	sudo pacman -Syyu --noconfirm \
 		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
-        starship cronie podman aria2 rsync pacman-contrib netcat neofetch
+        starship cronie podman aria2 rsync pacman-contrib netcat neofetch syncthing
 
     paru -S --noconfirm \
         brave-bin google-chrome nsxiv visual-studio-code-bin teams nvm
@@ -42,8 +42,9 @@ function install_packages() {
 	# To setup man pages
 	mandb
 
-    # Enable cron
+    # Enable services
     systemctl enable --now cronie.service
+    systemctl enable --now "syncthing@$(whoami)"
 }
 
 function install_astronvim() {
