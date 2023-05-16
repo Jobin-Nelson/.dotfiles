@@ -35,6 +35,7 @@ function main() {
         "torz2 - $HOME/.local/bin/torz2.sh"
         "emacs - $HOME/.config/doom/config.org"
         "weekly_jobs - $HOME/.local/bin/weekly_jobs.sh"
+        "gclone - $HOME/.local/bin/gclone.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

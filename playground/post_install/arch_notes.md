@@ -1,5 +1,15 @@
 # Arch Notes
 
+<!--toc:start-->
+- [Arch Notes](#arch-notes)
+  - [Rclone](#rclone)
+  - [Cronjobs](#cronjobs)
+  - [I3WM](#i3wm)
+  - [Emacs](#emacs)
+  - [Snapshots](#snapshots)
+  - [Screensharing](#screensharing)
+<!--toc:end-->
+
 - `rfkill unblock all`: iwctl device to power on
 - `git clone https://aur.archlinux.org/yay.git`: AUR helper
     - `cd yay && makepkg -si`: installing yay
@@ -18,6 +28,22 @@ Section "InputClass"
 EndSection
 ```
 
+## Rclone
+
+```bash
+# setup rclone
+rclone config
+# copy from remote
+rclone -v copy 'second_brain:01 - Personal/second_brain' "$HOME/playground/projects/second_brain/"
+```
+
+## Syncthing
+
+- `localhost:8384`: syncthing page
+- Add folders to be synced with phone:
+    - org_files
+    - second_brain
+
 ## Cronjobs
 
 - `crontab -e`: edit user crontab
@@ -26,6 +52,7 @@ EndSection
 0 18 * * Mon-Fri /home/jobin/playground/projects/email_updater/venv/bin/python3 /home/jobin/playground/projects/email_updater/updater.py >> /home/jobin/playground/projects/email_updater/cronjob.logs 2>&1
 0 12 * * Sat /home/jobin/.local/bin/paclear.sh 
 0 12 * * Sun /home/jobin/.local/bin/weekly_jobs.sh
+30 18 * * * /home/jobin/.local/bin/gclone.sh
 ```
 
 ## I3WM

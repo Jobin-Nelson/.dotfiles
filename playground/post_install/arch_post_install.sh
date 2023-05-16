@@ -100,7 +100,6 @@ function setup_repos() {
     REPOS=(
         'learn'
         'leet_daily'
-        'second_brain'
         'email_updater'
         'aoclib'
         'exercism_rust_track'
