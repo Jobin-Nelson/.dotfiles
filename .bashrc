@@ -2,6 +2,7 @@
 HISTCONTROL=ignoreboth
 HISTSIZE=5000
 HISTFILESIZE=5000
+PROMPT_DIRTRIM=2
 
 # Options
 set -o vi
@@ -11,7 +12,7 @@ shopt -s globstar
 shopt -s extglob
 
 # Prompt
-PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]: \[\033[01;34m\]\w\[\033[00m\]\n\$ '
+PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
 
 # Aliases
 alias ls='ls --color=auto'
