@@ -21,7 +21,7 @@ alias grep='grep --color=auto'
 alias less='less -i -R'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias eup="/usr/bin/nvim \$HOME/playground/dev/illumina/daily_updates/\$(date -d \"\$([[ \$(date -d '+6 hours' +%u) -gt 5 ]] && echo 'next Monday' || echo '+6 hours')\" '+%Y-%m-%d').txt"
+alias eup='${EDITOR:-nvim} $HOME/playground/dev/illumina/daily_updates/$(date -d "$([[ $(date -d "+6 hours" +%u) -gt 5 ]] && echo "next Monday" || echo "+6 hours")" +%Y-%m-%d).txt'
 alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to full|percentage\""
 alias wl='nsxiv $HOME/Pictures/wallpapers'
 alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%b_%d | tr "[:upper:]" "[:lower:]")'
@@ -35,6 +35,7 @@ alias todo='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $HOME/p
 alias ftodo='file=$(rg --line-number --no-heading --with-filename "\*+ TODO" $HOME/playground/projects/org_files | fzf -d ":" --prompt "Find Todo: " --with-nth "3.." --layout=reverse --height=50% --ansi --border | sed -E "s/(.*):([0-9]+):.*/\1 +\2/") && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $file'
 alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
 alias fnote='file=$(find $HOME/playground/projects/second_brain/ -type f -not -path "*.git*" -a -not -path "*/attachments/*" -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" -a -not -path "*/.trash/*" | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi --border) && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $file'
+alias ln='NVIM_APPNAME=lazy-vim nvim'
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'

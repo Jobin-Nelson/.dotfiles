@@ -32,7 +32,7 @@ function setup_aur() {
 function install_packages() {
     banner 'Installing packages'
 	sudo pacman -Syyu --noconfirm \
-		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep \
+		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
         starship cronie podman aria2 rsync pacman-contrib netcat neofetch syncthing
 
