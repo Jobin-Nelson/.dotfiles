@@ -1,9 +1,9 @@
 return {
   'nvim-lualine/lualine.nvim',
-	event = 'BufEnter',
+	-- event = 'VeryLazy',
   opts = {
     options = {
-      theme = 'onedark',
+      theme = 'catppuccin',
     },
   },
 }

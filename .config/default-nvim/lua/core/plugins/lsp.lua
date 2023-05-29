@@ -3,7 +3,7 @@ return {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
-      { 'williamboman/mason.nvim', config = true },
+      { 'williamboman/mason.nvim', cmd = 'Mason', config = true },
       'williamboman/mason-lspconfig.nvim',
       { 'j-hui/fidget.nvim',       opts = {} },
       'folke/neodev.nvim',

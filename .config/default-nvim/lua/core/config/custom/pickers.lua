@@ -122,7 +122,7 @@ end
 M.find_config = function()
   require('telescope.builtin').find_files({
     search_dirs = {
-      '~/.config/default-nvim/init',
+      '~/.config/default-nvim/init.lua',
       '~/.config/default-nvim/lua',
     },
     prompt_title = 'Find Config',
