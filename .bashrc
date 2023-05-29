@@ -35,7 +35,7 @@ alias todo='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $HOME/p
 alias ftodo='file=$(rg --line-number --no-heading --with-filename "\*+ TODO" $HOME/playground/projects/org_files | fzf -d ":" --prompt "Find Todo: " --with-nth "3.." --layout=reverse --height=50% --ansi --border | sed -E "s/(.*):([0-9]+):.*/\1 +\2/") && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $file'
 alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
 alias fnote='file=$(find $HOME/playground/projects/second_brain/ -type f -not -path "*.git*" -a -not -path "*/attachments/*" -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" -a -not -path "*/.trash/*" | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi --border) && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $file'
-alias ln='NVIM_APPNAME=lazy-vim nvim'
+alias n='NVIM_APPNAME=default-nvim nvim'
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'

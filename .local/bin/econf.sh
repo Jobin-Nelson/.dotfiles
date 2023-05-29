@@ -36,6 +36,7 @@ function main() {
         "emacs - $HOME/.config/doom/config.org"
         "weekly_jobs - $HOME/.local/bin/weekly_jobs.sh"
         "gclone - $HOME/.local/bin/gclone.sh"
+        "ssh - $HOME/.ssh/config"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
