@@ -15,6 +15,11 @@ vim.keymap.set('n', '<leader>bo', '<cmd>update <bar> %bdelete <bar> edit# <bar> 
 vim.keymap.set('n', '<leader>bh', '<cmd>lua require("core.config.custom.utils").delete_hidden_buffers()<cr>', { desc = 'Delete Hidden buffers' })
 vim.keymap.set('n', '<leader>br', '<cmd>lua require("core.config.custom.utils").rename_buffer()<cr>', { desc = 'Buffer Rename' })
 vim.keymap.set('n', '<leader>bk', '<cmd>call delete(expand("%:p")) <bar> bdelete!<cr>', { desc = 'Buffer Kill' })
+vim.keymap.set('n', '<leader>bd', '<cmd>BufferLinePickClose<cr>', { desc = 'Buffer Delete' })
+vim.keymap.set('n', '<leader>br', '<cmd>BufferLineCloseRight<cr>', { desc = 'Buffer close Right' })
+vim.keymap.set('n', '<leader>bl', '<cmd>BufferLineCloseLeft<cr>', { desc = 'Buffer close Left' })
+vim.keymap.set('n', '<b', '<cmd>BufferLineMovePrev<cr>', { desc = 'Buffer Move Left' })
+vim.keymap.set('n', '>b', '<cmd>BufferLineMoveNext<cr>', { desc = 'Buffer Move Right' })
 
 -- Git
 vim.keymap.set('n', '[c', '<cmd>lua require("gitsigns").prev_hunk()<cr>', { desc = 'Goto Previous Hunk' })
@@ -53,7 +58,7 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous Diagnosti
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next Diagnostics' })
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Open Diagnostic' })
 vim.keymap.set('n', '<leader>lq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-vim.keymap.set('n', '<leader>ld', '<cmd>lua require("telescope.builtin").diagnostics()<cr>', { desc = 'Lsp Diagnostics' })
+vim.keymap.set('n', '<leader>lD', '<cmd>lua require("telescope.builtin").diagnostics()<cr>', { desc = 'Lsp Diagnostics' })
 
 -- Packages
 vim.keymap.set('n', '<leader>ps', '<cmd>Lazy<cr>', { desc = 'Plugin Status' })
