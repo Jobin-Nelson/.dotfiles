@@ -10,7 +10,6 @@ function get_font() {
         'SauceCodePro Nerd Font'
         'Caskaydia Cove Nerd Font'
         'Ubuntu Mono Nerd Font'
-        'DejaVu Sans Mono Nerd Font'
     )
 
     choice=$(printf '%s\n' "${FONTS[@]}" \

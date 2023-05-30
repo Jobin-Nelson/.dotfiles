@@ -18,18 +18,18 @@ env:
 # Font configuration
 font:
   normal:
-    family: JetBrainsMono Nerd Font
+    family: Rec Mono Semicasual
     style: Regular
   bold:
-    family: JetBrainsMono Nerd Font
+    family: Rec Mono Semicasual
     style: Bold
   italic:
-    family: JetBrainsMono Nerd Font
+    family: Rec Mono Semicasual
     style: Italic
   bold_italic:
-    family: JetBrainsMono Nerd Font
+    family: Rec Mono Semicasual
     style: Bold Italic
-  size: 11.5
+  size: 12
 
 draw_bold_text_with_bright_colors: true
 

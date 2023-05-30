@@ -141,6 +141,19 @@ function download_wallpapers() {
     done
 }
 
+function install_recursive_font() {
+    local RECURSIVE_LINK DOWNLOAD_DIR FONT_DIR
+
+    RECURSIVE_LINK='https://github.com/arrowtype/recursive/releases/download/v1.085/ArrowType-Recursive-1.085.zip'
+    RECURSIVE_FONT="${RECURSIVE_LINK##*/}"
+    DOWNLOAD_DIR="$HOME/Downloads"
+    FONT_DIR="$HOME/.local/share/fonts"
+
+    curl -L "${RECURSIVE_LINK}" -o "${DOWNLOAD_DIR}/${RECURSIVE_FONT}"
+    unzip "${DOWNLOAD_DIR}/${RECURSIVE_FONT}" '*RecMono*' -d "${FONT_DIR}/${RECURSIVE_FONT%.zip}"
+    rm "${DOWNLOAD_DIR}/${RECURSIVE_FONT}"
+}
+
 function install_fonts() {
     banner 'Installing Fonts'
     local FONTS BASE_URL DOWNLOAD_DIR FONT_DIR
@@ -166,6 +179,8 @@ function install_fonts() {
         unzip "${DOWNLOAD_DIR}/${font}.zip" -d "${FONT_DIR}/${font}" -x '*Windows*'
         rm "${DOWNLOAD_DIR}/${font}.zip"
     done
+
+    install_recursive_font
 
     fc-cache
 }
