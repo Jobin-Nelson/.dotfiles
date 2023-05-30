@@ -18,16 +18,16 @@ env:
 # Font configuration
 font:
   normal:
-    family: Rec Mono Semicasual
+    family: Rec Mono Casual
     style: Regular
   bold:
-    family: Rec Mono Semicasual
+    family: Rec Mono Casual
     style: Bold
   italic:
-    family: Rec Mono Semicasual
+    family: Rec Mono Casual
     style: Italic
   bold_italic:
-    family: Rec Mono Semicasual
+    family: Rec Mono Casual
     style: Bold Italic
   size: 12
 

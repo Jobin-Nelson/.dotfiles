@@ -22,6 +22,19 @@ return {
 					return " " .. os.date("%R")
 				end
 			}
+		},
+		inactive_sections = {
+			lualine_a = {},
+			lualine_c = { 'filename' },
+			lualine_x = { 'location' },
 		}
 	},
 }
+
+-- return {
+-- 	'nvim-lualine/lualine.nvim',
+-- 	event = 'VeryLazy',
+-- 	config = function()
+-- 		require('core.config.lualine')
+-- 	end,
+-- }

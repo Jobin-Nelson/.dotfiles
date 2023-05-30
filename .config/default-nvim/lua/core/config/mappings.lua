@@ -22,8 +22,8 @@ vim.keymap.set('n', '<b', '<cmd>BufferLineMovePrev<cr>', { desc = 'Buffer Move L
 vim.keymap.set('n', '>b', '<cmd>BufferLineMoveNext<cr>', { desc = 'Buffer Move Right' })
 
 -- Git
-vim.keymap.set('n', '[c', '<cmd>lua require("gitsigns").prev_hunk()<cr>', { desc = 'Goto Previous Hunk' })
-vim.keymap.set('n', ']c', '<cmd>lua require("gitsigns").next_hunk()<cr>', { desc = 'Goto Next Hunk' })
+vim.keymap.set('n', '[g', '<cmd>lua require("gitsigns").prev_hunk()<cr>', { desc = 'Goto Previous Hunk' })
+vim.keymap.set('n', ']g', '<cmd>lua require("gitsigns").next_hunk()<cr>', { desc = 'Goto Next Hunk' })
 vim.keymap.set('n', '<leader>gp', '<cmd>lua require("gitsigns").preview_hunk()<cr>', { desc = 'Preview Hunk' })
 vim.keymap.set('n', '<leader>grb', '<cmd>lua require("gitsigns").reset_buffer()<cr>', { desc = 'Git Reset Buffer' })
 vim.keymap.set('n', '<leader>grh', '<cmd>lua require("gitsigns").reset_hunk()<cr>', { desc = 'Git Reset Hunk' })
