@@ -10,6 +10,10 @@ function get_font() {
         'SauceCodePro Nerd Font'
         'Caskaydia Cove Nerd Font'
         'Ubuntu Mono Nerd Font'
+        'Rec Mono Semicasual'
+        'Rec Mono Casual'
+        'Rec Mono Duotone'
+        'Rec Mono Linear'
     )
 
     choice=$(printf '%s\n' "${FONTS[@]}" \
@@ -44,9 +48,10 @@ function set_style() {
 }
 
 function set_size() {
-    case $font in
+    case "$font" in
         'Ubuntu Mono Nerd Font')    sed -i 's/size: .*/size: 14/' "${ALACRITTY_FILE}" ;;
         'Caskaydia Cove Nerd Font')    sed -i 's/size: .*/size: 12/' "${ALACRITTY_FILE}" ;;
+        'Rec Mono'*)    sed -i 's/size: .*/size: 12/' "${ALACRITTY_FILE}" ;;
         *)    sed -i 's/size: .*/size: 11.5/' "${ALACRITTY_FILE}" ;;
     esac
 }
