@@ -68,6 +68,8 @@ mason_lspconfig.setup_handlers {
 }
 
 require('lspconfig')['rust_analyzer'].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
 	cmd = { "rustup", "run", "stable", "rust-analyzer" },
 	filetypes = { "rust" },
 	root_dir = require('lspconfig.util').root_pattern("Cargo.toml"),
