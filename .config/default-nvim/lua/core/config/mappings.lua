@@ -7,8 +7,8 @@ vim.keymap.set('v', '<', '<gv', { silent = true, desc = 'Indent Inward' })
 vim.keymap.set('v', '>', '>gv', { silent = true, desc = 'Indent Outward' })
 
 -- Buffer
-vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
-vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Previous Buffer' })
+vim.keymap.set('n', '[b', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Next Buffer' })
+vim.keymap.set('n', ']b', '<cmd>BufferLineCycleNext<cr>', { desc = 'Previous Buffer' })
 vim.keymap.set('n', '[q', '<cmd>cprevious<cr>', { desc = 'Previous Quickfix' })
 vim.keymap.set('n', ']q', '<cmd>cnext<cr>', { desc = 'Next Quickfix' })
 vim.keymap.set('n', '<leader>bo', '<cmd>update <bar> %bdelete <bar> edit# <bar> bdelete #<CR>', { desc = 'Delete Other buffers' })
