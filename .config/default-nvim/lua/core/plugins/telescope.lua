@@ -14,6 +14,15 @@ return {
 		},
 		config = function()
 			require('telescope').setup({
+				pickers = {
+					buffers = {
+						mappings = {
+							n = {
+								['d'] = 'delete_buffer',
+							}
+						}
+					}
+				},
 				defaults = {
 					path_display = { "truncate" },
 					sorting_strategy = "ascending",

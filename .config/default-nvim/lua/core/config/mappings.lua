@@ -20,6 +20,10 @@ vim.keymap.set('n', '<leader>br', '<cmd>BufferLineCloseRight<cr>', { desc = 'Buf
 vim.keymap.set('n', '<leader>bl', '<cmd>BufferLineCloseLeft<cr>', { desc = 'Buffer close Left' })
 vim.keymap.set('n', '<b', '<cmd>BufferLineMovePrev<cr>', { desc = 'Buffer Move Left' })
 vim.keymap.set('n', '>b', '<cmd>BufferLineMoveNext<cr>', { desc = 'Buffer Move Right' })
+vim.keymap.set('n', '<C-Up>', '<cmd>wincmd 3+<cr>', { desc = 'Buffer Increase Height' })
+vim.keymap.set('n', '<C-Down>', '<cmd>wincmd 3-<cr>', { desc = 'Buffer Decrease Height' })
+vim.keymap.set('n', '<C-Left>', '<cmd>wincmd 3<<cr>', { desc = 'Buffer Decrease Width' })
+vim.keymap.set('n', '<C-Right>', '<cmd>wincmd 3><cr>', { desc = 'Buffer Increase Width' })
 
 -- Git
 vim.keymap.set('n', '[g', '<cmd>lua require("gitsigns").prev_hunk()<cr>', { desc = 'Goto Previous Hunk' })
@@ -29,9 +33,8 @@ vim.keymap.set('n', '<leader>grb', '<cmd>lua require("gitsigns").reset_buffer()<
 vim.keymap.set('n', '<leader>grh', '<cmd>lua require("gitsigns").reset_hunk()<cr>', { desc = 'Git Reset Hunk' })
 vim.keymap.set('n', '<leader>gl', '<cmd>lua require("gitsigns").blame_line()<cr>', { desc = 'Git blame Line' })
 vim.keymap.set('n', '<leader>gb', '<cmd>lua require("telescope.builtin").git_branches()<cr>', { desc = 'Git Branches' })
-vim.keymap.set('n', '<leader>gs', '<cmd>lua require("telescope.builtin").git_status()<cr>', { desc = 'Git Status' })
-vim.keymap.set('n', '<leader>gt', '<cmd>lua require("telescope.builtin").git_stash()<cr>', { desc = 'Git sTash' })
-vim.keymap.set('n', '<leader>gc', '<cmd>lua require("telescope.builtin").git_commits()<cr>', { desc = 'Git Commits' })
+vim.keymap.set('n', '<leader>gt', '<cmd>lua require("telescope.builtin").git_status()<cr>', { desc = 'Git Status' })
+vim.keymap.set('n', '<leader>gs', '<cmd>lua require("telescope.builtin").git_stash()<cr>', { desc = 'Git sTash' })
 vim.keymap.set('n', '<leader>gc', '<cmd>lua require("telescope.builtin").git_commits()<cr>', { desc = 'Git Commits' })
 
 -- Telescope
