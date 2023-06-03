@@ -21,7 +21,7 @@ return {
 			button("SPC f f", "󰈞  Find file"),
 			button("SPC f o", "󰊄  Find Oldfiles"),
 			button("SPC f a", "⚙  Find Config"),
-			button("SPC f g", "󰈬  Find word"),
+			button("SPC f w", "󰈬  Find word"),
 			button("SPC f m", "  Find bookmarks"),
 		}
 

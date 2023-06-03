@@ -30,13 +30,25 @@ local function get_link(issue_id)
   return link, cookie
 end
 
+local function populate_summary(text)
+  local issue_id = get_issue_id()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local line_nr = vim.fn.line('.')
+  local lines = {
+    '* TODO ' .. text,
+    '',
+    '** Description',
+    string.format('*Ticket*: [[https://jira.illumina.com/browse/%s][%s]]', issue_id, issue_id),
+  }
+  vim.api.nvim_buf_set_lines(bufnr, line_nr, line_nr, false, lines)
+  return line_nr + #lines
+end
 
-local function convert_to_org(html)
+local function populate_description(html, line_nr)
   local uv = vim.loop
   local handle
   local stdin, stdout = uv.new_pipe(), uv.new_pipe()
   local bufnr = vim.api.nvim_get_current_buf()
-  local line = vim.fn.line('.')
 
   if not stdin or not stdout then
     error('Cannot create new pipe')
@@ -67,7 +79,7 @@ local function convert_to_org(html)
     if data then
       vim.schedule(function()
         data = data:gsub('\n\n', '\n')
-        vim.api.nvim_buf_set_lines(bufnr, line, line, false, vim.split(data:gsub('u00a0', ''), '\n'))
+        vim.api.nvim_buf_set_lines(bufnr, line_nr, line_nr, false, vim.split(data:gsub('u00a0', ''), '\n'))
       end)
     end
   end)
@@ -84,11 +96,13 @@ local function get_description(_, data)
       error('Cannot convert response to json')
     end
     local description_html = response.tabs.defaultTabs[3].sections[1].html
-    convert_to_org(description_html)
+    local summary = response.tabs.defaultTabs[1].fields[1].text
+    local line_nr = populate_summary(summary)
+    populate_description(description_html, line_nr)
   end
 end
 
-local function get_ticket_details(link, cookie)
+local function populate_ticket_details(link, cookie)
   local cmd = 'curl'
   local command = {
     cmd,
@@ -108,9 +122,9 @@ local M = {}
 M.populate_ticket = function()
   local issue_id = get_issue_id()
   local link, cookie = get_link(issue_id)
-  get_ticket_details(link, cookie)
+  populate_ticket_details(link, cookie)
 end
--- vim.keymap.set('n', '<leader>rt', M.populate_ticket)
--- vim.keymap.set('n', '<leader>rr', ':update | luafile %<cr>')
+vim.keymap.set('n', '<leader>rt', M.populate_ticket)
+vim.keymap.set('n', '<leader>rr', ':update | luafile %<cr>')
 
 return M
