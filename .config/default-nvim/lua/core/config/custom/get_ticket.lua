@@ -89,7 +89,7 @@ local function populate_description(html, line_nr)
   end)
 end
 
-local function get_description(_, data)
+local function pop_sum_desc(_, data)
   if data and data[1] ~= '' then
     local response = vim.fn.json_decode(data)
     if not response then
@@ -113,7 +113,7 @@ local function populate_ticket_details(link, cookie)
   }
   vim.fn.jobstart(command, {
     stdout_buffered = true,
-    on_stdout = get_description,
+    on_stdout = pop_sum_desc,
   })
 end
 
@@ -124,7 +124,7 @@ M.populate_ticket = function()
   local link, cookie = get_link(issue_id)
   populate_ticket_details(link, cookie)
 end
-vim.keymap.set('n', '<leader>rt', M.populate_ticket)
-vim.keymap.set('n', '<leader>rr', ':update | luafile %<cr>')
+-- vim.keymap.set('n', '<leader>rt', M.populate_ticket)
+-- vim.keymap.set('n', '<leader>rr', ':update | luafile %<cr>')
 
 return M

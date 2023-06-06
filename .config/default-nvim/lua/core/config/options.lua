@@ -22,9 +22,10 @@ vim.o.laststatus = 3
 vim.o.winbar = '%=%m %t'
 vim.o.splitbelow = true
 vim.o.splitright = true
-vim.o.shiftwidth = 2
 vim.o.tabstop = 2
 vim.o.softtabstop = 2
+vim.o.shiftwidth = 2
+vim.o.expandtab = true
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 10
 vim.o.smartindent = true
@@ -35,12 +36,12 @@ vim.o.undofile = true
 vim.o.swapfile = false
 vim.opt.iskeyword = vim.opt.iskeyword + '-'
 vim.opt.formatoptions = vim.opt.formatoptions
-		- "a" -- Auto formatting is BAD.
-		- "t" -- Don't auto format my code. I got linters for that.
-		+ "c" -- In general, I like it when comments respect textwidth
-		+ "q" -- Allow formatting comments w/ gq
-		- "o" -- O and o, don't continue comments
-		+ "r" -- But do continue when pressing enter.
-		+ "n" -- Indent past the formatlistpat, not underneath it.
-		+ "j" -- Auto-remove comments if possible.
-		- "2" -- I'm not in gradeschool anymore
+  - "a" -- Auto formatting is BAD.
+  - "t" -- Don't auto format my code. I got linters for that.
+  + "c" -- In general, I like it when comments respect textwidth
+  + "q" -- Allow formatting comments w/ gq
+  - "o" -- O and o, don't continue comments
+  + "r" -- But do continue when pressing enter.
+  + "n" -- Indent past the formatlistpat, not underneath it.
+  + "j" -- Auto-remove comments if possible.
+  - "2" -- I'm not in gradeschool anymore
