@@ -36,12 +36,13 @@ local function populate_summary(text)
   local line_nr = vim.fn.line('.')
   local lines = {
     '* TODO ' .. text,
+    os.date('SCHEDULED: <%Y-%m-%d %a>'),
     '',
     '** Description',
     string.format('*Ticket*: [[https://jira.illumina.com/browse/%s][%s]]', issue_id, issue_id),
   }
   vim.api.nvim_buf_set_lines(bufnr, line_nr, line_nr, false, lines)
-  return line_nr + #lines
+  return line_nr + #lines + 1
 end
 
 local function populate_description(html, line_nr)
@@ -78,8 +79,10 @@ local function populate_description(html, line_nr)
   uv.read_start(stdout, function(status, data)
     if data then
       vim.schedule(function()
-        data = data:gsub('\n\n', '\n')
-        vim.api.nvim_buf_set_lines(bufnr, line_nr, line_nr, false, vim.split(data:gsub('u00a0', ''), '\n'))
+        data = data:gsub('\n\n', '\n') -- removing double new lines
+        data = data:gsub('\\\\', '')   -- removing double backslashes
+        data = data:gsub('u00a0', '')  -- removing unusual unicode character
+        vim.api.nvim_buf_set_lines(bufnr, line_nr, line_nr, false, vim.split(data, '\n'))
       end)
     end
   end)

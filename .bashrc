@@ -16,7 +16,7 @@ PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00
 
 # Aliases
 alias ls='ls --color=auto'
-alias ll='ls -alFh --group-directories-first'
+alias ll='ls -alFh --group-directories-first --color=auto'
 alias grep='grep --color=auto'
 alias less='less -i -R'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'

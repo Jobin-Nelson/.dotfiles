@@ -12,22 +12,22 @@ return {
 				},
 			},
 		},
-		sections = {
-			lualine_y = {
-				{ "progress", separator = " ", padding = { left = 1, right = 0 } },
-				{ "location", padding = { left = 0, right = 1 } },
-			},
-			lualine_z = {
-				function()
-					return " " .. os.date("%R")
-				end
-			}
-		},
-		inactive_sections = {
-			lualine_a = {},
-			lualine_c = { 'filename' },
-			lualine_x = { 'location' },
-		}
+		-- sections = {
+		-- 	lualine_y = {
+		-- 		{ "progress", separator = " ", padding = { left = 1, right = 0 } },
+		-- 		{ "location", padding = { left = 0, right = 1 } },
+		-- 	},
+		-- 	lualine_z = {
+		-- 		function()
+		-- 			return " " .. os.date("%R")
+		-- 		end
+		-- 	}
+		-- },
+		-- inactive_sections = {
+		-- 	lualine_a = {},
+		-- 	lualine_c = { 'filename' },
+		-- 	lualine_x = { 'location' },
+		-- }
 	},
 }
 
