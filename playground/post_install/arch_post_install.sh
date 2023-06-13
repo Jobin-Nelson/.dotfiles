@@ -52,15 +52,11 @@ function install_packages() {
 
 function install_astronvim() {
     banner 'Installing Astronvim'
-    local CONFIG_DIR DOWNLOAD_DIR
+    local CONFIG_DIR
 
     CONFIG_DIR="$HOME/.config/nvim"
-    DOWNLOAD_DIR="$HOME/Downloads"
 
-    git clone --depth 1 https://github.com/AstroNvim/AstroNvim "${DOWNLOAD_DIR}/nvim" && \
-        mv "${DOWNLOAD_DIR}/nvim/.git" "${CONFIG_DIR}" && \
-        rm -rf "${DOWNLOAD_DIR}/nvim" && \
-        git -C "${CONFIG_DIR}" restore . && \
+    git clone --depth 1 https://github.com/AstroNvim/AstroNvim "${CONFIG_DIR}" &&
         git clone --depth 1 git@github.com:Jobin-Nelson/astronvim_config.git "${CONFIG_DIR}/lua/user"
 }
 
