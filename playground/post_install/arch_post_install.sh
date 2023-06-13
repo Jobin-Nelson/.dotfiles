@@ -34,7 +34,7 @@ function install_packages() {
 	sudo pacman -Syyu --noconfirm \
 		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
-        starship cronie podman aria2 rsync pacman-contrib netcat neofetch syncthing
+        starship cronie docker docker-compose aria2 rsync pacman-contrib netcat neofetch syncthing
 
     paru -S --noconfirm \
         brave-bin google-chrome nsxiv visual-studio-code-bin teams nvm
@@ -44,7 +44,10 @@ function install_packages() {
 
     # Enable services
     systemctl enable --now cronie.service
+    systemctl enable --now docker
     systemctl enable --now "syncthing@$(whoami)"
+
+    sudo usermod -aG docker "$USER"
 }
 
 function install_astronvim() {
@@ -218,6 +221,12 @@ function install_hyprland() {
         hyprpaper-git grim slurp brightnessctl wlr-randr swaylock
 }
 
+function setup_done() {
+    banner 'Setup Done!!!'
+
+    echo -e '\nRestart System for changes to take effect\n'
+}
+
 function main() {
 
     setup_aur
@@ -234,8 +243,7 @@ function main() {
     switch_to_integrated_graphics
     # switch_to_X11
     # install_hyprland
-
-    banner 'Setup Done!!!'
+    setup_done
 }
 
 main
