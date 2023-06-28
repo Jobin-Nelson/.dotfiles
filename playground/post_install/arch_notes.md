@@ -11,6 +11,12 @@
 <!--toc:end-->
 
 - `rfkill unblock all`: iwctl device to power on
+- `iwctl`
+    - `device list`
+    - `device wlan0 show`
+    - `station wlan0 connect BatCave`
+    - `exit`
+    - `ping google.com`
 - `git clone https://aur.archlinux.org/yay.git`: AUR helper
     - `cd yay && makepkg -si`: installing yay
 - `yay -s envycontrol`: install envycontrol

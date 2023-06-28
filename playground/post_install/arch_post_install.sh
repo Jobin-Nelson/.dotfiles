@@ -190,6 +190,7 @@ function configure_gnome() {
     gsettings set org.gnome.shell.app-switcher current-workspace-only true
     gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
     gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Pictures/wallpapers/wallhaven-m96d8m.jpg"
+    gsettings set org.gnome.TextEditor keybindings 'vim'
 }
 
 function configure_package_manager() {
