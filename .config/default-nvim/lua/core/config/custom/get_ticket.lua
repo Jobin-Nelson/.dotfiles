@@ -1,5 +1,5 @@
 -- Get issue-id
--- Get link + cookie
+-- Get link + token
 -- Make request
 -- Get description from json result
 -- Convert html to org
@@ -12,8 +12,8 @@ end
 -- example json file
 -- {
 --   "jira": {
---     "cookie": "...",
 --     "link": "..."
+--     "token": "...",
 --   }
 -- }
 local function get_link(issue_id)
@@ -23,11 +23,11 @@ local function get_link(issue_id)
     error('No jira.json file found')
   end
   local link = creds.jira.link:gsub('(issueIdOrKey=)([^&]*)', string.format('%%1%s', issue_id))
-  local cookie = 'Cookie: ' .. creds.jira.cookie
-  if not link or not cookie then
+  local token = creds.jira.token
+  if not link or not token then
     error('Cannot parse jira.json file')
   end
-  return link, cookie
+  return link, token
 end
 
 local function populate_summary(text)
@@ -105,15 +105,19 @@ local function pop_sum_desc(_, data)
   end
 end
 
-local function populate_ticket_details(link, cookie)
+local function populate_ticket_details(link, token)
   local cmd = 'curl'
+  local flags = '-sSfL'
+  local operation = '--request GET'
+  local header = "Authorization: Bearer " .. token
   local command = {
     cmd,
-    '-sSfL',
-    '-H',
-    cookie,
+    flags,
+    -- operation,
+    '--header', header,
     link,
   }
+
   vim.fn.jobstart(command, {
     stdout_buffered = true,
     on_stdout = pop_sum_desc,
@@ -124,8 +128,8 @@ local M = {}
 
 M.populate_ticket = function()
   local issue_id = get_issue_id()
-  local link, cookie = get_link(issue_id)
-  populate_ticket_details(link, cookie)
+  local link, token = get_link(issue_id)
+  populate_ticket_details(link, token)
 end
 -- vim.keymap.set('n', '<leader>rt', M.populate_ticket)
 -- vim.keymap.set('n', '<leader>rr', ':update | luafile %<cr>')
