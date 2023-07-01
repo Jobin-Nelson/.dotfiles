@@ -15,6 +15,18 @@ function banner() {
     tput sgr0
 }
 
+function update_packages() {
+    banner 'Updating Packages'
+    sudo pacman -Syyu --no-confirm
+}
+
+function install_rust() {
+    banner 'Installing rust'
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    . "$HOME/.cargo/env"
+    rustup component add rust-analyzer
+}
+
 function setup_aur() {
     banner 'Setting up AUR'
 	local PARU_DIR
@@ -23,18 +35,28 @@ function setup_aur() {
 
     mkdir -pv "${PARU_DIR%/*}"
 
-    sudo pacman -S --needed base-devel git
+    sudo pacman -Sy --needed --no-confirm base-devel git
 
 	git clone 'https://aur.archlinux.org/paru.git' "${PARU_DIR}"
 	cd "${PARU_DIR}" && makepkg -si
 }
 
+function configure_package_manager() {
+    banner 'Configuring package managers'
+    sudo sed -i 's/^#MAKEFLAGS=.*/MAKEFLAGS="-j8"/' /etc/makepkg.conf
+    sudo sed -i "
+        s/^#Color/Color/
+        s/^#ParallelDownloads.*/ParallelDownloads = 5/
+    " /etc/pacman.conf
+}
+
 function install_packages() {
     banner 'Installing packages'
-	sudo pacman -Syyu --noconfirm \
+	sudo pacman -Sy --noconfirm \
 		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
-        starship cronie docker docker-compose aria2 rsync pacman-contrib netcat neofetch syncthing
+        starship cronie docker docker-compose aria2 rsync pacman-contrib \
+        netcat neofetch syncthing
 
     paru -S --noconfirm \
         brave-bin google-chrome nsxiv visual-studio-code-bin teams nvm
@@ -76,21 +98,16 @@ function install_neovim() {
 function install_doom_emacs() {
     banner 'Installing Emacs'
 
-    sudo pacman -Syu --needed --noconfirm \
+    sudo pacman -Sy --needed --noconfirm \
         emacs ripgrep fd
 
     git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
     ~/.config/emacs/bin/doom install
 }
 
-function install_python_rust() {
+function install_python() {
     banner 'Installing python'
     pyenv install 3.11.1 && pyenv global 3.11.1
-
-    banner 'Installing rust'
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    . "$HOME/.cargo/env"
-    rustup component add rust-analyzer
 }
 
 function setup_repos() {
@@ -110,6 +127,7 @@ function setup_repos() {
     RUST_BINARIES=(
         'todo'
         'waldl'
+        'leet_daily'
     )
 
     PROJECT_DIR="$HOME/playground/projects"
@@ -193,12 +211,6 @@ function configure_gnome() {
     gsettings set org.gnome.TextEditor keybindings 'vim'
 }
 
-function configure_package_manager() {
-    banner 'Configuring package managers'
-    sudo sed -i 's/^#MAKEFLAGS=.*/MAKEFLAGS="-j8"/' /etc/makepkg.conf
-    sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
-}
-
 function switch_to_integrated_graphics() {
     banner 'Switching to integrated graphics'
 	paru -S --noconfirm envycontrol
@@ -226,17 +238,19 @@ function setup_done() {
 
 function main() {
 
+    update_packages
+    install_rust
     setup_aur
+    configure_package_manager
     install_packages
     install_astronvim
     install_neovim
     # install_doom_emacs
-    install_python_rust
+    install_python
     setup_repos
     download_wallpapers
     install_fonts
     configure_gnome
-    configure_package_manager
     switch_to_integrated_graphics
     # switch_to_X11
     # install_hyprland
