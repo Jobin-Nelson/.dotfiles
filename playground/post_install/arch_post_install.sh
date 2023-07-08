@@ -55,8 +55,8 @@ function install_packages() {
 	sudo pacman -Sy --noconfirm \
 		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
-        starship cronie docker docker-compose aria2 rsync pacman-contrib \
-        netcat neofetch syncthing code
+        starship cronie podman aria2 rsync pacman-contrib netcat neofetch \
+        syncthing code
 
     paru -S --noconfirm \
         nvm
@@ -73,10 +73,7 @@ function install_packages() {
 
     # Enable services
     systemctl enable --now cronie.service
-    systemctl enable --now docker
-    systemctl enable --now "syncthing@$(whoami)"
-
-    sudo usermod -aG docker "$USER"
+    systemctl enable --now "syncthing@${USER}"
 }
 
 function install_astronvim() {
