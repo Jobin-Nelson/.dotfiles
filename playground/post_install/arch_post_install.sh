@@ -17,7 +17,7 @@ function banner() {
 
 function update_packages() {
     banner 'Updating Packages'
-    sudo pacman -Syyu --no-confirm
+    sudo pacman -Syyu --noconfirm
 }
 
 function install_rust() {
@@ -35,7 +35,7 @@ function setup_aur() {
 
     mkdir -pv "${PARU_DIR%/*}"
 
-    sudo pacman -Sy --needed --no-confirm base-devel git
+    sudo pacman -Sy --needed --noconfirm base-devel git
 
 	git clone 'https://aur.archlinux.org/paru.git' "${PARU_DIR}"
 	cd "${PARU_DIR}" && makepkg -si
@@ -53,13 +53,20 @@ function configure_package_manager() {
 function install_packages() {
     banner 'Installing packages'
 	sudo pacman -Sy --noconfirm \
-		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd \
+		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
         starship cronie docker docker-compose aria2 rsync pacman-contrib \
-        netcat neofetch syncthing
+        netcat neofetch syncthing code
 
     paru -S --noconfirm \
-        brave-bin google-chrome nsxiv visual-studio-code-bin teams nvm
+        nvm
+
+    flatpak install \
+        com.google.Chrome \
+        com.brave.Browser \
+        com.github.IsmaelMartinez.teams_for_linux \
+        com.github.tchx84.Flatseal \
+        org.gnome.Boxes 
 
 	# To setup man pages
 	mandb
