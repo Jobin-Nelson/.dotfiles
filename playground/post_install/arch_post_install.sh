@@ -56,10 +56,10 @@ function install_packages() {
 		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
         starship cronie podman aria2 rsync pacman-contrib netcat neofetch \
-        syncthing code
+        syncthing
 
     paru -S --noconfirm \
-        nvm
+        nvm visual-studio-code-bin 
 
     flatpak install \
         com.google.Chrome \
