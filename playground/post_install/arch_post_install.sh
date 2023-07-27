@@ -187,7 +187,7 @@ function install_fonts() {
         'UbuntuMono'
     )
 
-    BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.1'
+    BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2'
     DOWNLOAD_DIR="$HOME/Downloads"
     FONT_DIR="$HOME/.local/share/fonts"
     mkdir -pv "${DOWNLOAD_DIR}" "${FONT_DIR}" 
