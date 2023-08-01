@@ -12,3 +12,5 @@
 	prune = true
 [commit]
 	template = /home/jobin/.config/git/commit_template.txt
+[alias]
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
