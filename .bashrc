@@ -1,5 +1,6 @@
 # Environment variables
 HISTCONTROL=ignoreboth
+HISTTIMEFORMAT='[%Y/%m/%d %T] '
 HISTSIZE=5000
 HISTFILESIZE=5000
 PROMPT_DIRTRIM=2
@@ -10,6 +11,7 @@ shopt -s histappend
 shopt -s checkwinsize
 shopt -s globstar
 shopt -s extglob
+shopt -s cdspell
 
 # Prompt
 PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
@@ -35,7 +37,7 @@ alias ftodo='file=$(rg --line-number --no-heading --with-filename "\*+ TODO" $HO
 alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
 alias fnote='file=$(find $HOME/playground/projects/second_brain/ -type f -not -path "*.git*" -a -not -path "*/attachments/*" -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" -a -not -path "*/.trash/*" | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi --border) && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $file'
 alias n='NVIM_APPNAME=default-nvim nvim'
-alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "$instanceId"; done'
+alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "${instanceId}"; done'
 alias docker=podman
 
 
