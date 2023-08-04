@@ -25,10 +25,10 @@ function get_font() {
 function set_font() {
     sed -i "s/family: .*/family: $font/" "${ALACRITTY_FILE}"
 
-    sed -Ei "
-    s/set [$]font '.*'/set \$font '${font}'/
-    s/font pango:.* ([0-9][0-9]?)/font pango:${font} \1/
-    " "${I3_FILE}"
+    # sed -Ei "
+    # s/set [$]font '.*'/set \$font '${font}'/
+    # s/font pango:.* ([0-9][0-9]?)/font pango:${font} \1/
+    # " "${I3_FILE}"
 
     echo "Font changed to $font"
 }
