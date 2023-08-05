@@ -80,4 +80,6 @@ vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>', { desc = 'Terminal window comma
 vim.keymap.set('n', '<leader>sc', '<cmd>lua require("core.config.custom.utils").scratch_buffer()<cr>', { desc = 'Scratch buffer' })
 vim.keymap.set('n', '<leader>se', '<cmd>lua require("core.config.custom.email_update").open()<cr>', { desc = 'Send Email' })
 vim.keymap.set('n', '<leader>st', '<cmd>lua require("core.config.custom.get_ticket").populate_ticket()<cr>', { desc = 'Source Ticket' })
+vim.keymap.set('n', '<leader>sj', '<cmd>lua require("core.config.custom.pickers").journal_today()<cr>', { desc = 'Journal Today' })
+vim.keymap.set('n', '<leader>sJ', '<cmd>lua require("core.config.custom.pickers").journal_search()<cr>', { desc = 'Journal Search' })
 vim.keymap.set('n', '<leader>oT', '<cmd>lua require("core.config.custom.org-tangle").tangle()<cr>', { desc = 'Org Tangle' })
