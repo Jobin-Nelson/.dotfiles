@@ -57,6 +57,7 @@ vim.keymap.set('n', '<leader>fz', '<cmd>lua require("core.config.custom.pickers"
 vim.keymap.set('n', '<leader>fs', '<cmd>lua require("core.config.custom.pickers").find_second_brain_files()<cr>', { desc = 'Find Second brain files' })
 vim.keymap.set('n', '<leader>fO', '<cmd>lua require("core.config.custom.pickers").find_org_files()<cr>', { desc = 'Find Org files' })
 vim.keymap.set('n', '<leader>fp', '<cmd>lua require("core.config.custom.pickers").find_projects()<cr>', { desc = 'Find Projects' })
+vim.keymap.set('n', '<leader>fj', '<cmd>lua require("core.config.custom.pickers").find_journal()<cr>', { desc = 'Find Journal' })
 
 -- Lsp
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous Diagnostics' })
@@ -80,6 +81,5 @@ vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>', { desc = 'Terminal window comma
 vim.keymap.set('n', '<leader>sc', '<cmd>lua require("core.config.custom.utils").scratch_buffer()<cr>', { desc = 'Scratch buffer' })
 vim.keymap.set('n', '<leader>se', '<cmd>lua require("core.config.custom.email_update").open()<cr>', { desc = 'Send Email' })
 vim.keymap.set('n', '<leader>st', '<cmd>lua require("core.config.custom.get_ticket").populate_ticket()<cr>', { desc = 'Source Ticket' })
-vim.keymap.set('n', '<leader>sj', '<cmd>lua require("core.config.custom.pickers").journal_today()<cr>', { desc = 'Journal Today' })
-vim.keymap.set('n', '<leader>sJ', '<cmd>lua require("core.config.custom.pickers").journal_search()<cr>', { desc = 'Journal Search' })
+vim.keymap.set('n', '<leader>sj', '<cmd>lua require("core.config.custom.utils").start_journal()<cr>', { desc = 'Start Journal' })
 vim.keymap.set('n', '<leader>oT', '<cmd>lua require("core.config.custom.org-tangle").tangle()<cr>', { desc = 'Org Tangle' })

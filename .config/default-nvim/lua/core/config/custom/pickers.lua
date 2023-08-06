@@ -153,16 +153,10 @@ M.find_dotfiles = function()
   })
 end
 
--- Journal stuff
-local journal_dir = '~/playground/projects/second_brain/Resources/journal/'
-M.journal_today = function()
-  local journal_path = vim.fs.normalize(string.format('%s/%s.md', journal_dir, os.date('%Y-%m-%d')))
-  vim.cmd('tabedit ' .. journal_path)
-end
-
-M.journal_search = function()
+M.find_journal = function()
+  local journal_dir = '~/playground/projects/second_brain/Resources/journal/'
   require('telescope.builtin').live_grep({
-    prompt_title = 'Journal Search',
+    prompt_title = 'Find Journal',
     search_dirs = {journal_dir}
   })
 end

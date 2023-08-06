@@ -66,6 +66,13 @@ M.rename_buffer = function()
   vim.fn.delete(original_filename)
   print('Renamed to ' .. new_filename)
 end
+
+M.start_journal = function()
+  local journal_dir = '~/playground/projects/second_brain/Resources/journal/'
+  local journal_path = vim.fs.normalize(string.format('%s/%s.md', journal_dir, os.date('%Y-%m-%d')))
+  vim.cmd('tabedit ' .. journal_path)
+end
+
 -- vim.keymap.set('n', '<leader>rt', M.rename_buffer)
 -- vim.keymap.set('n', '<leader>rr', ':update | luafile %<cr>')
 
