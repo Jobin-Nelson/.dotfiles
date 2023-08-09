@@ -37,5 +37,6 @@ nnoremap <leader>- :vertical resize -3<CR>
 
 autocmd filetype python nnoremap <F5> :w <bar> !python %<CR>
 autocmd filetype javascript nnoremap <F5> :w <bar> !node %<CR>
+autocmd filetype markdown :hi link markdownError Normal
 
 colorscheme habamax
