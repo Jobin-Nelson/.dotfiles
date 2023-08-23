@@ -6,7 +6,7 @@ return {
 		require('orgmode').setup({
 			org_agenda_files = {
 				'~/playground/projects/org_files/**/*',
-				'~/playground/dev/illumina/ticket_notes/work/**/*',
+				'~/playground/dev/illumina/ticket_notes/work_org_files/**/*',
 			},
 			org_default_notes_file = '~/playground/projects/org_files/refile.org',
 			org_todo_keywords = { 'TODO(t)', 'NEXT(n)', '|', 'DONE(d)', 'CANCELLED(c)' },
