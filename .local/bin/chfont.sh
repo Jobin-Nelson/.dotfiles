@@ -50,7 +50,8 @@ function set_style() {
 function set_size() {
     case "$font" in
         'Ubuntu Mono Nerd Font')    sed -i 's/size: .*/size: 14/' "${ALACRITTY_FILE}" ;;
-        *)    sed -i 's/size: .*/size: 13/' "${ALACRITTY_FILE}" ;;
+        'Rec Mono'*)    sed -i 's/size: .*/size: 13/' "${ALACRITTY_FILE}" ;;
+        *)    sed -i 's/size: .*/size: 11.5/' "${ALACRITTY_FILE}" ;;
     esac
 }
 

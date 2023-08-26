@@ -73,6 +73,18 @@ M.start_journal = function()
   vim.cmd('tabedit ' .. journal_path)
 end
 
+function M.set_indent()
+  local ok, input = pcall(vim.fn.input, "Set indent value (>0 expandtab, <=0 noexpandtab): ")
+  if not ok then return end
+  local indent = tonumber(input)
+  if not indent or indent == 0 then return end
+  vim.bo.expandtab = (indent > 0)
+  indent = math.abs(indent)
+  vim.bo.tabstop = indent
+  vim.bo.softtabstop = indent
+  vim.bo.shiftwidth = indent
+end
+
 -- vim.keymap.set('n', '<leader>rt', M.rename_buffer)
 -- vim.keymap.set('n', '<leader>rr', ':update | luafile %<cr>')
 

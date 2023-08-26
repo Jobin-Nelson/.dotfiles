@@ -77,6 +77,9 @@ vim.keymap.set('t', '<A-h>', '<C-\\><C-n><cmd>ToggleTerm direction=horizontal<cr
 vim.keymap.set('t', '<A-v>', '<C-\\><C-n><cmd>ToggleTerm direction=vertical<cr>', { desc = 'ToggleTerm Vertical' })
 vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>', { desc = 'Terminal window command' })
 
+-- UI
+vim.keymap.set('n', '<leader>ui', '<cmd>lua require("core.config.custom.utils").set_indent()<cr>', { desc = 'Set Indent' })
+
 -- Other
 vim.keymap.set('n', '<leader>sc', '<cmd>lua require("core.config.custom.utils").scratch_buffer()<cr>', { desc = 'Scratch buffer' })
 vim.keymap.set('n', '<leader>se', '<cmd>lua require("core.config.custom.email_update").open()<cr>', { desc = 'Send Email' })
