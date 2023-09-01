@@ -37,6 +37,7 @@ function main() {
         "weekly_jobs - $HOME/.local/bin/weekly_jobs.sh"
         "gclone - $HOME/.local/bin/gclone.sh"
         "ssh - $HOME/.ssh/config"
+        "helix - $HOME/.config/helix/config.toml"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
