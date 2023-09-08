@@ -5,6 +5,8 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set('v', '<', '<gv', { silent = true, desc = 'Indent Inward' })
 vim.keymap.set('v', '>', '>gv', { silent = true, desc = 'Indent Outward' })
+vim.keymap.set('v', 'P', '"_dP', { silent = true, desc = 'Paste without yanking' })
+vim.keymap.set('n', '<leader>ss', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>', { desc = 'Substitute word' })
 
 -- Buffer
 vim.keymap.set('n', '<C-Up>', '<cmd>wincmd 3+<cr>', { desc = 'Buffer Increase Height' })
