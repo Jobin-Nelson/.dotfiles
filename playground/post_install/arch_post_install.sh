@@ -88,15 +88,16 @@ function install_astronvim() {
 
 function install_neovim() {
     banner 'Install Neovim'
-    local DOWNLOAD_DIR NEOVIM_DIR
+    sudo pacman -S --noconfirm neovim
+    # local DOWNLOAD_DIR NEOVIM_DIR
 
-    DOWNLOAD_DIR="$HOME/Downloads"
-    NEOVIM_DIR="${DOWNLOAD_DIR}/nvim-linux64"
+    # DOWNLOAD_DIR="$HOME/Downloads"
+    # NEOVIM_DIR="${DOWNLOAD_DIR}/nvim-linux64"
 
-	curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz -o "${NEOVIM_DIR}.tar.gz"
-    tar -xzvf "${NEOVIM_DIR}.tar.gz" -C "${DOWNLOAD_DIR}" 
-    sudo mv "${NEOVIM_DIR}/bin/nvim" /usr/bin/
-    rm -rf "${NEOVIM_DIR}" "${NEOVIM_DIR}.tar.gz"
+	# curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz -o "${NEOVIM_DIR}.tar.gz"
+    # tar -xzvf "${NEOVIM_DIR}.tar.gz" -C "${DOWNLOAD_DIR}" 
+    # sudo mv "${NEOVIM_DIR}/bin/nvim" /usr/bin/
+    # rm -rf "${NEOVIM_DIR}" "${NEOVIM_DIR}.tar.gz"
 }
 
 function install_doom_emacs() {
