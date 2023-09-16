@@ -57,7 +57,6 @@ export EDITOR='/usr/bin/nvim'
 export VISUAL='/usr/bin/nvim'
 export COLORTERM="truecolor"
 # export MANPAGER='nvim +Man!'
-export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 
 # XDG
 export XDG_CACHE_HOME="$HOME/.cache"

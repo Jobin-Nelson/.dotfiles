@@ -35,6 +35,8 @@ vim.o.undodir = vim.fn.stdpath('config') .. '/undodir'
 vim.o.undofile = true
 vim.o.swapfile = false
 vim.opt.iskeyword = vim.opt.iskeyword + '-'
+-- vim.o.foldcolumn = '3'
+-- vim.o.fillchars = 'eob: ,fold: ,foldopen:,foldsep: ,foldclose:'
 vim.opt.formatoptions = vim.opt.formatoptions
   - "a" -- Auto formatting is BAD.
   - "t" -- Don't auto format my code. I got linters for that.
