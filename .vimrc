@@ -29,7 +29,7 @@ set spelllang=en_us
 let mapleader=" "
 map Q <Nop>
 
-nnoremap <leader>so :source $HOME/.config/nvim/init.vim<CR>
+nnoremap <leader>so :source $HOME/.vimrc<CR>
 nnoremap <leader>i :e $HOME/.vimrc<CR>
 nnoremap <leader>e :Lexplore 30<CR>
 nnoremap <leader>+ :vertical resize +3<CR>
