@@ -38,6 +38,7 @@ function main() {
         "gclone - $HOME/.local/bin/gclone.sh"
         "ssh - $HOME/.ssh/config"
         "helix - $HOME/.config/helix/config.toml"
+        "leet - $HOME/.local/bin/leet.py"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
