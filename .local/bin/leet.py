@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Sequence
 from pathlib import Path
 import argparse, json, datetime, webbrowser, subprocess
-import urllib.request, urllib.parse
+import urllib.request
 
 TODAY = datetime.datetime.now()
 LEET_DAILY_DIR = (Path.home()
@@ -53,7 +53,7 @@ def get_daily_qn_link() -> str:
 
 def create_file(leet_file: Path, daily_qn_link: str):
     if leet_file.exists(): return leet_file
-    leet_file.parent.mkdir(exist_ok=True)
+    leet_file.parent.mkdir(parents=True, exist_ok=True)
     with open(leet_file, 'w') as f:
         f.write(f"""\
 '''
