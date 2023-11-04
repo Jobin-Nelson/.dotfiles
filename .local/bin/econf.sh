@@ -39,6 +39,7 @@ function main() {
         "ssh - $HOME/.ssh/config"
         "helix - $HOME/.config/helix/config.toml"
         "leet - $HOME/.local/bin/leet.py"
+        "zdate - $HOME/.local/bin/zdate.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
