@@ -1,11 +1,14 @@
 # Dotfiles
 
 - Setup ssh key with github
-- `mkdir -p $HOME/playground/backup && mv $HOME/.{bash_profile,bashrc} $_`
-- `git clone --depth 5 --bare git@github.com:Jobin-Nelson/.dotfiles.git $HOME/.dotfiles`
-- `alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'`
-- `dot config --local status.showUntrackedFiles no`
-- `dot checkout`
+
+```shell
+mkdir -p $HOME/playground/backup && mv $HOME/.{bash_profile,bashrc} $_
+git clone --depth 5 --bare git@github.com:Jobin-Nelson/.dotfiles.git $HOME/.dotfiles
+alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+dot config --local status.showUntrackedFiles no
+dot checkout
+```
 
 ## Post Install
 

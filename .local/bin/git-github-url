@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import shlex
+import subprocess
+
+def main() -> int:
+    ssh = 'git@github.com:'
+    dot_git = '.git'
+
+    cmd = shlex.split('git config remote.origin.url')
+    remote = subprocess.check_output(cmd, encoding='UTF-8').strip()
+
+    if remote.startswith(ssh):
+        remote = remote[len(ssh):]
+    if remote.endswith(dot_git):
+        remote = remote[:-1 * len(dot_git)]
+
+    print(f'https://github.com/{remote}')
+    return 0
+
+if __name__ == '__main__':
+    raise SystemExit(main())

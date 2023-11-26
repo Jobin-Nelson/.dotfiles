@@ -63,9 +63,9 @@ def get_daily_qn_link() -> str:
     req = urllib.request.Request(base_url, json.dumps(query).encode("utf-8"))
     req.add_header("Content-Type", "application/json")
     req.add_header("User-Agent", "Mozilla/5.0")
-    res = urllib.request.urlopen(req)
+    res = urllib.request.urlopen(req, timeout=5.0)
     return (
-        base_url.rstrip("/graphql/")
+        base_url.removesuffix("/graphql/")
         + json.loads(res.read())["data"]["activeDailyCodingChallengeQuestion"]["link"]
     )
 
@@ -76,18 +76,18 @@ def create_file(leet_file: Path, daily_qn_link: str):
     leet_file.parent.mkdir(parents=True, exist_ok=True)
     with open(leet_file, "w") as f:
         f.write(
-            f"""\
-'''
+            f'''\
+"""
 Created Date: {TODAY:%Y-%m-%d}
 Qn: 
 Link: {daily_qn_link}
 Notes:
-'''
+"""
 def main():
     pass
 
 if __name__ == '__main__':
-"""
+'''
         )
 
 
