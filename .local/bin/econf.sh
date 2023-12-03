@@ -40,6 +40,9 @@ function main() {
         "helix - $HOME/.config/helix/config.toml"
         "leet - $HOME/.local/bin/leet.py"
         "zdate - $HOME/.local/bin/zdate.sh"
+        "git-github-fork - $HOME/.local/bin/git-github-fork"
+        "git-github-url - $HOME/.local/bin/git-github-url"
+        "git-happy-merge - $HOME/.local/bin/git-happy-merge"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
