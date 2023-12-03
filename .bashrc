@@ -78,10 +78,10 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 # Scripts
 case ":${PATH}:" in
-*:"${HOME}/.local/bin":*) ;;
-*)
-	[[ -d "$HOME/.local/bin" ]] && PATH="$HOME/.local/bin:$PATH"
-	;;
+  *:"${HOME}/.local/bin":*) ;;
+  *)
+    [[ -d "$HOME/.local/bin" ]] && PATH="$HOME/.local/bin:$PATH"
+    ;;
 esac
 
 # Fzf completion
@@ -94,9 +94,8 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # NVM (Node version manager)
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # Directory jumper
 eval "$(zoxide init bash)"
