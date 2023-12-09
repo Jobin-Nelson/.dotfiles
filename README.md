@@ -19,7 +19,7 @@ cd /home/jobin/playground/post_install
 ./arch_post_install.sh
 ```
 
-further setup is documented in [Arch notes](./playground/post_install/arch_notes.md)
+Further setup is documented in [Arch notes](./playground/post_install/arch_notes.md)
 
 ### Ubuntu & derivatives
 

@@ -76,11 +76,15 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+# Language
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
+
 # Scripts
 case ":${PATH}:" in
   *:"${HOME}/.local/bin":*) ;;
   *)
-    [[ -d "$HOME/.local/bin" ]] && PATH="$HOME/.local/bin:$PATH"
+    [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
     ;;
 esac
 
