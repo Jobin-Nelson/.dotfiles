@@ -3,12 +3,10 @@ return {
 	event = 'VeryLazy',
 	opts = {
 		options = {
-			theme = 'catppuccin',
 			globalstatus = true,
 			disabled_filetypes = {
 				statusline = {
 					'TelescopePrompt',
-					'alpha',
 				},
 			},
 		},

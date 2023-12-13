@@ -14,7 +14,16 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup('core.plugins', {
+require('lazy').setup({
+  { import = 'jobin.plugins'},
+}, {
+  install = {
+    colorscheme = {'catppuccin'},
+  },
+  checker = {
+    enabled = true,
+    notify = false,
+  },
 	defaults = {
 		lazy = true,
 	},
@@ -34,6 +43,7 @@ require('lazy').setup('core.plugins', {
 	}
 })
 
-require('core.config.options')
-require('core.config.mappings')
-require('core.config.commands')
+require('jobin.config.options')
+require('jobin.config.mappings')
+require('jobin.config.commands')
+

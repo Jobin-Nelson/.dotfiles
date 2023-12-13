@@ -15,6 +15,7 @@ function main() {
         "change_brightness - $HOME/.local/bin/change_brightness.sh"
         "dev - $HOME/.local/bin/dev.sh"
         "chfont - $HOME/.local/bin/chfont.sh"
+        "chnvim - $HOME/.local/bin/chnvim.sh"
         "slay - $HOME/.local/bin/slay.sh"
         "tmuxify - $HOME/.local/bin/tmuxify.sh"
         "tpb3 - $HOME/.local/bin/tpb3.sh"

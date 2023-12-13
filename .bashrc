@@ -1,4 +1,3 @@
-
 #  ____            _
 # | __ )  __ _ ___| |__  _ __ ___
 # |  _ \ / _` / __| '_ \| '__/ __|
@@ -43,7 +42,7 @@ alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%b_%d | tr "[:upper:]" "[:low
 alias rwl='gsettings set org.gnome.desktop.background picture-uri-dark file://$(find $HOME/Pictures/wallpapers -type f | shuf -n 1)'
 # alias rwl='w=$(find $HOME/Pictures/wallpapers -type f | shuf -n 1) && hyprctl hyprpaper unload all && hyprctl hyprpaper preload "$w" && hyprctl hyprpaper wallpaper "eDP-1,$w" '
 alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
-alias emacs='emacsclient -nc -a ""'
+# alias emacs='emacsclient -nc -a ""'
 alias todo='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $HOME/playground/projects/org_files/refile.org +$'
 alias ftodo='file=$(rg --line-number --no-heading --with-filename "\*+ TODO" $HOME/playground/projects/org_files | fzf -d ":" --prompt "Find Todo: " --with-nth "3.." --layout=reverse --height=50% --ansi --border | sed -E "s/(.*):([0-9]+):.*/\1 +\2/") && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $file'
 alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
@@ -51,7 +50,6 @@ alias fnote='file=$(find $HOME/playground/projects/second_brain/ -type f -not -p
 alias n='NVIM_APPNAME=default-nvim nvim'
 alias avim='NVIM_APPNAME=astrovim nvim'
 alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "${instanceId}"; done'
-alias docker=podman
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'

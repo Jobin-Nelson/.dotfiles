@@ -19,7 +19,7 @@ vim.o.termguicolors = true
 vim.o.conceallevel = 2
 vim.o.signcolumn = 'yes'
 vim.o.laststatus = 3
-vim.o.winbar = '%=%m %t'
+-- vim.o.winbar = '%=%m %t'
 vim.o.splitbelow = true
 vim.o.splitright = true
 vim.o.tabstop = 2
