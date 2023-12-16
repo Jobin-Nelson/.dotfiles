@@ -9,8 +9,7 @@ import subprocess
 import sys
 import urllib.request
 from pathlib import Path
-from typing import NoReturn
-from typing import Sequence
+from typing import NoReturn, Sequence
 
 
 def get_slug() -> str:

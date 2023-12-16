@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 #  ____            _
 # | __ )  __ _ ___| |__  _ __ ___
 # |  _ \ / _` / __| '_ \| '__/ __|
@@ -48,7 +49,6 @@ alias ftodo='file=$(rg --line-number --no-heading --with-filename "\*+ TODO" $HO
 alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
 alias fnote='file=$(find $HOME/playground/projects/second_brain/ -type f -not -path "*.git*" -a -not -path "*/attachments/*" -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" -a -not -path "*/.trash/*" | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi --border) && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $file'
 alias n='NVIM_APPNAME=default-nvim nvim'
-alias avim='NVIM_APPNAME=astrovim nvim'
 alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "${instanceId}"; done'
 
 # WSL
@@ -82,8 +82,8 @@ export LC_ALL='en_US.UTF-8'
 case ":${PATH}:" in
   *:"${HOME}/.local/bin":*) ;;
   *)
-    [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
-    ;;
+	  [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
+	  ;;
 esac
 
 # Fzf completion
