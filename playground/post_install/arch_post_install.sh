@@ -56,7 +56,7 @@ function install_packages() {
 		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
 		starship cronie podman aria2 rsync pacman-contrib netcat neofetch \
-		syncthing luarocks
+		syncthing
 
 	paru -S --noconfirm \
 		nvm visual-studio-code-bin
@@ -258,7 +258,7 @@ function main() {
 	setup_aur
 	configure_package_manager
 	install_packages
-	install_astronvim
+	# install_astronvim
 	# install_lazyvim
 	install_neovim
 	# install_doom_emacs

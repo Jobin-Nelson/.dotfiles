@@ -72,6 +72,7 @@ def get_daily_qn_link() -> str:
 
 def create_file(leet_file: Path, daily_qn_link: str):
     if leet_file.exists():
+        print(f'File already exits {leet_file}')
         return leet_file
     leet_file.parent.mkdir(parents=True, exist_ok=True)
     with open(leet_file, "w") as f:
@@ -89,6 +90,7 @@ def main():
 if __name__ == '__main__':
 '''
         )
+        print(f'File created {leet_file}')
 
 
 if __name__ == "__main__":
