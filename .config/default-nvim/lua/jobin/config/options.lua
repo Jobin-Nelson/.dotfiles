@@ -48,3 +48,6 @@ vim.opt.formatoptions = vim.opt.formatoptions
   + "n" -- Indent past the formatlistpat, not underneath it.
   + "j" -- Auto-remove comments if possible.
   - "2" -- I'm not in gradeschool anymore
+
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_node_provider = 0

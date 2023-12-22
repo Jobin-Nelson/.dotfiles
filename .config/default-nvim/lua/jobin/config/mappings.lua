@@ -6,26 +6,23 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set('v', '<', '<gv', { silent = true, desc = 'Indent Inward' })
 vim.keymap.set('v', '>', '>gv', { silent = true, desc = 'Indent Outward' })
 vim.keymap.set('v', 'P', '"_dP', { silent = true, desc = 'Paste without yanking' })
-vim.keymap.set('n', '<leader>ss', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>', { desc = 'Substitute word' })
 
 -- Buffer
 vim.keymap.set('n', '<C-Up>', '<cmd>wincmd 3+<cr>', { desc = 'Buffer Increase Height' })
 vim.keymap.set('n', '<C-Down>', '<cmd>wincmd 3-<cr>', { desc = 'Buffer Decrease Height' })
 vim.keymap.set('n', '<C-Left>', '<cmd>wincmd 3<<cr>', { desc = 'Buffer Decrease Width' })
 vim.keymap.set('n', '<C-Right>', '<cmd>wincmd 3><cr>', { desc = 'Buffer Increase Width' })
-vim.keymap.set('n', '<b', '<cmd>BufferLineMovePrev<cr>', { desc = 'Buffer Move Left' })
-vim.keymap.set('n', '>b', '<cmd>BufferLineMoveNext<cr>', { desc = 'Buffer Move Right' })
-vim.keymap.set('n', '[b', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Next Buffer' })
-vim.keymap.set('n', ']b', '<cmd>BufferLineCycleNext<cr>', { desc = 'Previous Buffer' })
+vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Next Buffer' })
+vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Previous Buffer' })
 vim.keymap.set('n', '[q', '<cmd>cprevious<cr>', { desc = 'Previous Quickfix' })
 vim.keymap.set('n', ']q', '<cmd>cnext<cr>', { desc = 'Next Quickfix' })
 vim.keymap.set('n', '<leader>bo', '<cmd>update <bar> %bdelete <bar> edit# <bar> bdelete #<CR>', { desc = 'Delete Other buffers' })
 vim.keymap.set('n', '<leader>bh', '<cmd>lua require("jobin.config.custom.utils").delete_hidden_buffers()<cr>', { desc = 'Delete Hidden buffers' })
-vim.keymap.set('n', '<leader>bR', '<cmd>lua require("jobin.config.custom.utils").rename_buffer()<cr>', { desc = 'Buffer Rename' })
+vim.keymap.set('n', '<leader>br', '<cmd>lua require("jobin.config.custom.utils").rename_buffer()<cr>', { desc = 'Buffer Rename' })
 vim.keymap.set('n', '<leader>bk', '<cmd>call delete(expand("%:p")) <bar> bdelete!<cr>', { desc = 'Buffer Kill' })
-vim.keymap.set('n', '<leader>bd', '<cmd>BufferLinePickClose<cr>', { desc = 'Buffer Delete' })
-vim.keymap.set('n', '<leader>br', '<cmd>BufferLineCloseRight<cr>', { desc = 'Buffer close Right' })
-vim.keymap.set('n', '<leader>bl', '<cmd>BufferLineCloseLeft<cr>', { desc = 'Buffer close Left' })
+-- vim.keymap.set('n', '<leader>bd', '<cmd>BufferLinePickClose<cr>', { desc = 'Buffer Delete' })
+-- vim.keymap.set('n', '<leader>br', '<cmd>BufferLineCloseRight<cr>', { desc = 'Buffer close Right' })
+-- vim.keymap.set('n', '<leader>bl', '<cmd>BufferLineCloseLeft<cr>', { desc = 'Buffer close Left' })
 vim.keymap.set('n', '<leader>b/', '<cmd>lua require("telescope.builtin").current_buffer_fuzzy_find()<cr>', { desc = 'Buffer Search' })
 
 -- Git
@@ -61,30 +58,29 @@ vim.keymap.set('n', '<leader>fO', '<cmd>lua require("jobin.config.custom.pickers
 vim.keymap.set('n', '<leader>fp', '<cmd>lua require("jobin.config.custom.pickers").find_projects()<cr>', { desc = 'Find Projects' })
 vim.keymap.set('n', '<leader>fj', '<cmd>lua require("jobin.config.custom.pickers").find_journal()<cr>', { desc = 'Find Journal' })
 
--- Lsp
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous Diagnostics' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next Diagnostics' })
-vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Open Diagnostic' })
-vim.keymap.set('n', '<leader>lq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-vim.keymap.set('n', '<leader>lD', '<cmd>lua require("telescope.builtin").diagnostics()<cr>', { desc = 'Lsp Diagnostics' })
-
 -- Packages
 vim.keymap.set('n', '<leader>ps', '<cmd>Lazy<cr>', { desc = 'Plugin Status' })
 vim.keymap.set('n', '<leader>pm', '<cmd>Mason<cr>', { desc = 'Mason Installer' })
 
 -- Terminal
-vim.keymap.set('n', '<A-h>', '<cmd>ToggleTerm size=20 direction=horizontal<cr>', { desc = 'ToggleTerm Horizontal' })
-vim.keymap.set('n', '<A-v>', '<cmd>ToggleTerm size=80 direction=vertical<cr>', { desc = 'ToggleTerm Vertical' })
-vim.keymap.set('t', '<A-h>', '<C-\\><C-n><cmd>ToggleTerm direction=horizontal<cr>', { desc = 'ToggleTerm Horizontal' })
-vim.keymap.set('t', '<A-v>', '<C-\\><C-n><cmd>ToggleTerm direction=vertical<cr>', { desc = 'ToggleTerm Vertical' })
+-- vim.keymap.set('n', '<A-h>', '<cmd>ToggleTerm size=20 direction=horizontal<cr>', { desc = 'ToggleTerm Horizontal' })
+-- vim.keymap.set('n', '<A-v>', '<cmd>ToggleTerm size=80 direction=vertical<cr>', { desc = 'ToggleTerm Vertical' })
+-- vim.keymap.set('t', '<A-h>', '<C-\\><C-n><cmd>ToggleTerm direction=horizontal<cr>', { desc = 'ToggleTerm Horizontal' })
+-- vim.keymap.set('t', '<A-v>', '<C-\\><C-n><cmd>ToggleTerm direction=vertical<cr>', { desc = 'ToggleTerm Vertical' })
 vim.keymap.set('t', '<C-w>', '<C-\\><C-n><C-w>', { desc = 'Terminal window command' })
 
 -- UI
 vim.keymap.set('n', '<leader>ui', '<cmd>lua require("jobin.config.custom.utils").set_indent()<cr>', { desc = 'Set Indent' })
+vim.keymap.set('n', '<leader>ur', '<cmd>nohlsearch <bar> diffupdate <bar> normal! <C-L><CR>', { desc = 'UI Refresh' })
 
 -- Other
-vim.keymap.set('n', '<leader>sc', '<cmd>lua require("jobin.config.custom.utils").scratch_buffer()<cr>', { desc = 'Scratch buffer' })
-vim.keymap.set('n', '<leader>se', '<cmd>lua require("jobin.config.custom.email_update").open()<cr>', { desc = 'Send Email' })
-vim.keymap.set('n', '<leader>st', '<cmd>lua require("jobin.config.custom.get_ticket").populate_ticket()<cr>', { desc = 'Source Ticket' })
-vim.keymap.set('n', '<leader>sj', '<cmd>lua require("jobin.config.custom.utils").start_journal()<cr>', { desc = 'Start Journal' })
-vim.keymap.set('n', '<leader>oT', '<cmd>lua require("jobin.config.custom.org-tangle").tangle()<cr>', { desc = 'Org Tangle' })
+vim.keymap.set('n', '<leader>we', '<cmd>lua require("jobin.config.custom.email_update").open()<cr>', { desc = 'Send Email' })
+vim.keymap.set('n', '<leader>wt', '<cmd>lua require("jobin.config.custom.get_ticket").populate_ticket()<cr>', { desc = 'Source Ticket' })
+vim.keymap.set('n', '<leader>jb', '<cmd>lua require("jobin.config.custom.utils").scratch_buffer()<cr>', { desc = 'Scratch buffer' })
+vim.keymap.set('n', '<leader>js', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>', { desc = 'Substitute word' })
+vim.keymap.set('n', '<leader>jj', '<cmd>lua require("jobin.config.custom.utils").start_journal()<cr>', { desc = 'Start Journal' })
+vim.keymap.set('n', '<leader>jt', '<cmd>lua require("jobin.config.custom.org-tangle").tangle()<cr>', { desc = 'Org Tangle' })
+vim.keymap.set('n', '<leader>jc', '<cmd>lua require("jobin.config.custom.utils").cd_git_root()<cr>', { desc = 'Cd Git Root' })
+vim.keymap.set('n', '<leader>jr', '<cmd>lua require("jobin.config.custom.utils").rename_file()<cr>', { desc = 'Rename File' })
+vim.keymap.set('n', '<leader>jm', '<cmd>lua require("jobin.config.custom.utils").move_file()<cr>', { desc = 'Move File' })
+vim.keymap.set('n', '<leader>jl', '<cmd>lua require("jobin.config.custom.utils").leet()<cr>', { desc = 'Leetcode Daily' })

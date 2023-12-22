@@ -11,6 +11,7 @@ return {
 					return vim.fn.executable 'make' == 1
 				end,
 			},
+      'xiyaowong/telescope-emoji.nvim',
 		},
 		config = function()
 			require('telescope').setup({
@@ -41,6 +42,7 @@ return {
 				}
 			})
 			require('telescope').load_extension('fzf')
+			require('telescope').load_extension('emoji')
 		end
 	},
 }

@@ -19,9 +19,14 @@ return {
       nmap('gd', vim.lsp.buf.definition, 'Goto Definition')
       nmap('gr', require('telescope.builtin').lsp_references, 'Goto References')
       nmap('gI', vim.lsp.buf.implementation, 'Goto Implementation')
-      nmap('<leader>gT', vim.lsp.buf.type_definition, 'Goto Type definition')
-      nmap('<leader>lds', require('telescope.builtin').lsp_document_symbols, 'Lsp Document Symbols')
-      nmap('<leader>lws', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Lsp Workspace Symbols')
+      nmap('gT', vim.lsp.buf.type_definition, 'Goto Type definition')
+      nmap('gl', vim.diagnostic.open_float, 'Open diagnostic')
+      nmap(']d', vim.diagnostic.goto_next, 'Next diagnostic')
+      nmap('[d', vim.diagnostic.goto_prev, 'Previous diagnostic')
+      nmap('<leader>lq', vim.diagnostic.setloclist, 'Set diagnostic quickfix')
+      nmap('<leader>ld', require('telescope.builtin').diagnostics, 'Open diagnostic list')
+      nmap('<leader>ls', require('telescope.builtin').lsp_document_symbols, 'Lsp Document Symbols')
+      nmap('<leader>lS', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Lsp Workspace Symbols')
       nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
       nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
       nmap('gD', vim.lsp.buf.declaration, 'Goto Declaration')
@@ -45,6 +50,10 @@ return {
       tsserver = {},
       emmet_ls = {},
       marksman = {},
+      gopls = {},
+      rust_analyzer = {
+        cmd = { "rustup", "run", "stable", "rust-analyzer" },
+      },
       lua_ls = {
         Lua = {
           workspace = { checkThirdParty = false },
@@ -73,16 +82,12 @@ return {
           capabilities = capabilities,
           on_attach = on_attach,
           settings = servers[server_name],
+          filetypes = (servers[server_name] or {}).filetypes,
+          cmd = servers[server_name].cmd
         }
       end,
     }
 
-    require('lspconfig')['rust_analyzer'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      cmd = { "rustup", "run", "stable", "rust-analyzer" },
-      filetypes = { "rust" },
-      root_dir = require('lspconfig.util').root_pattern("Cargo.toml"),
-    })
+    require('lspconfig.ui.windows').default_options.border = 'single'
   end
 }
