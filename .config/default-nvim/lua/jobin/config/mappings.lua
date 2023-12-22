@@ -1,6 +1,6 @@
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
--- vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 30<cr>', { desc = 'Open Explorer' })
-vim.keymap.set('n', '<leader>e', '<cmd>lua require("nvim-tree.api").tree.toggle({find_file=true})<cr>', { desc = 'Open Explorer' })
+vim.keymap.set('n', '<leader>e', '<cmd>Lexplore 30<cr>', { desc = 'Open Explorer' })
+-- vim.keymap.set('n', '<leader>e', '<cmd>lua require("nvim-tree.api").tree.toggle({find_file=true})<cr>', { desc = 'Open Explorer' })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set('v', '<', '<gv', { silent = true, desc = 'Indent Inward' })
