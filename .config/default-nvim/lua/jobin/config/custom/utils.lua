@@ -1,12 +1,12 @@
+-- Major shoutout to
+-- https://github.com/ibhagwan/nvim-lua/blob/main/lua/utils.lua
+
 local M = {}
 
 M.delete_hidden_buffers = function()
-  local all_bufs = vim.tbl_filter(
-    function(buf)
-      return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted
-    end,
-    vim.api.nvim_list_bufs()
-  )
+  local all_bufs = vim.tbl_filter(function(buf)
+    return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted
+  end, vim.api.nvim_list_bufs())
   local all_wins = vim.api.nvim_list_wins()
   local visible_bufs = {}
   for _, win in ipairs(all_wins) do
@@ -18,7 +18,7 @@ M.delete_hidden_buffers = function()
       vim.cmd.bwipeout({ count = buf, bang = true })
     end
   end
-  print('All hidden buffers have been deleted')
+  print("All hidden buffers have been deleted")
 end
 
 M.scratch_buffer = function()
@@ -33,56 +33,132 @@ M.scratch_buffer = function()
         end
       end
     end
-    vim.cmd('vert sbuffer ' .. buf_nr)
+    vim.cmd("vert sbuffer " .. buf_nr)
     return
   end
 
   local buf_nr = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_name(buf_nr, 'scratch')
+  vim.api.nvim_buf_set_name(buf_nr, "scratch")
   vim.g.scratch_nr = buf_nr
   vim.cmd.vnew()
   vim.api.nvim_win_set_buf(0, buf_nr)
 end
 
-M.rename_buffer = function()
+---@param target_dir string
+M.rename_file = function(target_dir)
   local original_filename = vim.api.nvim_buf_get_name(0)
-  local prompt = 'Rename: '
+  local function move_file(new_filename)
+    if new_filename == "" or new_filename == nil then
+      return
+    end
 
-  local new_filename = vim.fn.input({
-    prompt = prompt,
-    default = original_filename,
-    completion = 'file',
-  })
-
-  if new_filename == '' then
-    return
+    vim.cmd("update | saveas ++p " .. new_filename)
+---@diagnostic disable-next-line: param-type-mismatch
+    local alternate_bufnr = vim.fn.bufnr("#")
+    if vim.fn.bufexists(alternate_bufnr) then
+      vim.api.nvim_buf_delete(alternate_bufnr, {})
+    end
+    vim.fn.delete(original_filename)
+    print("Renamed to " .. new_filename)
   end
 
-  vim.cmd('update | saveas ++p ' .. new_filename)
-  local alternate_bufnr = vim.fn.bufnr('#')
-  if vim.fn.bufexists(alternate_bufnr) then
-    vim.api.nvim_buf_delete(alternate_bufnr, {})
+  if target_dir then
+    if vim.fn.isdirectory(target_dir) == 1 then
+      target_dir = target_dir .. '/' .. vim.fs.basename(original_filename)
+    end
+    move_file(target_dir)
+  else
+    vim.ui.input({
+      prompt =  "Rename: ",
+      default = original_filename,
+      completion = "file",
+    }, move_file)
   end
-  vim.fn.delete(original_filename)
-  print('Renamed to ' .. new_filename)
 end
 
 M.start_journal = function()
-  local journal_dir = '~/playground/projects/second_brain/Resources/journal/'
-  local journal_path = vim.fs.normalize(string.format('%s/%s.md', journal_dir, os.date('%Y-%m-%d')))
-  vim.cmd('tabedit ' .. journal_path)
+  local second_brain = vim.fs.normalize("~/playground/projects/second_brain")
+  local journal_dir = second_brain .. '/Resources/journal'
+  local template_file = second_brain .. '/Resources/Templates/daily_note_template.md'
+
+  local journal_path = string.format("%s/%s.md", journal_dir, os.date("%Y-%m-%d"))
+
+  vim.cmd("tabedit " .. journal_path)
+  local filesize = vim.fn.getfsize(journal_path)
+  if filesize < 1 and filesize ~= -2 then
+    vim.cmd('0read ' .. template_file)
+  end
+  vim.cmd('lcd ' .. second_brain)
+  vim.opt_local.wrap = true
+  vim.opt_local.linebreak = true
 end
 
 function M.set_indent()
-  local ok, input = pcall(vim.fn.input, "Set indent value (>0 expandtab, <=0 noexpandtab): ")
-  if not ok then return end
-  local indent = tonumber(input)
-  if not indent or indent == 0 then return end
-  vim.bo.expandtab = (indent > 0)
-  indent = math.abs(indent)
-  vim.bo.tabstop = indent
-  vim.bo.softtabstop = indent
-  vim.bo.shiftwidth = indent
+  vim.ui.input({
+    prompt = "Set indent value (>0 expandtab, <=0 noexpandtab): ",
+  }, function(new_indent)
+    new_indent = tonumber(new_indent)
+    if new_indent == nil or new_indent == 0 then
+      return
+    end
+
+    vim.bo.expandtab = (new_indent > 0)
+    new_indent = math.abs(new_indent)
+    vim.bo.tabstop = new_indent
+    vim.bo.softtabstop = new_indent
+    vim.bo.shiftwidth = new_indent
+    print("Indent set to " .. new_indent)
+  end)
+end
+
+---@param cwd? string
+---@return string|nil
+function M.get_git_root(cwd)
+  local cmd = { 'git', 'rev-parse', '--show-toplevel' }
+  if cwd then
+    table.insert(cmd, 2, '-C')
+    table.insert(cmd, 3, cwd)
+  end
+  local output = vim.fn.systemlist(cmd)
+  if vim.v.shell_error ~= 0 then
+    return nil
+  end
+  return output[1]
+end
+
+function M.cd_git_root()
+  local parent = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+  local git_root = M.get_git_root(parent)
+  if not git_root then
+    print('Not a git repo: ' .. parent or vim.loop.cwd())
+    return
+  end
+  if git_root == vim.loop.cwd() then
+    print('Already at git root: ' .. git_root)
+    return
+  end
+  if vim.loop.fs_stat(git_root) then
+    vim.cmd.cd(git_root)
+    print('Directory changed to ' .. git_root)
+  else
+    error(git_root .. ' not accessible')
+  end
+end
+
+function M.leet()
+  if vim.fn.executable('leet.py') ~= 1 then
+    print('leet.py not found')
+    return
+  end
+
+  local cmd = { 'leet.py', '-n' }
+  local output = vim.fn.system(cmd)
+  if vim.v.shell_error ~= 0 then
+    print('leet.py failed execution')
+    return
+  end
+  local leet_file = string.match(output, "(%S+)%s*$")
+  vim.cmd('tabedit ' ..leet_file)
 end
 
 -- vim.keymap.set('n', '<leader>rt', M.rename_buffer)

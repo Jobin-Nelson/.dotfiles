@@ -10,6 +10,7 @@ return {
 		  require('nvim-treesitter.configs').setup({
 			  ensure_installed = {
 				  'rust',
+          'go',
 				  'python',
 				  'bash',
 				  'markdown',
@@ -25,7 +26,6 @@ return {
 				  'typescript',
 				  'tsx',
 				  'vim',
-				  'commonlisp',
 				  'org',
 				  'query'
 			  },
