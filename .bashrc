@@ -105,6 +105,9 @@ eval "$(zoxide init bash)"
 # Cargo [Rust]
 . "$HOME/.cargo/env"
 
+# Go
+command -v go > /dev/null && export PATH="${PATH}:$(go env GOPATH)/bin"
+
 # Starship prompt
 eval "$(starship init bash)"
 
