@@ -165,14 +165,31 @@ M.find_second_brain_files = function()
   require('telescope.builtin').find_files({
     search_dirs = { second_brain },
     prompt_title = 'Second Brain Files',
+    attach_mappings = function(_, map)
+      map({'i', 'n'}, '<S-CR>', function(prompt_bufnr)
+        local selection = action_state.get_current_line()
+        if selection == '' then
+          print('Input value is empty')
+          return true
+        end
+        actions.close(prompt_bufnr)
+        local md_suffix = '.md'
+        if selection:sub(-#md_suffix) ~= md_suffix then
+          selection = selection .. md_suffix
+        end
+        local new_file = vim.fn.join({second_brain, selection}, '/')
+        vim.cmd('edit ' .. new_file)
+      end)
+      return true
+    end
   })
 end
 
 M.move_file = function()
   local opts = dropdown_theme
   local parent = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
-  local cwd = require('jobin.config.custom.utils').get_git_root(parent) or vim.loop.cwd()
-  local rename_file = require('jobin.config.custom.utils').rename_file
+  local cwd = require('user.jobin.utils').get_git_root(parent) or vim.loop.cwd()
+  local rename_file = require('user.jobin.utils').rename_file
 
   local cmd = {'find', cwd, '-type', 'd'}
   -- fd doesn't return cwd
