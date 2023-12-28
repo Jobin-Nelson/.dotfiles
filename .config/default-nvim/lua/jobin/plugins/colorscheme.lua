@@ -2,8 +2,7 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = false,
-    priority = 1000,
+    lazy = true,
     config  = function()
       require('catppuccin').setup({
         transparent_background = true,
@@ -55,4 +54,15 @@ return {
       vim.cmd('colorscheme catppuccin')
     end
   },
+  {
+    'jesseleite/nvim-noirbuddy',
+    dependencies = {
+      { 'tjdevries/colorbuddy.nvim', branch = 'dev' }
+    },
+    lazy = false,
+    priority = 1000,
+    opts = {
+      preset = 'minimal',
+    },
+  }
 }

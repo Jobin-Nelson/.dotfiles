@@ -10,6 +10,7 @@ function get_font() {
         'SauceCodePro Nerd Font'
         'Caskaydia Cove Nerd Font'
         'Ubuntu Mono Nerd Font'
+        'FiraCode Nerd Font'
         'Rec Mono Semicasual'
         'Rec Mono Casual'
         'Rec Mono Duotone'

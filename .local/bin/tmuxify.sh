@@ -70,12 +70,8 @@ while getopts 'hsw:' option; do
     h)
       help
       exit 0;;
-    s)
-      sessionizer
-      ;;
-    w)
-      windowizer "${OPTARG}"
-      ;;
+    s) sessionizer ;;
+    w) windowizer "${OPTARG}" ;;
     *)
       echo "Invalid flag"
       help

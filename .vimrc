@@ -35,8 +35,9 @@ nnoremap <leader>e :Lexplore 30<CR>
 nnoremap <leader>+ :vertical resize +3<CR>
 nnoremap <leader>- :vertical resize -3<CR>
 
-autocmd filetype python nnoremap <F5> :w <bar> !python %<CR>
-autocmd filetype javascript nnoremap <F5> :w <bar> !node %<CR>
+autocmd filetype python nnoremap <F5> :update <bar> !python %<CR>
+autocmd filetype javascript nnoremap <F5> :update <bar> !node %<CR>
+autocmd filetype go nnoremap <F5> :update <bar> !go run %<CR>
 autocmd filetype markdown :hi link markdownError Normal
 
 colorscheme habamax

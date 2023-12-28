@@ -14,9 +14,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('jobin.config.options')
-require('jobin.config.mappings')
-require('jobin.config.commands')
+require('jobin.config')
 
 require('lazy').setup({
   { import = 'jobin.plugins'},
