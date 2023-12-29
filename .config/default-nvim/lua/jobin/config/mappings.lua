@@ -49,6 +49,7 @@ map('n', '<leader>fB', '<cmd>lua require("telescope.builtin").builtin()<cr>', { 
 map('n', '<leader>fo', '<cmd>lua require("telescope.builtin").oldfiles()<cr>', { desc = 'Find Oldfiles' })
 map('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>', { desc = 'Find Buffers' })
 map('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', { desc = 'Find Files' })
+map('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files({no_ignore=true,hidden=true})<cr>', { desc = 'Find Files' })
 map('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>', { desc = 'Find Help' })
 map('n', '<leader>fc', '<cmd>lua require("telescope.builtin").grep_string()<cr>', { desc = 'Find word under Cursor' })
 map('n', '<leader>fw', '<cmd>lua require("telescope.builtin").live_grep()<cr>', { desc = 'Find words' })
