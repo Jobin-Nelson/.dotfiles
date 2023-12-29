@@ -48,6 +48,12 @@ vim.opt.formatoptions = vim.opt.formatoptions
   + "n" -- Indent past the formatlistpat, not underneath it.
   + "j" -- Auto-remove comments if possible.
   - "2" -- I'm not in gradeschool anymore
+vim.g.git_worktrees = {
+  {
+    toplevel = vim.env.HOME,
+    gitdir = vim.env.HOME .. "/.dotfiles",
+  },
+}
 
 -- Disabled
 vim.g.loaded_python3_provider = 0
@@ -72,4 +78,3 @@ vim.g.loaded_rrhelper = 1
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
 -- vim.g.loaded_netrwSettings = 1
-

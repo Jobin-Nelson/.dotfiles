@@ -161,6 +161,24 @@ function M.leet()
   vim.cmd('tabedit ' ..leet_file)
 end
 
+function M.term_toggle()
+  if vim.g.custom_terminal_bufnr == nil then
+    vim.cmd('botright new | term')
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+    vim.g.custom_terminal_bufnr = vim.api.nvim_get_current_buf()
+  else
+    local term_bufnr = vim.g.custom_terminal_bufnr
+    for _, win_id in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+      if vim.api.nvim_win_get_buf(win_id) == term_bufnr then
+        -- return vim.api.nvim_set_current_win(win_id)
+        return vim.api.nvim_win_close(win_id, false)
+      end
+    end
+    vim.cmd('botright sb' .. term_bufnr)
+  end
+end
+
 -- vim.keymap.set('n', '<leader>rt', M.rename_buffer)
 -- vim.keymap.set('n', '<leader>rr', ':update | luafile %<cr>')
 

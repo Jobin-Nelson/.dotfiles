@@ -25,7 +25,6 @@ if __name__ == '__main__':
     {}
 ]], {
       d(1, function(node)
-        vim.pretty_print(node)
         if node[1][1] == 'raise SystemExit(main())' then
           return sn(1, t(' -> int'))
         end

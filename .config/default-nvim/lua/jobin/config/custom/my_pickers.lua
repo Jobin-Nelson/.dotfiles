@@ -125,10 +125,13 @@ M.find_zoxide = function()
 end
 
 M.find_config = function()
+  local config_dir = vim.fn.stdpath('config')
   require('telescope.builtin').find_files({
     search_dirs = {
-      '~/.config/default-nvim/init.lua',
-      '~/.config/default-nvim/lua',
+      config_dir .. '/init.lua',
+      config_dir .. '/lua',
+      config_dir .. '/after',
+      config_dir .. '/snippets',
     },
     prompt_title = 'Find Config',
   })

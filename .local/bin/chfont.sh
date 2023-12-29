@@ -52,6 +52,7 @@ function set_size() {
     case "$font" in
         'Ubuntu Mono Nerd Font')       sed -i 's/size: .*/size: 12/' "${ALACRITTY_FILE}" ;;
         'JetBrainsMono Nerd Font')     sed -i 's/size: .*/size: 10/' "${ALACRITTY_FILE}" ;;
+        'SauceCodePro Nerd Font')      sed -i 's/size: .*/size: 11.5/' "${ALACRITTY_FILE}" ;;
         # 'Rec Mono'*)                   sed -i 's/size: .*/size: 10.5/' "${ALACRITTY_FILE}" ;;
         # 'Caskaydia Cove Nerd Font')    sed -i 's/size: .*/size: 10.5/' "${ALACRITTY_FILE}" ;;
         *)                             sed -i 's/size: .*/size: 10.5/' "${ALACRITTY_FILE}" ;;

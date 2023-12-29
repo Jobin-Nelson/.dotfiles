@@ -20,6 +20,7 @@ local snippets = {
     fmt([[
 #[cfg(test)]
 mod tests {{
+    use super::*;
     #[test]
     fn {}() {{
         {}
