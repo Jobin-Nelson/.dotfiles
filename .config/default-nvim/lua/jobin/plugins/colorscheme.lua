@@ -2,7 +2,8 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = true,
+    lazy = false,
+    priority = 1000,
     config  = function()
       require('catppuccin').setup({
         transparent_background = true,
@@ -59,10 +60,11 @@ return {
     dependencies = {
       { 'tjdevries/colorbuddy.nvim', branch = 'dev' }
     },
+    enabled = false,
     lazy = false,
     priority = 1000,
     opts = {
       preset = 'minimal',
     },
-  }
+  },
 }

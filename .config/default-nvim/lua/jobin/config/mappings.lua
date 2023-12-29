@@ -39,6 +39,7 @@ vim.keymap.set('n', '<leader>gc', '<cmd>lua require("telescope.builtin").git_com
 
 -- Telescope
 vim.keymap.set('n', '<leader>f<cr>', '<cmd>lua require("telescope.builtin").resume()<cr>', { desc = 'Find Oldfiles' })
+vim.keymap.set('n', '<leader>fB', '<cmd>lua require("telescope.builtin").builtin()<cr>', { desc = 'Find Builtins' })
 vim.keymap.set('n', '<leader>fo', '<cmd>lua require("telescope.builtin").oldfiles()<cr>', { desc = 'Find Oldfiles' })
 vim.keymap.set('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>', { desc = 'Find Buffers' })
 vim.keymap.set('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', { desc = 'Find Files' })
@@ -47,7 +48,8 @@ vim.keymap.set('n', '<leader>fc', '<cmd>lua require("telescope.builtin").grep_st
 vim.keymap.set('n', '<leader>fw', '<cmd>lua require("telescope.builtin").live_grep()<cr>', { desc = 'Find words' })
 vim.keymap.set('n', '<leader>fC', '<cmd>lua require("telescope.builtin").commands()<cr>', { desc = 'Find Commands' })
 vim.keymap.set('n', '<leader>fk', '<cmd>lua require("telescope.builtin").keymaps()<cr>', { desc = 'Find Keymaps' })
-vim.keymap.set('n', '<leader>fm', '<cmd>lua require("telescope.builtin").marks()<cr>', { desc = 'Find Keymaps' })
+vim.keymap.set('n', "<leader>f'", '<cmd>lua require("telescope.builtin").marks()<cr>', { desc = 'Find Marks' })
+vim.keymap.set('n', "<leader>fm", '<cmd>lua require("telescope.builtin").man_pages()<cr>', { desc = 'Find Man Pages' })
 vim.keymap.set('n', '<leader>ft', '<cmd>lua require("telescope.builtin").colorscheme()<cr>', { desc = 'Find Themes' })
 vim.keymap.set('n', '<leader>fD', '<cmd>lua require("telescope.builtin").diagnostics()<cr>', { desc = 'Find Diagnostics' })
 vim.keymap.set('n', '<leader>fa', '<cmd>lua require("jobin.config.custom.my_pickers").find_config()<cr>', { desc = 'Find Config' })
