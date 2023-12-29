@@ -35,6 +35,7 @@ vim.o.incsearch = true
 vim.o.undodir = vim.fn.stdpath('config') .. '/undodir'
 vim.o.undofile = true
 vim.o.swapfile = false
+vim.o.pumheight = 10
 -- vim.opt.iskeyword = vim.opt.iskeyword + '-'
 -- vim.o.foldcolumn = '3'
 -- vim.o.fillchars = 'eob: ,fold: ,foldopen:,foldsep: ,foldclose:'
