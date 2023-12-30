@@ -1,13 +1,18 @@
 local map = vim.keymap.set
 
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-map('n', '<leader>e', '<cmd>Lexplore 30<cr>', { desc = 'Open Explorer' })
+map('n', '<leader>e', '<cmd>Lexplore 30 %:h<cr>', { desc = 'Open Explorer' })
+map('n', '<leader>E', '<cmd>Lexplore 30<cr>', { desc = 'Open Explorer (cwd)' })
 -- map('n', '<leader>e', '<cmd>lua require("nvim-tree.api").tree.toggle({find_file=true})<cr>', { desc = 'Open Explorer' })
 map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map('v', '<', '<gv', { silent = true, desc = 'Indent Inward' })
 map('v', '>', '>gv', { silent = true, desc = 'Indent Outward' })
 map('v', 'P', '"_dP', { silent = true, desc = 'Paste without yanking' })
+map('n', '<C-Up>', '<cmd>resize -2<CR>', { desc = 'Resize split up' })
+map('n', '<C-Down>',  '<cmd>resize +2<CR>', { desc = 'Resize split down' })
+map('n', '<C-Left>',  '<cmd>vertical resize -2<CR>', { desc = 'Resize split left' })
+map('n', '<C-Right>',  '<cmd>vertical resize +2<CR>', { desc = 'Resize split right' })
 
 -- Buffer
 map('n', '<C-Up>', '<cmd>wincmd 3+<cr>', { desc = 'Buffer Increase Height' })
