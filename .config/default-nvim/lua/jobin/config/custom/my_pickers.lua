@@ -191,8 +191,8 @@ end
 M.move_file = function()
   local opts = dropdown_theme
   local parent = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
-  local cwd = require('user.jobin.utils').get_git_root(parent) or vim.loop.cwd()
-  local rename_file = require('user.jobin.utils').rename_file
+  local cwd = require('jobin.config.custom.utils').get_git_root(parent) or vim.loop.cwd()
+  local rename_file = require('jobin.config.custom.utils').rename_file
 
   local cmd = {'find', cwd, '-type', 'd'}
   -- fd doesn't return cwd

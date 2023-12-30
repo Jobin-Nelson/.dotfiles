@@ -5,7 +5,7 @@ function main() {
     local choice
 
     FILES=(
-        "alacritty - $HOME/.config/alacritty/alacritty.yml"
+        "alacritty - $HOME/.config/alacritty/alacritty.toml"
         "i3 - $HOME/.config/i3/config"
         "i3-status - $HOME/.config/i3/i3status.conf"
         "i3-layouts - $HOME/.config/i3/layouts"
