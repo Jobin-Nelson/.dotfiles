@@ -14,17 +14,26 @@ return {
       'xiyaowong/telescope-emoji.nvim',
     },
     config = function()
+      local actions = require('telescope.actions')
+      local my_actions = require('jobin.config.custom.my_actions')
       require('telescope').setup({
         pickers = {
           buffers = {
             mappings = {
               n = {
                 ['d'] = 'delete_buffer',
-              }
+              },
             }
           }
         },
         defaults = {
+          mappings = {
+            i = {
+              ["<C-s>"] = actions.cycle_previewers_next,
+              ["<C-a>"] = actions.cycle_previewers_prev,
+              ["<A-y>"] = my_actions.copy_entry,
+            },
+          },
           git_worktrees = vim.g.git_worktrees,
           prompt_prefix = "❯ ",
           selection_caret = "❯ ",
