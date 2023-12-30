@@ -1,8 +1,7 @@
 local map = vim.keymap.set
 
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-map('n', '<leader>e', '<cmd>Lexplore 30 %:h<cr>', { desc = 'Open Explorer' })
-map('n', '<leader>E', '<cmd>Lexplore 30<cr>', { desc = 'Open Explorer (cwd)' })
+map('n', '<leader>e', '<cmd>Lexplore 30<cr>', { desc = 'Open Explorer (cwd)' })
 -- map('n', '<leader>e', '<cmd>lua require("nvim-tree.api").tree.toggle({find_file=true})<cr>', { desc = 'Open Explorer' })
 map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -84,7 +83,8 @@ map('n', '<leader>pm', '<cmd>Mason<cr>', { desc = 'Mason Installer' })
 map('t', '<C-w>', '<C-\\><C-n><C-w>', { desc = 'Terminal window command' })
 
 -- UI
-map('n', '<leader>ui', '<cmd>lua require("jobin.config.custom.utils").set_indent()<cr>', { desc = 'Set Indent' })
+map('n', '<leader>ui', '<cmd>lua require("jobin.config.custom.ui").set_indent()<cr>', { desc = 'Set Indent' })
+map('n', '<leader>us', '<cmd>lua require("jobin.config.custom.ui").toggle_spell()<cr>', { desc = 'Toggle Spell' })
 map('n', '<leader>ur', '<cmd>nohlsearch <bar> diffupdate <bar> normal! <C-L><CR>', { desc = 'UI Refresh' })
 
 -- Other

@@ -95,24 +95,6 @@ M.start_journal = function()
   vim.opt_local.linebreak = true
 end
 
-function M.set_indent()
-  vim.ui.input({
-    prompt = "Set indent value (>0 expandtab, <=0 noexpandtab): ",
-  }, function(new_indent)
-    new_indent = tonumber(new_indent)
-    if new_indent == nil or new_indent == 0 then
-      return
-    end
-
-    vim.bo.expandtab = (new_indent > 0)
-    new_indent = math.abs(new_indent)
-    vim.bo.tabstop = new_indent
-    vim.bo.softtabstop = new_indent
-    vim.bo.shiftwidth = new_indent
-    print("Indent set to " .. new_indent)
-  end)
-end
-
 ---@param cwd? string
 ---@return string|nil
 function M.get_git_root(cwd)
