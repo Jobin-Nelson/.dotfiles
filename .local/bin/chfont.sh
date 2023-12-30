@@ -24,7 +24,7 @@ function get_font() {
 }
 
 function set_font() {
-    sed -i "s/family: .*/family: $font/" "${ALACRITTY_FILE}"
+    sed -i "s/^family = .*/family = \"$font\"/" "${ALACRITTY_FILE}"
 
     # sed -Ei "
     # s/set [$]font '.*'/set \$font '${font}'/
@@ -50,19 +50,17 @@ function set_style() {
 
 function set_size() {
     case "$font" in
-        'Ubuntu Mono Nerd Font')       sed -i 's/size: .*/size: 12/' "${ALACRITTY_FILE}" ;;
-        'JetBrainsMono Nerd Font')     sed -i 's/size: .*/size: 10/' "${ALACRITTY_FILE}" ;;
-        'SauceCodePro Nerd Font')      sed -i 's/size: .*/size: 11.5/' "${ALACRITTY_FILE}" ;;
-        # 'Rec Mono'*)                   sed -i 's/size: .*/size: 10.5/' "${ALACRITTY_FILE}" ;;
-        # 'Caskaydia Cove Nerd Font')    sed -i 's/size: .*/size: 10.5/' "${ALACRITTY_FILE}" ;;
-        *)                             sed -i 's/size: .*/size: 10.5/' "${ALACRITTY_FILE}" ;;
+        'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 12/' "${ALACRITTY_FILE}" ;;
+        'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 10/' "${ALACRITTY_FILE}" ;;
+        'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 11.5/' "${ALACRITTY_FILE}" ;;
+        *)                             sed -i 's/^size .*/size = 10.5/' "${ALACRITTY_FILE}" ;;
     esac
 }
 
 function main() {
     local ALACRITTY_FILE I3_FILE font
 
-    ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.yml"
+    ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.toml"
     I3_FILE="$HOME/.config/i3/config"
 
     font=$(get_font)
