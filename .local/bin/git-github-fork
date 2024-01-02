@@ -28,7 +28,7 @@ def load_config() -> dict[str, str]:
 
     if sys.platform != "win32" and mode != 0o600:
         raise SystemExit(
-            f"{filename} has too-permissive permissions, Expected 0o600"
+            f"{filename} has too-permissive permissions, Expected 0o600 "
             f"got 0o{mode:o}",
         )
 

@@ -15,14 +15,8 @@ map('n', '<C-Left>',  '<cmd>vertical resize -2<CR>', { desc = 'Resize split left
 map('n', '<C-Right>',  '<cmd>vertical resize +2<CR>', { desc = 'Resize split right' })
 
 -- Buffer
-map('n', '<C-Up>', '<cmd>wincmd 3+<cr>', { desc = 'Buffer Increase Height' })
-map('n', '<C-Down>', '<cmd>wincmd 3-<cr>', { desc = 'Buffer Decrease Height' })
-map('n', '<C-Left>', '<cmd>wincmd 3<<cr>', { desc = 'Buffer Decrease Width' })
-map('n', '<C-Right>', '<cmd>wincmd 3><cr>', { desc = 'Buffer Increase Width' })
 map('n', '[b', '<cmd>bprevious<cr>', { desc = 'Next Buffer' })
 map('n', ']b', '<cmd>bnext<cr>', { desc = 'Previous Buffer' })
-map('n', '[q', '<cmd>cprevious<cr>', { desc = 'Previous Quickfix' })
-map('n', ']q', '<cmd>cnext<cr>', { desc = 'Next Quickfix' })
 map('n', '<leader>bo', '<cmd>update <bar> %bdelete <bar> edit# <bar> bdelete #<CR>', { desc = 'Delete Other buffers' })
 map('n', '<leader>bh', '<cmd>lua require("jobin.config.custom.utils").delete_hidden_buffers()<cr>', { desc = 'Delete Hidden buffers' })
 map('n', '<leader>bk', '<cmd>call delete(expand("%:p")) <bar> bdelete!<cr>', { desc = 'Buffer Kill' })
@@ -63,6 +57,7 @@ map('n', "<leader>f'", '<cmd>lua require("telescope.builtin").marks()<cr>', { de
 map('n', "<leader>fm", '<cmd>lua require("telescope.builtin").man_pages()<cr>', { desc = 'Find Man Pages' })
 map('n', '<leader>ft', '<cmd>lua require("telescope.builtin").colorscheme()<cr>', { desc = 'Find Themes' })
 map('n', '<leader>fD', '<cmd>lua require("telescope.builtin").diagnostics()<cr>', { desc = 'Find Diagnostics' })
+map('n', '<leader>fe', '<cmd>Telescope emoji<cr>', { desc = 'Find Emoji' })
 map('n', '<leader>fa', '<cmd>lua require("jobin.config.custom.my_pickers").find_config()<cr>', { desc = 'Find Config' })
 map('n', '<leader>fd', '<cmd>lua require("jobin.config.custom.my_pickers").find_dotfiles()<cr>', { desc = 'Find Dotfiles' })
 map('n', '<leader>fz', '<cmd>lua require("jobin.config.custom.my_pickers").find_zoxide()<cr>', { desc = 'Find Zoxide' })
@@ -89,6 +84,8 @@ map('n', '<leader>us', '<cmd>lua require("jobin.config.custom.ui").toggle_spell(
 map('n', '<leader>ur', '<cmd>nohlsearch <bar> diffupdate <bar> normal! <C-L><CR>', { desc = 'UI Refresh' })
 
 -- Other
+map('n', '[q', '<cmd>cprevious<cr>', { desc = 'Previous Quickfix' })
+map('n', ']q', '<cmd>cnext<cr>', { desc = 'Next Quickfix' })
 map('n', '<leader>we', '<cmd>lua require("jobin.config.custom.work_stuff.email_update").open()<cr>', { desc = 'Send Email' })
 map('n', '<leader>wt', '<cmd>lua require("jobin.config.custom.work_stuff.get_ticket").populate_ticket()<cr>', { desc = 'Source Ticket' })
 map('n', '<leader>jb', '<cmd>lua require("jobin.config.custom.utils").scratch_buffer()<cr>', { desc = 'Scratch buffer' })

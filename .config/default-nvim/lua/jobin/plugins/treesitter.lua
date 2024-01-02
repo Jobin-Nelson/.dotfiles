@@ -114,10 +114,5 @@ return {
     event = { 'BufReadPre', 'BufNewFile'},
     opts = { mode = "cursor", max_lines = 3 },
   },
-  {
-    'nvim-treesitter/playground',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    cmd = 'TSPlaygroundToggle',
-  }
 }
 

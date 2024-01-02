@@ -10,6 +10,25 @@ lines = 27
 x = 3
 y = 3
 
+[font]
+size = 12
+
+[font.bold]
+family = "Ubuntu Mono Nerd Font"
+style = "Bold"
+
+[font.bold_italic]
+family = "Ubuntu Mono Nerd Font"
+style = "Bold Italic"
+
+[font.italic]
+family = "Ubuntu Mono Nerd Font"
+style = "Italic"
+
+[font.normal]
+family = "Ubuntu Mono Nerd Font"
+style = "Regular"
+
 [colors]
 draw_bold_text_with_bright_colors = true
 
@@ -49,25 +68,6 @@ shape = "Block"
 
 [env]
 TERM = "xterm-256color"
-
-[font]
-size = 10
-
-[font.bold]
-family = "JetBrainsMono Nerd Font"
-style = "Bold"
-
-[font.bold_italic]
-family = "JetBrainsMono Nerd Font"
-style = "Bold Italic"
-
-[font.italic]
-family = "JetBrainsMono Nerd Font"
-style = "Italic"
-
-[font.normal]
-family = "JetBrainsMono Nerd Font"
-style = "Regular"
 
 # keybindings
 [[keyboard.bindings]]
