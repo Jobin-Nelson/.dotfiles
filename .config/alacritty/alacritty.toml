@@ -71,11 +71,6 @@ TERM = "xterm-256color"
 
 # keybindings
 [[keyboard.bindings]]
-action = "CreateNewWindow"
-key = "N"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
 chars = "\u001B[13;2u"
 key = "Return"
 mods = "Shift"
