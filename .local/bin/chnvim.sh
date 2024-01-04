@@ -22,6 +22,7 @@ function get_current_distro() {
   case "${origin_url}" in
     lazyvim_config) CURRENT_DISTRO='lazyvim';;
     AstroNvim)      CURRENT_DISTRO='astronvim';;
+    my_nvim)      CURRENT_DISTRO='my_nvim';;
     *)              bail 'No match found for nvim distribution';;
   esac
 }
