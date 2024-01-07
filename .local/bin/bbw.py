@@ -47,11 +47,9 @@ async def main() -> int:
     projects = home / 'playground' / 'projects'
     nvim = home / '.config' / 'nvim'
 
-    tasks = []
-    tasks.append(git_push(*map(str, [home, dotfiles, home])))
-    tasks.append(git_push(str(nvim)))
     await asyncio.gather(
-        *tasks,
+        git_push(*map(str, [home, dotfiles, home])),
+        git_push(str(nvim)),
         *(git_push(str(p)) for p in projects.iterdir() if p.is_dir()),
     )
     return 0
