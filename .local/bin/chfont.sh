@@ -68,7 +68,7 @@ function main() {
     [[ -z $font ]] && { echo "None selected. Aborting!"; exit 1; }
 
     set_font 
-    set_style 
+    # set_style 
     set_size
 }
 
