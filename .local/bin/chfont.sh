@@ -15,6 +15,8 @@ function get_font() {
         'Rec Mono Casual'
         'Rec Mono Duotone'
         'Rec Mono Linear'
+        'GeistMono Nerd Font'
+        'RobotoMono Nerd Font'
     )
 
     choice=$(printf '%s\n' "${FONTS[@]}" \

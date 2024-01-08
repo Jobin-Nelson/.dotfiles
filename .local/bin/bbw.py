@@ -13,6 +13,7 @@ from typing import overload
 import shutil
 import asyncio
 
+
 async def exec_cmd(cmd: list[str]) -> bool:
     proc = await asyncio.create_subprocess_exec(
         *cmd,
@@ -20,7 +21,7 @@ async def exec_cmd(cmd: list[str]) -> bool:
         stderr=asyncio.subprocess.DEVNULL,
     )
     await proc.communicate()
-    return await proc.wait() == 0
+    return proc.returncode == 0
 
 
 @overload
