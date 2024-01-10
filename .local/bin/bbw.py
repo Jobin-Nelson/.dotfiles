@@ -30,15 +30,15 @@ async def git_push(cwd: str, git_dir: None = None, work_tree: None = None): ...
 async def git_push(cwd: str, git_dir: str, work_tree: str): ...
 
 async def git_push(cwd: str, git_dir: str|None = None, work_tree: str|None = None):
-    cmd = ['git']
-    if cwd: cmd.extend(['-C', cwd])
+    cmd = ['git', '-C', cwd]
     if git_dir: cmd.extend(['--git-dir', git_dir])
     if work_tree: cmd.extend(['--work-tree', work_tree])
 
-    commit_cmd = ['commit', '-a', '-m', 'chore: bbw.py backup commit']
-    push_cmd = ['push', 'origin', 'HEAD']
+    commit_args = ['commit', '-a', '-m', 'chore: bbw.py backup commit']
+    push_args = ['push', 'origin', 'HEAD']
 
-    if await exec_cmd(cmd + commit_cmd) + await exec_cmd(cmd + push_cmd) == 2:
+    await exec_cmd(cmd + commit_args)
+    if await exec_cmd(cmd + push_args):
         print(f'{git_dir or cwd} successfully backed up')
 
 
