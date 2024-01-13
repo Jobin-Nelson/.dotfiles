@@ -37,17 +37,18 @@ function set_font() {
 }
 
 function set_style() {
-    if [[ $font == 'JetBrainsMono Nerd Font' ]]; then
+    if [[ $font == 'JetBrainsMono Nerd Font' ]] \
+      || [[ $font == 'SauceCodePro Nerd Font' ]]; then
         sed -zi '
         s/style = "[^"]*"/style = "Medium Italic"/3
         s/style = "[^"]*"/style = "Medium"/4
         ' "${ALACRITTY_FILE}"
-    else
-        sed -zi '
-        s/style = "[^"]*"/style = "Italic"/3
-        s/style = "[^"]*"/style = "Regular"/4
-        ' "${ALACRITTY_FILE}"
+        return
     fi
+    sed -zi '
+    s/style = "[^"]*"/style = "Italic"/3
+    s/style = "[^"]*"/style = "Regular"/4
+    ' "${ALACRITTY_FILE}"
 }
 
 function set_size() {
@@ -70,7 +71,7 @@ function main() {
     [[ -z $font ]] && { echo "None selected. Aborting!"; exit 1; }
 
     set_font 
-    # set_style 
+    set_style 
     set_size
 }
 
