@@ -37,8 +37,7 @@ function set_font() {
 }
 
 function set_style() {
-    if [[ $font == 'JetBrainsMono Nerd Font' ]] \
-      || [[ $font == 'SauceCodePro Nerd Font' ]]; then
+    if [[ $font == 'JetBrainsMono Nerd Font' ]]; then
         sed -zi '
         s/style = "[^"]*"/style = "Medium Italic"/3
         s/style = "[^"]*"/style = "Medium"/4

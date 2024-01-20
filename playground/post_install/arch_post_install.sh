@@ -56,7 +56,8 @@ function install_packages() {
 		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
 		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
 		starship cronie podman aria2 rsync pacman-contrib netcat neofetch \
-		syncthing
+		ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
+    syncthing net-tools 
 
 	paru -S --noconfirm \
 		nvm visual-studio-code-bin
@@ -265,7 +266,7 @@ function main() {
 	install_python
 	setup_repos
 	download_wallpapers
-	install_fonts
+	# install_fonts
 	configure_gnome
 	switch_to_integrated_graphics
 	# switch_to_X11

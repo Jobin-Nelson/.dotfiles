@@ -44,3 +44,7 @@ WSL=1 $HOME/make_life_easy.sh
 - [neovim](https://github.com/neovim/neovim)
 - [starship](https://starship.rs/)
 
+## Ansible Pull
+
+- `sudo pacman -S git ansible wl-clipboard`
+- `ansible-pull -K -U https://github.com/jobin-nelson/config-setup`
