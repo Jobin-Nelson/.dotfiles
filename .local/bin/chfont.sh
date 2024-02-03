@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+FONT=''
+
 function get_font() {
   declare -a FONTS
 
@@ -19,25 +22,26 @@ function get_font() {
     'RobotoMono Nerd Font'
   )
 
-  choice=$(printf '%s\n' "${FONTS[@]}" \
+  FONT=$(printf '%s\n' "${FONTS[@]}" \
     | fzf --prompt 'Edit font: ' --layout=reverse --height='50%' --border --ansi)
-
-  echo "${choice}"
 }
 
-function set_font() {
-  sed -i "s/^family = .*/family = \"$font\"/" "${ALACRITTY_FILE}"
+function set_alacritty_font() {
+  sed -i "s/^family = .*/family = \"$FONT\"/" "${ALACRITTY_FILE}"
 
     # sed -Ei "
     # s/set [$]font '.*'/set \$font '${font}'/
     # s/font pango:.* ([0-9][0-9]?)/font pango:${font} \1/
     # " "${I3_FILE}"
 
-    echo "Font changed to $font"
+    echo "Font changed to $FONT"
+
+    set_alacritty_style
+    set_alacritty_size
   }
 
-  function set_style() {
-    if [[ $font == 'JetBrainsMono Nerd Font' ]]; then
+  function set_alacritty_style() {
+    if [[ $FONT == 'JetBrainsMono Nerd Font' ]]; then
       sed -zi '
       s/style = "[^"]*"/style = "Medium Italic"/3
       s/style = "[^"]*"/style = "Medium"/4
@@ -50,8 +54,8 @@ function set_font() {
     ' "${ALACRITTY_FILE}"
   }
 
-  function set_size() {
-    case "$font" in
+  function set_alacritty_size() {
+    case "$FONT" in
       'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 12/' "${ALACRITTY_FILE}" ;;
       'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 10/' "${ALACRITTY_FILE}" ;;
       'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 11.5/' "${ALACRITTY_FILE}" ;;
@@ -60,26 +64,27 @@ function set_font() {
   }
 
   function set_kitty_font() {
-    sed -i "s/^\(font_family\s*\).*/\1${font}/1" "${KITTY_FILE}"
-    echo "Font changed to $font"
+    sed -i "s/^\(font_family\s*\).*/\1${FONT}/1" "${KITTY_FILE}" \
+      && kill -SIGUSR1 "${KITTY_PID}" \
+      && echo "Font changed to $FONT"
   }
 
   function main() {
-    local ALACRITTY_FILE I3_FILE font
+    local ALACRITTY_FILE I3_FILE FONT
 
     ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.toml"
     I3_FILE="$HOME/.config/i3/config"
     KITTY_FILE="$HOME/.config/kitty/kitty.conf"
 
-    font=$(get_font)
+    get_font
 
-    [[ -z $font ]] && { echo "None selected. Aborting!"; exit 1; }
+    [[ -z $FONT ]] && { echo "None selected. Aborting!"; exit 1; }
 
-    [[ $TERM == 'xterm-kitty' ]] && set_kitty_font && return
-
-    set_font
-    set_style
-    set_size
+    if [[ -n $KITTY_PID ]]; then 
+      set_kitty_font
+    else
+      set_alacritty_font
+    fi
   }
 
   main

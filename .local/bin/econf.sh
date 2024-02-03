@@ -45,6 +45,7 @@ function main() {
         "git-github-url - $HOME/.local/bin/git-github-url"
         "git-happy-merge - $HOME/.local/bin/git-happy-merge"
         "bbw - $HOME/.local/bin/bbw.py"
+        "kitty - $HOME/.config/kitty/kitty.conf"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
