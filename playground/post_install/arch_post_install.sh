@@ -242,8 +242,8 @@ function install_hyprland() {
 	banner 'Installing Hyprland window manager'
 
 	paru -S --noconfirm \
-		hyprland-git dunst polkit-kde-agent waybar-hyprland-git wl-clipboard \
-		hyprpaper-git grim slurp brightnessctl wlr-randr swaylock
+		hyprland dunst polkit-kde-agent waybar wl-clipboard \
+		hyprpaper grim slurp brightnessctl wlr-randr swaylock rofi
 }
 
 function setup_done() {

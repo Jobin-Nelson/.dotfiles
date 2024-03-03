@@ -41,7 +41,8 @@ function set_alacritty_font() {
   }
 
   function set_alacritty_style() {
-    if [[ $FONT == 'JetBrainsMono Nerd Font' ]]; then
+    if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
+      || [[ $FONT == 'SauceCodePro Nerd Font' ]]; then
       sed -zi '
       s/style = "[^"]*"/style = "Medium Italic"/3
       s/style = "[^"]*"/style = "Medium"/4
