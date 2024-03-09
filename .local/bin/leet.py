@@ -63,6 +63,7 @@ def get_daily_qn_link() -> str:
     req = urllib.request.Request(base_url, json.dumps(query).encode("utf-8"))
     req.add_header("Content-Type", "application/json")
     req.add_header("User-Agent", "Mozilla/5.0")
+    req.add_header("Accept", "*/*")
     res = urllib.request.urlopen(req, timeout=5.0)
     return (
         base_url.removesuffix("/graphql/")
