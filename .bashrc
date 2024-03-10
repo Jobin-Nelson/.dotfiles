@@ -51,6 +51,7 @@ alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set
 alias fnote='file=$(find $HOME/playground/projects/second_brain/ -type f -not -path "*.git*" -a -not -path "*/attachments/*" -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" -a -not -path "*/.trash/*" | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi --border) && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $file'
 alias n='NVIM_APPNAME=my_nvim nvim'
 alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "${instanceId}"; done'
+alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -Wno-unused-parameter -g -fmax-errors=1 -Wfatal-errors -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address'
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
