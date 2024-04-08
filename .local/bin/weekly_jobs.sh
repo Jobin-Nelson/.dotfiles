@@ -19,7 +19,7 @@ function main() {
 
   projects=(
     'learn'
-    'org_files'
+    # 'org_files'
     # 'second_brain'
   )
 
