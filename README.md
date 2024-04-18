@@ -22,6 +22,11 @@ cd /home/jobin/playground/post_install
 
 Further setup is documented in [Arch notes](./playground/post_install/arch_notes.md)
 
+#### Install gsconnect for Gnome
+
+- `sudo pacman -S gnome-browser-connector`: install connector package
+- https://extensions.gnome.org/extension/1319/gsconnect/
+
 ### Ubuntu & derivatives
 
 ```bash

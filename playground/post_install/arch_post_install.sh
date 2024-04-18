@@ -197,9 +197,10 @@ function install_fonts() {
 		'SourceCodePro'
 		'CascadiaCode'
 		'UbuntuMono'
+    'Recursive'
 	)
 
-	BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1'
+	BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1'
 	DOWNLOAD_DIR="$HOME/Downloads"
 	FONT_DIR="$HOME/.local/share/fonts"
 	mkdir -pv "${DOWNLOAD_DIR}" "${FONT_DIR}"

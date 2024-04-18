@@ -89,19 +89,20 @@ case ":${PATH}:" in
 esac
 
 # Fzf completion
-[[ -s "$HOME/.config/fzf/key-bindings.bash" ]] && \. "$HOME/.config/fzf/key-bindings.bash"
-[[ -s "$HOME/.config/fzf/completion.bash" ]] && \. "$HOME/.config/fzf/completion.bash"
+export FZF_DEFAULT_OPTS='--border --layout=reverse --height=40% --info=inline-right --cycle'
+eval "$(fzf --bash)"
+[[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
+
+# Directory jumper
+eval "$(zoxide init bash)"
 
 # Pyenv [Python version manager]
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-# Directory jumper
-eval "$(zoxide init bash)"
-
 # Cargo [Rust]
-. "$HOME/.cargo/env"
+[[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
 
 # Go
 command -v go > /dev/null && export PATH="${PATH}:$(go env GOPATH)/bin"
