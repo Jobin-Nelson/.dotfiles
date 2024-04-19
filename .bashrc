@@ -89,7 +89,7 @@ case ":${PATH}:" in
 esac
 
 # Fzf completion
-export FZF_DEFAULT_OPTS='--border --layout=reverse --height=40% --info=inline-right --cycle'
+export FZF_DEFAULT_OPTS='--border --layout=reverse --height=40% --info=right --cycle'
 eval "$(fzf --bash)"
 [[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
 

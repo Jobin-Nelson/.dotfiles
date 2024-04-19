@@ -57,7 +57,7 @@ function help() {
   echo
   echo "This script sets up tmux sessions and windows"
   echo 
-  echo "Syntax: ${0##*/} [-h|c] movie name"
+  echo "Syntax: ${0##*/} [-h|s|w <cmd>]"
   echo 'options:'
   echo 'h   Print this [h]elp'
   echo 's   Start or switch [s]essions'
