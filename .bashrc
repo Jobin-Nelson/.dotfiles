@@ -105,7 +105,7 @@ eval "$(pyenv init -)"
 [[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
 
 # Go
-command -v go > /dev/null && export PATH="${PATH}:$(go env GOPATH)/bin"
+command -v go > /dev/null && export PATH="$(go env GOPATH)/bin:${PATH}"
 
 # Starship prompt
 eval "$(starship init bash)"

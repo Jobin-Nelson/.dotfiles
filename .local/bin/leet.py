@@ -6,6 +6,8 @@ import argparse
 import datetime
 import json
 import subprocess
+import sys
+import urllib.error
 import urllib.request
 import webbrowser
 from pathlib import Path
@@ -40,7 +42,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    daily_qn_link = get_daily_qn_link()
+    try:
+        daily_qn_link = get_daily_qn_link()
+    except urllib.error.URLError:
+        print(f'Unable to get response from leetcode. Check your network connection', file=sys.stderr)
+        return 1
+
     leet_file = LEET_DAILY_DIR / Path(daily_qn_link).with_suffix(".py").name
 
     if args.browser:
