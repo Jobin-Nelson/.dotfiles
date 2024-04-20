@@ -67,9 +67,12 @@ function set_alacritty_size() {
 }
 
 function set_kitty_font() {
-  sed -i "s/^\(font_family\s*\).*/\1${FONT}/1" "${KITTY_FILE}" \
-    && kill -SIGUSR1 "${KITTY_PID}" \
-    && echo "Font changed to $FONT"
+  sed -i "s/^\(font_family\s*\).*/\1${FONT}/1" "${KITTY_FILE}"
+  [[ -n $KITTY_PID ]] && kill -SIGUSR1 "${KITTY_PID}"
+}
+
+function set_wofi_font() {
+  sed -i 's/font-family: ".*"/font-family: "'"${FONT}"'"/' "${WOFI_FILE}"
 }
 
 function main() {
@@ -78,16 +81,15 @@ function main() {
   ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.toml"
   I3_FILE="$HOME/.config/i3/config"
   KITTY_FILE="$HOME/.config/kitty/kitty.conf"
+  WOFI_FILE="$HOME/.config/wofi/style.css"
 
   get_font
 
   [[ -z $FONT ]] && { echo "None selected. Aborting!"; exit 1; }
 
-  if [[ -n $KITTY_PID ]]; then 
-    set_kitty_font
-  else
-    set_alacritty_font
-  fi
+  set_kitty_font
+  set_alacritty_font
+  set_wofi_font
 }
 
 main

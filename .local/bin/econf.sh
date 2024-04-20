@@ -30,6 +30,10 @@ function main() {
         "arch_notes - $HOME/playground/post_install/arch_notes.md"
         "arch_post_install - $HOME/playground/post_install/arch_post_install.sh"
         "hyprland - $HOME/.config/hypr/hyprland.conf"
+        "hypridle - $HOME/.config/hypr/hypridle.conf"
+        "hyprpaper - $HOME/.config/hypr/hyprpaper.conf"
+        "hyprlock - $HOME/.config/hypr/hyprlock.conf"
+        "hyprstart - $HOME/.local/bin/hyprstart"
         "waybar - $HOME/.config/waybar/config"
         "deconf - $HOME/.local/bin/deconf.sh"
         "git - $HOME/.config/git/config"
@@ -46,6 +50,8 @@ function main() {
         "git-happy-merge - $HOME/.local/bin/git-happy-merge"
         "bbw - $HOME/.local/bin/bbw.py"
         "kitty - $HOME/.config/kitty/kitty.conf"
+        "wofi - $HOME/.config/wofi/config"
+        "wofi_style - $HOME/.config/wofi/style.css"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
