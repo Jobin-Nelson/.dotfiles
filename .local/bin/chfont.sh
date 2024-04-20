@@ -60,6 +60,7 @@ function set_alacritty_size() {
     'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 14/' "${ALACRITTY_FILE}" ;;
     'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 11.5/' "${ALACRITTY_FILE}" ;;
     'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 13/' "${ALACRITTY_FILE}" ;;
+    'Caskaydia Cove Nerd Font')    sed -i 's/^size .*/size = 12/' "${ALACRITTY_FILE}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${ALACRITTY_FILE}" ;;
     *)                             sed -i 's/^size .*/size = 11.5/' "${ALACRITTY_FILE}" ;;
   esac
