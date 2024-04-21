@@ -187,26 +187,26 @@
 
     // CPU
     "cpu": {
-        "format": "/ C {usage}% ",
+        "format": "|C {usage}%",
         "on-click": "alacritty -e htop"
     },
 
     // Memory
     "memory": {
-        "format": "/ M {}% ",
+        "format": "|M {}%",
         "on-click": "alacritty -e htop"
     },
 
     // Harddisc space used
     "disk": {
         "interval": 30,
-        "format": "D {percentage_used}% ",
+        "format": "|D {percentage_used}%",
         "path": "/",
         "on-click": "alacritty -e htop"
     }, 
 
     "hyprland/language": {
-        "format": "/ K {short}"
+        "format": "|K {short}"
     },
 
     // Group Hardware
