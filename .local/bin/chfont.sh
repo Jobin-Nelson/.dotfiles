@@ -83,6 +83,8 @@ function set_waybar_font() {
 
   waybar_file="$HOME/.config/waybar/style.css"
   sed -i "s/font-family: .*;/font-family: ${FONT};/" "${waybar_file}"
+
+  [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]] && reload.sh -w &>/dev/null
 }
 
 function set_hyprlock_font() {
