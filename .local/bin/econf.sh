@@ -63,6 +63,7 @@ function main() {
         "wofi_style - $HOME/.config/wofi/style.css"
         "reload - $HOME/.local/bin/reload.sh"
         "chde - $HOME/.local/bin/chde.sh"
+        "bcon - $HOME/.local/bin/bcon.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

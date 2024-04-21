@@ -79,6 +79,7 @@ function set_wofi_font() {
 }
 
 function set_waybar_font() {
+  [[ $FONT == 'SauceCodePro Nerd Font' ]] && return
   local waybar_file
 
   waybar_file="$HOME/.config/waybar/style.css"
