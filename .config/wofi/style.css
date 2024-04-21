@@ -1,0 +1,32 @@
+/* See `Man 5 wofi` for help on selectors */
+
+* {
+  border-radius: 5px;
+  border: none;
+}
+
+window {
+  font-size: 18px;
+  font-family: "Hack Nerd Font";
+  background-color: rgba(50, 50, 50, 0.9);
+  color: white;
+}
+
+#entry:selected {
+  background-color: #bbccdd;
+}
+
+#text:selected {
+  color: #333333;
+}
+
+#input {
+  background-color: rgba(50, 50, 50, 0.5);
+  color: white;
+  padding: 0.25em;
+}
+
+image {
+  margin-left: .25em;
+  margin-right: .25em;
+}
