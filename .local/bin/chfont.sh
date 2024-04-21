@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-FONT=''
+FONT="${FONT:-}"
 
 function get_font() {
   declare -a FONTS
@@ -23,18 +23,15 @@ function get_font() {
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" \
-    | fzf --prompt 'Edit font: ' --layout=reverse --height='50%' --border --ansi)
+    | fzf --prompt 'Edit font: ' --layout=reverse --height='50%' --border)
 }
 
 function set_alacritty_font() {
-  sed -i "s/^family = .*/family = \"$FONT\"/" "${ALACRITTY_FILE}"
+  local alacritty_file
 
-  # sed -Ei "
-  # s/set [$]font '.*'/set \$font '${font}'/
-  # s/font pango:.* ([0-9][0-9]?)/font pango:${font} \1/
-  # " "${I3_FILE}"
+  alacritty_file="$HOME/.config/alacritty/alacritty.toml"
 
-  echo "Font changed to $FONT"
+  sed -i "s/^family = .*/family = \"$FONT\"/" "${alacritty_file}"
 
   set_alacritty_style
   set_alacritty_size
@@ -46,50 +43,67 @@ function set_alacritty_style() {
     sed -zi '
     s/style = "[^"]*"/style = "Medium Italic"/3
     s/style = "[^"]*"/style = "Medium"/4
-    ' "${ALACRITTY_FILE}"
+    ' "${alacritty_file}"
     return
   fi
   sed -zi '
   s/style = "[^"]*"/style = "Italic"/3
   s/style = "[^"]*"/style = "Regular"/4
-  ' "${ALACRITTY_FILE}"
+  ' "${alacritty_file}"
 }
 
 function set_alacritty_size() {
   case "$FONT" in
-    'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 14/' "${ALACRITTY_FILE}" ;;
-    'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 11.5/' "${ALACRITTY_FILE}" ;;
-    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 13/' "${ALACRITTY_FILE}" ;;
-    'Caskaydia Cove Nerd Font')    sed -i 's/^size .*/size = 12/' "${ALACRITTY_FILE}" ;;
-    Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${ALACRITTY_FILE}" ;;
-    *)                             sed -i 's/^size .*/size = 11.5/' "${ALACRITTY_FILE}" ;;
+    'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 14/' "${alacritty_file}" ;;
+    'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 11.5/' "${alacritty_file}" ;;
+    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
+    'Caskaydia Cove Nerd Font')    sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
+    Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
+    *)                             sed -i 's/^size .*/size = 11.5/' "${alacritty_file}" ;;
   esac
 }
 
 function set_kitty_font() {
-  sed -i "s/^\(font_family\s*\).*/\1${FONT}/1" "${KITTY_FILE}"
+  local kitty_file
+
+  kitty_file="$HOME/.config/kitty/kitty.conf"
+  sed -i "s/^\(font_family\s*\).*/\1${FONT}/1" "${kitty_file}"
   [[ -n $KITTY_PID ]] && kill -SIGUSR1 "${KITTY_PID}"
 }
 
 function set_wofi_font() {
-  sed -i 's/font-family: ".*"/font-family: "'"${FONT}"'"/' "${WOFI_FILE}"
+  local wofi_file
+
+  wofi_file="$HOME/.config/wofi/style.css"
+  sed -i 's/font-family: ".*"/font-family: "'"${FONT}"'"/' "${wofi_file}"
+}
+
+function set_waybar_font() {
+  local waybar_file
+
+  waybar_file="$HOME/.config/waybar/style.css"
+  sed -i "s/font-family: .*;/font-family: ${FONT};/" "${waybar_file}"
+}
+
+function set_hyprlock_font() {
+  local hyprlock_file
+
+  hyprlock_file="$HOME/.config/hypr/hyprlock.conf"
+  sed -i "s/font_family = .*/font_family = ${FONT}/" "${hyprlock_file}"
 }
 
 function main() {
-  local ALACRITTY_FILE I3_FILE FONT
-
-  ALACRITTY_FILE="$HOME/.config/alacritty/alacritty.toml"
-  I3_FILE="$HOME/.config/i3/config"
-  KITTY_FILE="$HOME/.config/kitty/kitty.conf"
-  WOFI_FILE="$HOME/.config/wofi/style.css"
-
-  get_font
+  [[ -z $FONT ]] && get_font
 
   [[ -z $FONT ]] && { echo "None selected. Aborting!"; exit 1; }
 
   set_kitty_font
   set_alacritty_font
   set_wofi_font
+  set_waybar_font
+  set_hyprlock_font
+
+  echo "Font changed to $FONT"
 }
 
 main

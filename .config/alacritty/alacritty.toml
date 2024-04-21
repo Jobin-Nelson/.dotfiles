@@ -11,23 +11,23 @@ x = 3
 y = 3
 
 [font]
-size = 12
+size = 11.5
 
 [font.bold]
-family = "Caskaydia Cove Nerd Font"
+family = "JetBrainsMono Nerd Font"
 style = "Bold"
 
 [font.bold_italic]
-family = "Caskaydia Cove Nerd Font"
+family = "JetBrainsMono Nerd Font"
 style = "Bold Italic"
 
 [font.italic]
-family = "Caskaydia Cove Nerd Font"
-style = "Italic"
+family = "JetBrainsMono Nerd Font"
+style = "Medium Italic"
 
 [font.normal]
-family = "Caskaydia Cove Nerd Font"
-style = "Regular"
+family = "JetBrainsMono Nerd Font"
+style = "Medium"
 
 [colors]
 draw_bold_text_with_bright_colors = true

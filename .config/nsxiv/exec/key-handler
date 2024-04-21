@@ -7,7 +7,7 @@ case "$1" in
   if [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]]; then 
     while read file; do 
       ff="$(readlink -e "${file}")"
-      hyprctl hyprpaper unload all && hyprctl hyprpaper preload "$ff" && hyprctl hyprpaper wallpaper "eDP-1,$ff" 
+      ~/.local/bin/reload.sh -p "$ff"
       sed -i "
       s|^\(preload = \).*|\1$ff|
       s|^\(wallpaper = ,\).*|\1$ff|

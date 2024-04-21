@@ -53,6 +53,7 @@ function main() {
         "kitty - $HOME/.config/kitty/kitty.conf"
         "wofi - $HOME/.config/wofi/config"
         "wofi_style - $HOME/.config/wofi/style.css"
+        "reload - $HOME/.local/bin/reload.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
