@@ -29,6 +29,10 @@ function hyprpaper() {
     s|^\(preload = \).*|\1$wallpaper|
     s|^\(wallpaper = ,\).*|\1$wallpaper|
     " "$HOME/.config/hypr/hyprpaper.conf"
+
+    [[ "${wallpaper: -4}" == ".png" ]] && sed -i "
+    s|\(path = \)[^#]*|\1$wallpaper |
+    " "$HOME/.config/hypr/hyprlock.conf"
 }
 
 while getopts 'hwp:' option; do

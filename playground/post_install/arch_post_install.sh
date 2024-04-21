@@ -242,9 +242,9 @@ function switch_to_X11() {
 function install_hyprland() {
 	banner 'Installing Hyprland window manager'
 
-	paru -S --noconfirm \
+	pacman -S --noconfirm --needed \
 		hyprland dunst polkit-kde-agent waybar wl-clipboard \
-		hyprpaper grim slurp brightnessctl wlr-randr swaylock rofi
+		hyprpaper grim slurp brightnessctl wlr-randr hyprlock wofi
 }
 
 function setup_done() {
