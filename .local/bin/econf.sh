@@ -42,6 +42,7 @@ function main() {
         "hyprlock - $HOME/.config/hypr/hyprlock.conf"
         "hyprstart - $HOME/.local/bin/hyprstart"
         "waybar - $HOME/.config/waybar/config"
+        "waybar_module - $HOME/.config/waybar/modules.json"
         "waybar_style - $HOME/.config/waybar/style.css"
         "deconf - $HOME/.local/bin/deconf.sh"
         "git - $HOME/.config/git/config"
