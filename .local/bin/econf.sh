@@ -54,6 +54,7 @@ function main() {
         "wofi - $HOME/.config/wofi/config"
         "wofi_style - $HOME/.config/wofi/style.css"
         "reload - $HOME/.local/bin/reload.sh"
+        "chde - $HOME/.local/bin/chde.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

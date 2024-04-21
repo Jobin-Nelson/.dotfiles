@@ -8,11 +8,6 @@ function set_gnome() {
   s/.*\(alias rwl=\)/# \1/
   s/.*\(alias rwl='gsettings\)/\1/
   " "$BASHRC"
-
-  sed -i '
-  s/.*"C-w"/# "C-w"/
-  s/.*\("C-w")      while read file; do gsettings\)/\1/
-  ' "$NSXIV_KEY_HANDLER"
 }
 
 function set_hyprland() {
@@ -20,11 +15,6 @@ function set_hyprland() {
   s/.*\(alias rwl=\)/# \1/
   s/.*\(alias rwl='w=\)/\1/
   " "$BASHRC"
-
-  sed -i '
-  s/.*"C-w"/# "C-w"/
-  s/.*\("C-w")      while read file; do ff=\)/\1/
-  ' "$NSXIV_KEY_HANDLER"
 }
 
 function main() {
