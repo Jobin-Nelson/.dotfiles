@@ -31,7 +31,7 @@ function set_alacritty_font() {
 
   alacritty_file="$HOME/.config/alacritty/alacritty.toml"
 
-  sed -i "s/^family = .*/family = \"$FONT\"/" "${alacritty_file}"
+  sed -i "s/family = .*/family = \"$FONT\"/" "${alacritty_file}"
 
   set_alacritty_style
   set_alacritty_size

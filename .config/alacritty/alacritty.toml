@@ -1,82 +1,81 @@
 [window]
 decorations = "None"
-opacity = 0.9
+opacity = 0.8
 
-[window.dimensions]
-columns = 100
-lines = 27
+  [window.dimensions]
+  columns = 100
+  lines = 27
 
-[window.padding]
-x = 3
-y = 3
+  [window.padding]
+  x = 3
+  y = 3
 
 [font]
 size = 11.5
 
-[font.bold]
-family = "Hack Nerd Font"
-style = "Bold"
+  [font.bold]
+  family = "JetBrainsMono Nerd Font"
+  style = "Bold"
 
-[font.bold_italic]
-family = "Hack Nerd Font"
-style = "Bold Italic"
+  [font.bold_italic]
+  family = "JetBrainsMono Nerd Font"
+  style = "Bold Italic"
 
-[font.italic]
-family = "Hack Nerd Font"
-style = "Italic"
+  [font.italic]
+  family = "JetBrainsMono Nerd Font"
+  style = "Medium Italic"
 
-[font.normal]
-family = "Hack Nerd Font"
-style = "Regular"
+  [font.normal]
+  family = "JetBrainsMono Nerd Font"
+  style = "Medium"
 
 [colors]
 draw_bold_text_with_bright_colors = true
+transparent_background_colors = false
 
-[colors.bright]
-black = "#555753"
-blue = "#729fcf"
-cyan = "#34e2e2"
-green = "#8ae234"
-magenta = "#ad7fa8"
-red = "#ef2929"
-white = "#eeeeec"
-yellow = "#fce94f"
+  [colors.primary]
+  background = "#000000"
+  foreground = "#ffffff"
 
-[colors.cursor]
-cursor = "#ffffff"
-text = "#000000"
+  [colors.cursor]
+  text = "#000000"
+  cursor = "#ffffff"
 
-[colors.normal]
-black = "#000000"
-blue = "#3465a4"
-cyan = "#06989a"
-green = "#4e9a06"
-magenta = "#75507b"
-red = "#cc0000"
-white = "#d3d7cf"
-yellow = "#c4a000"
+  [colors.normal]
+  black = "#151515"
+  red = "#bf7979"
+  green = "#97b26b"
+  yellow = "#cdcda1"
+  blue = "#4a5463"
+  magenta = "#9c3885"
+  cyan = "#88aadd"
+  white = "#ffffff"
 
-[colors.primary]
-background = "#000000"
-foreground = "#ffffff"
+  [colors.bright]
+  black = "#505450"
+  red = "#f4a45f"
+  green = "#c5f779"
+  yellow = "#ffffaf"
+  blue = "#7d8794"
+  magenta = "#e628ba"
+  cyan = "#99ccff"
+  white = "#dedede"
 
 [cursor]
 unfocused_hollow = true
 
-[cursor.style]
-shape = "Block"
+  [cursor.style]
+  shape = "Block"
 
 [env]
 TERM = "xterm-256color"
 
-# keybindings
 [[keyboard.bindings]]
-chars = "\u001B[13;2u"
+chars = "\u001b[13;2u"
 key = "Return"
 mods = "Shift"
 
 [[keyboard.bindings]]
-chars = "\u001B[13;5u"
+chars = "\u001b[13;5u"
 key = "Return"
 mods = "Control"
-
