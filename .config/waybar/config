@@ -1,14 +1,17 @@
 {
     "layer": "top", // Waybar at top layer
     // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 30, // Waybar height (to be removed for auto height)
+    // "height": 30, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["hyprland/workspaces", "sway/mode", "sway/scratchpad", "custom/media"],
+    "modules-left": [
+        "hyprland/workspaces",
+        "hyprland/submap",
+        ],
     "modules-center": ["hyprland/window"],
-    // "modules-right": ["mpd", idle_inhibitor", "pulseaudio", "network", "cpu", "memory", "temperature", "backlight", "keyboard-state", "sway/language", "battery", "battery#bat2", "clock", "tray"],
-    "modules-right": ["idle_inhibitor", "network", "pulseaudio", "backlight", "keyboard-state", "sway/language", "battery", "battery#bat2", "clock", "tray"],
+    // "modules-right": ["mpd", idle_inhibitor", "pulseaudio", "network", "cpu", "memory", "temperature", "backlight", "keyboard-state", "hyprland/language", "battery", "battery#bat2", "clock", "tray"],
+    "modules-right": ["idle_inhibitor", "network", "pulseaudio", "backlight", "keyboard-state", "battery", "clock", "tray"],
     // Modules configuration
     "hyprland/window": {
         "format": "{}"
@@ -38,7 +41,7 @@
             "unlocked": ""
         }
     },
-    "sway/mode": {
+    "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>"
     },
     "sway/scratchpad": {
@@ -124,9 +127,6 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]
-    },
-    "battery#bat2": {
-        "bat": "BAT2"
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
