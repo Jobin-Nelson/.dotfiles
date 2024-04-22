@@ -9,10 +9,10 @@ case "$1" in
       ff="$(readlink -e "${file}")"
       ~/.local/bin/reload.sh -p "$ff"
     done
-  else
+  elif [[ $XDG_CURRENT_DESKTOP == 'GNOME' ]]; then 
     while read file; do 
-    gsettings set org.gnome.desktop.background picture-uri-dark "file://$(readlink -e $file)"
-  done
+      gsettings set org.gnome.desktop.background picture-uri-dark "file://$(readlink -e $file)"
+    done
   fi
   ;;
 "C-d")      while read file; do rm "$(readlink -e "${file}")"; done ;;
