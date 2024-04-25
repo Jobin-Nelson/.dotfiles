@@ -14,6 +14,8 @@
 - `iwctl`
     - `device list`
     - `device wlan0 show`
+    - `station wlan0 scan`
+    - `station wlan0 get-networks`
     - `station wlan0 connect BatCave`
     - `exit`
     - `ping google.com`
