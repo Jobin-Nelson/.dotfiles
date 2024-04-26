@@ -41,4 +41,4 @@ autocmd filetype javascript nnoremap <F5> :update <bar> !node %<CR>
 autocmd filetype go nnoremap <F5> :update <bar> !go run %<CR>
 autocmd filetype markdown :hi link markdownError Normal
 
-colorscheme habamax
+" colorscheme habamax

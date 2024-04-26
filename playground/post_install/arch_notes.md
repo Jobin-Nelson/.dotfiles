@@ -13,6 +13,8 @@
 - `rfkill unblock all`: iwctl device to power on
 - `iwctl`
     - `device list`
+    - `adapter ph0 set-property Powered on`
+    - `device wlan0 set-property Powered on`
     - `device wlan0 show`
     - `station wlan0 scan`
     - `station wlan0 get-networks`
