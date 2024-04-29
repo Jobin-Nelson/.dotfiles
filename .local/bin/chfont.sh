@@ -14,11 +14,6 @@ function get_font() {
     'Caskaydia Cove Nerd Font'
     'Ubuntu Mono Nerd Font'
     'FiraCode Nerd Font'
-    'RecMonoSmCasual Nerd Font'
-    'RecMonoCasual Nerd Font'
-    'RecMonoDuotone Nerd Font'
-    'RecMonoLinear Nerd Font'
-    'GeistMono Nerd Font'
     'RobotoMono Nerd Font'
   )
 
@@ -39,7 +34,9 @@ function set_alacritty_font() {
 
 function set_alacritty_style() {
   if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
-    || [[ $FONT == 'SauceCodePro Nerd Font' ]]; then
+    || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
+    || [[ $FONT == 'RobotoMono Nerd Font' ]] \
+    then
     sed -zi '
     s/style = "[^"]*"/style = "Medium Italic"/3
     s/style = "[^"]*"/style = "Medium"/4
@@ -56,7 +53,7 @@ function set_alacritty_size() {
   case "$FONT" in
     'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 15/' "${alacritty_file}" ;;
     'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
-    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
+    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 14.3/' "${alacritty_file}" ;;
     'Caskaydia Cove Nerd Font')    sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     *)                             sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
@@ -79,7 +76,6 @@ function set_wofi_font() {
 }
 
 function set_waybar_font() {
-  [[ $FONT == 'SauceCodePro Nerd Font' ]] && return
   local waybar_file
 
   waybar_file="$HOME/.config/waybar/style.css"
