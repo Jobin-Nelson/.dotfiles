@@ -4,11 +4,12 @@ function help() {
   echo
   echo "This script reloads anything"
   echo 
-  echo "Syntax: ${0##*/} [-h|w|p <wallpaper>]"
+  echo "Syntax: ${0##*/} [-h|w|p <wallpaper>|g]"
   echo 'options:'
   echo 'h   Print this [h]elp'
   echo 'w   Reload waybar'
   echo 'p   Reload hyprpaper'
+  echo 'g   Reload gpg-agent'
   echo
 }
 
@@ -35,11 +36,16 @@ function hyprpaper() {
     " "$HOME/.config/hypr/hyprlock.conf"
 }
 
-while getopts 'hwp:' option; do
+function gpg_agent() {
+  gpg-connect-agent reloadagent /bye
+}
+
+while getopts 'hwp:g' option; do
   case $option in
     h) help ;;
     w) waybar ;;
     p) hyprpaper "${OPTARG}";;
+    g) gpg_agent ;;
     *) 
       echo "Invalid flag"
       help
