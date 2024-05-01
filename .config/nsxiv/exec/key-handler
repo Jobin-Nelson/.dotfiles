@@ -2,17 +2,28 @@
 
 case "$1" in
 "C-x")      xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
-"C-c")      while read file; do xclip -selection clipboard -target image/png "$file"; done ;;
+"C-c")      
+  while read file; do
+    if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
+      wl-copy < "$file"
+    elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
+      xclip -selection clipboard -target image/png "$file"
+    fi
+  done
+  ;;
 "C-w")      
   if [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]]; then 
     while read file; do 
-      ff="$(readlink -e "${file}")"
-      ~/.local/bin/reload.sh -p "$ff"
+      ~/.local/bin/reload.sh -p "$(readlink -e "${file}")"
     done
   elif [[ $XDG_CURRENT_DESKTOP == 'GNOME' ]]; then 
     while read file; do 
       gsettings set org.gnome.desktop.background picture-uri-dark "file://$(readlink -e $file)"
       gsettings set org.gnome.desktop.background picture-options "zoom"
+    done
+  elif [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then 
+    while read file; do
+      ~/.local/bin/reload.sh -k "$(readlink -e "${file}")"
     done
   fi
   ;;
