@@ -1,6 +1,7 @@
 [user]
 	name = Jobin Nelson
 	email = jobinnelson369@gmail.com
+	signingkey = 1197D8169DB72B0C!
 [diff]
 	tool = nvimdiff
 [difftool "nvimdiff"]
@@ -17,6 +18,7 @@
 	prune = true
 [commit]
 	template = /home/jobin/.config/git/commit_template.txt
+	gpgsign = true
 [alias]
 	; hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 	hist = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative

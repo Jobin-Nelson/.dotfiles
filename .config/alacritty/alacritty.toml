@@ -14,19 +14,19 @@ opacity = 0.9
 size = 13
 
   [font.bold]
-  family = "MesloLGS Nerd Font"
+  family = "Hack Nerd Font"
   style = "Bold"
 
   [font.bold_italic]
-  family = "MesloLGS Nerd Font"
+  family = "Hack Nerd Font"
   style = "Bold Italic"
 
   [font.italic]
-  family = "MesloLGS Nerd Font"
+  family = "Hack Nerd Font"
   style = "Italic"
 
   [font.normal]
-  family = "MesloLGS Nerd Font"
+  family = "Hack Nerd Font"
   style = "Regular"
 
 [colors]

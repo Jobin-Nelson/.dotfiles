@@ -78,6 +78,9 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
+# Git commit signing
+export GPG_TTY=$(tty)
+
 # Scripts
 case ":${PATH}:" in
   *:"${HOME}/.local/bin":*) ;;
