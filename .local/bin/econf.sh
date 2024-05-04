@@ -64,6 +64,7 @@ function main() {
         "reload - $HOME/.local/bin/reload.sh"
         "chde - $HOME/.local/bin/chde.sh"
         "bcon - $HOME/.local/bin/bcon.sh"
+        "fzf-git - $HOME/.config/fzf/fzf-git.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

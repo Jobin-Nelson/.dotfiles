@@ -2,6 +2,24 @@
 
 case "$1" in
 "C-x")      xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
+"p")      
+  while read file; do
+    if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
+      echo "${file}" | wl-copy
+    elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
+      echo "$file" | xclip -selection clipboard
+    fi
+  done
+  ;;
+"y")      
+  while read file; do
+    if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
+      echo "${file##*/}" | wl-copy
+    elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
+      echo "${file##*/}" | xclip -selection clipboard
+    fi
+  done
+  ;;
 "C-c")      
   while read file; do
     if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
@@ -11,21 +29,21 @@ case "$1" in
     fi
   done
   ;;
-"C-w")      
+"w")      
   if [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]]; then 
     while read file; do 
-      ~/.local/bin/reload.sh -p "$(readlink -e "${file}")"
+      ~/.local/bin/reload.sh -p "$file"
     done
   elif [[ $XDG_CURRENT_DESKTOP == 'GNOME' ]]; then 
     while read file; do 
-      gsettings set org.gnome.desktop.background picture-uri-dark "file://$(readlink -e $file)"
+      gsettings set org.gnome.desktop.background picture-uri-dark "file://$file"
       gsettings set org.gnome.desktop.background picture-options "zoom"
     done
   elif [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then 
     while read file; do
-      ~/.local/bin/reload.sh -k "$(readlink -e "${file}")"
+      ~/.local/bin/reload.sh -k "$file"
     done
   fi
   ;;
-"C-d")      while read file; do rm "$(readlink -e "${file}")"; done ;;
+"d")      while read file; do rm "$file"; done ;;
 esac

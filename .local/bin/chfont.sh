@@ -15,6 +15,11 @@ function get_font() {
     'Ubuntu Mono Nerd Font'
     'FiraCode Nerd Font'
     'RobotoMono Nerd Font'
+    'RecMonoCasual Nerd Font'
+    'RecMonoSmCasual Nerd Font'
+    'RecMonoDuotone Nerd Font'
+    'RecMonoLinear Nerd Font'
+    'SFMono Nerd Font'
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" \
@@ -36,6 +41,7 @@ function set_alacritty_style() {
   if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
     || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
     || [[ $FONT == 'RobotoMono Nerd Font' ]] \
+    || [[ $FONT == 'SFMono Nerd Font' ]] \
     then
     sed -zi '
     s/style = "[^"]*"/style = "Medium Italic"/3
@@ -55,6 +61,7 @@ function set_alacritty_size() {
     'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
     'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 14.3/' "${alacritty_file}" ;;
     'Caskaydia Cove Nerd Font')    sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
+    'SFMono Nerd Font')            sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     *)                             sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
   esac
