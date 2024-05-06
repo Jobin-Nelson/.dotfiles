@@ -82,12 +82,7 @@ export LC_ALL='en_US.UTF-8'
 export GPG_TTY=$(tty)
 
 # Scripts
-case ":${PATH}:" in
-  *:"${HOME}/.local/bin":*) ;;
-  *)
-	  [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
-	  ;;
-esac
+[[ $PATH =~ ~/.local/bin ]] || export PATH="$HOME/.local/bin:$PATH"
 
 # Fzf completion
 export FZF_DEFAULT_OPTS='--border --layout=reverse --height=40% --info=right --cycle'

@@ -255,24 +255,24 @@ function setup_done() {
 
 function main() {
 
-	update_packages
-	install_rust
-	setup_aur
-	configure_package_manager
-	install_packages
+	# update_packages
+	# install_rust
+	# setup_aur
+	# configure_package_manager
+	# install_packages
 	# install_astronvim
 	# install_lazyvim
-	install_neovim
+	# install_neovim
 	# install_doom_emacs
-	install_python
-	setup_repos
+	# install_python
+	# setup_repos
 	download_wallpapers
 	# install_fonts
-	configure_gnome
-	switch_to_integrated_graphics
+	# configure_gnome
+	# switch_to_integrated_graphics
 	# switch_to_X11
 	# install_hyprland
-	setup_done
+	# setup_done
 }
 
 main
