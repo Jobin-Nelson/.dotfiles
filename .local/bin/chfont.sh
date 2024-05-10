@@ -39,7 +39,6 @@ function set_alacritty_font() {
 
 function set_alacritty_style() {
   if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
-    || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
     || [[ $FONT == 'RobotoMono Nerd Font' ]] \
     || [[ $FONT == 'SFMono Nerd Font' ]] \
     then
@@ -59,7 +58,7 @@ function set_alacritty_size() {
   case "$FONT" in
     'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 11.5/' "${alacritty_file}" ;;
-    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
+    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 11.3/' "${alacritty_file}" ;;
     'Caskaydia Cove Nerd Font')    sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     # 'SFMono Nerd Font')            sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;

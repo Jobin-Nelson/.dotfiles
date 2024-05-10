@@ -7,10 +7,6 @@
 #
 #
 
-
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
 # Environment variables
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT='[%Y/%m/%d %T] '
@@ -101,7 +97,7 @@ eval "$(pyenv init -)"
 [[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
 
 # Go
-command -v go > /dev/null && export PATH="$(go env GOPATH)/bin:${PATH}"
+command -v go > /dev/null && [[ $PATH =~ $(go env GOPATH)/bin ]] || export PATH="$(go env GOPATH)/bin:${PATH}"
 
 # Starship prompt
 eval "$(starship init bash)"
