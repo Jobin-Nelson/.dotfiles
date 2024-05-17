@@ -7,6 +7,10 @@
 #
 #
 
+
+# If not running interactively, don't do anything
+[[ $- =~ i ]] || return
+
 # Environment variables
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT='[%Y/%m/%d %T] '
