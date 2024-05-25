@@ -20,7 +20,7 @@ function main() {
   projects=(
     'learn'
     # 'org_files'
-    # 'second_brain'
+    'second_brain'
   )
 
   for project in "${projects[@]}"; do

@@ -34,7 +34,7 @@ async def git_push(cwd: str, git_dir: str|None = None, work_tree: str|None = Non
     if git_dir: cmd.extend(['--git-dir', git_dir])
     if work_tree: cmd.extend(['--work-tree', work_tree])
 
-    commit_args = ['commit', '-a', '-m', 'chore: bbw.py backup commit']
+    commit_args = ['commit', '--no-gpg-sign', '-a', '-m', 'chore: bbw.py backup commit']
     push_args = ['push', 'origin', 'HEAD']
 
     await exec_cmd(cmd + commit_args)
