@@ -11,6 +11,11 @@ case "$1" in
     fi
   done
   ;;
+"r")      
+  while read file; do
+    cp "${file}" "$HOME/Pictures/jaison_jasmine_wedding/netto//"
+  done
+  ;;
 "y")      
   while read file; do
     if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then

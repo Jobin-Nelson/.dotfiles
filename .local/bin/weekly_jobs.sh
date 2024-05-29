@@ -7,7 +7,7 @@ function git_push() {
 
   cd "${git_dir}" \
     && git add -A \
-    && git commit -m "cron job push $(date '+%Y-%m-%d')" \
+    && git commit --no-gpg-sign -m "cron job push $(date '+%Y-%m-%d')" \
     && git push
 }
 
@@ -19,7 +19,7 @@ function main() {
 
   projects=(
     'learn'
-    # 'org_files'
+    'org_files'
     'second_brain'
   )
 
