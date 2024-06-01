@@ -58,9 +58,9 @@ async def git_status(cmd: list[str]):
     stdout, _ = await proc.communicate()
     # print(f'{cmd[2]=}: {stdout=}')
     # print(f'{cmd[2]=}: {stderr=}')
-    if stdout:
-        print(f'{cmd[2]} repo is dirty')
-        print(f'{stdout.decode(encoding="utf-8")}')
+    if not stdout: return
+    print(f'{cmd[2]} repo is dirty')
+    print(f'{stdout.decode(encoding="utf-8")}')
 
 async def main() -> int:
     home = Path.home()
