@@ -17,6 +17,8 @@ import asyncio
 async def exec_cmd(cmd: list[str]) -> bool:
     proc = await asyncio.create_subprocess_exec(
         *cmd,
+        stdout=asyncio.subprocess.DEVNULL,
+        stderr=asyncio.subprocess.DEVNULL,
     )
     await proc.wait()
     return proc.returncode == 0
@@ -50,6 +52,7 @@ async def git_status(cmd: list[str]):
     proc = await asyncio.create_subprocess_exec(
         *cmd,
         stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.DEVNULL,
         limit=1,
     )
 
