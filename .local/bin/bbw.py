@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import overload
 import shutil
 import asyncio
-import sys
 
 
 async def exec_cmd(cmd: list[str]) -> bool:
@@ -59,9 +58,10 @@ async def git_status(cmd: list[str]):
     stdout, _ = await proc.communicate()
     # print(f'{cmd[2]=}: {stdout=}')
     # print(f'{cmd[2]=}: {stderr=}')
+    stdout = stdout.decode(encoding='utf-8')
     if stdout:
         print(f'{cmd[2]} repo is dirty')
-        print(f'{stdout.decode(encoding="utf-8")}')
+        print(f'{stdout}')
 
 async def main() -> int:
     home = Path.home()
@@ -83,7 +83,6 @@ async def main() -> int:
             *(operation(git_cmd(p)) for p in projects.iterdir() if p.is_dir()),
             *(operation(git_cmd(p)) for p in extra_repos if p.is_dir())
         )
-    sys.stdout.flush()
     return 0
 
 
