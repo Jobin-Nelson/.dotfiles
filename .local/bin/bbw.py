@@ -93,4 +93,5 @@ def check_requirements():
 
 if __name__ == '__main__':
     check_requirements()
-    raise SystemExit(asyncio.run(main()))
+    # raise SystemExit(asyncio.run(main()))
+    raise SystemExit(asyncio.get_event_loop().run_until_complete(main()))
