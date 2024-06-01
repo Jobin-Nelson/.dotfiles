@@ -82,6 +82,7 @@ async def main() -> int:
             *(operation(git_cmd(p)) for p in projects.iterdir() if p.is_dir()),
             *(operation(git_cmd(p)) for p in extra_repos if p.is_dir())
         )
+    print(flush=True)
     return 0
 
 
