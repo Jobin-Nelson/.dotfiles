@@ -9,7 +9,7 @@ Things to backup before wipe (bbw) 😄
 
 from __future__ import annotations
 from pathlib import Path
-from typing import Callable, overload
+from typing import overload
 import shutil
 import asyncio
 
@@ -25,27 +25,27 @@ async def exec_cmd(cmd: list[str]) -> bool:
 
 
 @overload
-async def git_push(cwd: str, git_dir: None = None, work_tree: None = None): ...
+def git_cmd(cwd: Path, git_dir: None = None, work_tree: None = None) -> list[str]: ...
 @overload
-async def git_push(cwd: str, git_dir: str, work_tree: str): ...
+def git_cmd(cwd: Path, git_dir: Path, work_tree: Path) -> list[str]: ...
 
-async def git_push(cwd: str, git_dir: str|None = None, work_tree: str|None = None):
-    cmd = ['git', '-C', cwd]
-    if git_dir: cmd.extend(['--git-dir', git_dir])
-    if work_tree: cmd.extend(['--work-tree', work_tree])
+def git_cmd(cwd: Path, git_dir: Path|None = None, work_tree: Path|None = None) -> list[str]:
+    cmd = ['git', '-C', str(cwd)]
+    if git_dir: cmd.extend(['--git-dir', str(git_dir)])
+    if work_tree: cmd.extend(['--work-tree', str(work_tree)])
+    return cmd
 
+
+async def git_push(cmd: list[str]):
     commit_args = ['commit', '--no-gpg-sign', '-a', '-m', 'chore: bbw.py backup commit']
     push_args = ['push', 'origin', 'HEAD']
 
     await exec_cmd(cmd + commit_args)
     if await exec_cmd(cmd + push_args):
-        print(f'{git_dir or cwd} successfully pushed to remote')
+        print(f'{cmd[2]} successfully pushed to remote')
 
-async def git_status(cwd: str, git_dir: str|None = None, work_tree: str|None = None):
-    cmd = ['git', '-C', cwd]
-    if git_dir: cmd.extend(['--git-dir', git_dir])
-    if work_tree: cmd.extend(['--work-tree', work_tree])
 
+async def git_status(cmd: list[str]):
     status_args = ['status', '--porcelain', '--untracked-files=normal']
     cmd.extend(status_args)
 
@@ -57,7 +57,7 @@ async def git_status(cwd: str, git_dir: str|None = None, work_tree: str|None = N
 
     stdout, stderr = await proc.communicate()
     if stdout or stderr:
-        print(f'{git_dir or cwd} repo is dirty')
+        print(f'{cmd[2]} repo is dirty')
 
 
 async def main() -> int:
@@ -72,13 +72,13 @@ async def main() -> int:
 
     git_operations = [ git_push, git_status ]
 
-    await git_push(*map(str, [home, dotfiles, home]))
+    await git_push(git_cmd(home, dotfiles, home))
 
     for operation in git_operations:
         print('=' * 40)
         await asyncio.gather(
-            *(operation(str(p)) for p in projects.iterdir() if p.is_dir()),
-            *(operation(str(p)) for p in extra_repos if p.is_dir())
+            *(operation(git_cmd(p)) for p in projects.iterdir() if p.is_dir()),
+            *(operation(git_cmd(p)) for p in extra_repos if p.is_dir())
         )
     return 0
 
