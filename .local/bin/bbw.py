@@ -46,12 +46,16 @@ async def main() -> int:
     home = Path.home()
     dotfiles = home / '.dotfiles'
     projects = home / 'playground' / 'projects'
-    nvim = home / '.config' / 'nvim'
+
+    extra_repos = [
+        home / '.config' / 'nvim',
+        home / '.password-store'
+    ]
 
     await asyncio.gather(
         git_push(*map(str, [home, dotfiles, home])),
-        git_push(str(nvim)),
         *(git_push(str(p)) for p in projects.iterdir() if p.is_dir()),
+        *(git_push(str(p)) for p in extra_repos if p.is_dir())
     )
     return 0
 
