@@ -58,10 +58,9 @@ async def git_status(cmd: list[str]):
     stdout, _ = await proc.communicate()
     # print(f'{cmd[2]=}: {stdout=}')
     # print(f'{cmd[2]=}: {stderr=}')
-    stdout = stdout.decode(encoding='utf-8')
-    if stdout:
-        print(f'{cmd[2]} repo is dirty')
-        print(f'{stdout}')
+    if stdout == b'': return
+    print(f'{cmd[2]} repo is dirty')
+    print(f'{stdout.decode(encoding="utf-8")}')
 
 async def main() -> int:
     home = Path.home()
@@ -83,6 +82,7 @@ async def main() -> int:
             *(operation(git_cmd(p)) for p in projects.iterdir() if p.is_dir()),
             *(operation(git_cmd(p)) for p in extra_repos if p.is_dir())
         )
+    print(flush=True)
     return 0
 
 
