@@ -9,7 +9,7 @@ Things to backup before wipe (bbw) 😄
 
 from __future__ import annotations
 from pathlib import Path
-from typing import overload
+from typing import Callable, overload
 import shutil
 import asyncio
 
@@ -39,7 +39,25 @@ async def git_push(cwd: str, git_dir: str|None = None, work_tree: str|None = Non
 
     await exec_cmd(cmd + commit_args)
     if await exec_cmd(cmd + push_args):
-        print(f'{git_dir or cwd} successfully backed up')
+        print(f'{git_dir or cwd} successfully pushed to remote')
+
+async def git_status(cwd: str, git_dir: str|None = None, work_tree: str|None = None):
+    cmd = ['git', '-C', cwd]
+    if git_dir: cmd.extend(['--git-dir', git_dir])
+    if work_tree: cmd.extend(['--work-tree', work_tree])
+
+    status_args = ['--porcelain', '--untrack-files=normal']
+    cmd.extend(status_args)
+
+    proc = await asyncio.create_subprocess_exec(
+        *cmd,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+
+    stdout, stderr = await proc.communicate()
+    if stdout or stderr:
+        print(f'{git_dir or cwd} repo is dirty')
 
 
 async def main() -> int:
@@ -52,11 +70,15 @@ async def main() -> int:
         home / '.password-store'
     ]
 
-    await asyncio.gather(
-        git_push(*map(str, [home, dotfiles, home])),
-        *(git_push(str(p)) for p in projects.iterdir() if p.is_dir()),
-        *(git_push(str(p)) for p in extra_repos if p.is_dir())
-    )
+    git_operations = [ git_push, git_status ]
+
+    for operation in git_operations:
+        print('=' * 40)
+        await asyncio.gather(
+            operation(*map(str, [home, dotfiles, home])),
+            *(operation(str(p)) for p in projects.iterdir() if p.is_dir()),
+            *(operation(str(p)) for p in extra_repos if p.is_dir())
+        )
     return 0
 
 
