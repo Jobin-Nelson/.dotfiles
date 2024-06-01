@@ -17,8 +17,6 @@ import asyncio
 async def exec_cmd(cmd: list[str]) -> bool:
     proc = await asyncio.create_subprocess_exec(
         *cmd,
-        stdout=asyncio.subprocess.DEVNULL,
-        stderr=asyncio.subprocess.DEVNULL,
     )
     await proc.wait()
     return proc.returncode == 0
@@ -56,7 +54,7 @@ async def git_status(cmd: list[str]):
     )
 
     stdout = await proc.stdout.read(1)
-    print(f'{cmd=}: {stdout=}')
+    # print(f'{cmd=}: {stdout=}')
     # print(f'{cmd[2]=}: {stderr=}')
     # if stdout == b'': return
     if stdout: print(f'{cmd[2]} repo is dirty')
