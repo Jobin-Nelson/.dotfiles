@@ -55,11 +55,11 @@ async def git_status(cmd: list[str]):
         stderr=asyncio.subprocess.DEVNULL,
     )
 
-    stdout, _ = await proc.communicate()
+    stdout = await proc.stdout.read(1)
     print(f'{cmd=}: {stdout=}')
     # print(f'{cmd[2]=}: {stderr=}')
     # if stdout == b'': return
-    # print(f'{cmd[2]} repo is dirty')
+    if stdout: print(f'{cmd[2]} repo is dirty')
     # print(f'{stdout.decode(encoding="utf-8")}')
 
 async def main() -> int:
