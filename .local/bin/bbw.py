@@ -53,9 +53,10 @@ async def git_status(cmd: list[str]):
         *cmd,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.DEVNULL,
+        limit=1,
     )
 
-    stdout = await proc.stdout.readline()
+    stdout = await proc.stdout.read(1)
     if stdout: print(f'{cmd[2]} repo is dirty')
 
 async def main() -> int:
