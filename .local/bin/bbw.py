@@ -57,7 +57,7 @@ async def git_status(cmd: list[str]):
 
     stdout, stderr = await proc.communicate()
     if stdout or stderr:
-        print(f'{cmd[2]} repo is dirty')
+        print(f'{cmd[2]} repo is dirty', flush=True)
 
 
 async def main() -> int:
