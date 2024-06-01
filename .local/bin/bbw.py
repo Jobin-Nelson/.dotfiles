@@ -55,8 +55,8 @@ async def git_status(cwd: str, git_dir: str|None = None, work_tree: str|None = N
         stderr=asyncio.subprocess.DEVNULL,
     )
 
-    stdout, stderr = await proc.communicate()
-    if stdout or stderr:
+    stdout, _ = await proc.communicate()
+    if stdout:
         print(f'{git_dir or cwd} repo is dirty')
 
 
