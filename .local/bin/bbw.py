@@ -56,8 +56,6 @@ async def git_status(cwd: str, git_dir: str|None = None, work_tree: str|None = N
     )
 
     stdout, stderr = await proc.communicate()
-    # print(f'{cwd}: {stdout=}')
-    # print(f'{cwd}: {stderr=}')
     if stdout or stderr:
         print(f'{git_dir or cwd} repo is dirty')
 
@@ -74,10 +72,11 @@ async def main() -> int:
 
     git_operations = [ git_push, git_status ]
 
+    await git_push(*map(str, [home, dotfiles, home]))
+
     for operation in git_operations:
         print('=' * 40)
         await asyncio.gather(
-            operation(*map(str, [home, dotfiles, home])),
             *(operation(str(p)) for p in projects.iterdir() if p.is_dir()),
             *(operation(str(p)) for p in extra_repos if p.is_dir())
         )
