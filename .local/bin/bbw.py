@@ -46,7 +46,7 @@ async def git_status(cwd: str, git_dir: str|None = None, work_tree: str|None = N
     if git_dir: cmd.extend(['--git-dir', git_dir])
     if work_tree: cmd.extend(['--work-tree', work_tree])
 
-    status_args = ['--porcelain', '--untrack-files=normal']
+    status_args = ['status', '--porcelain', '--untrack-files=normal']
     cmd.extend(status_args)
 
     proc = await asyncio.create_subprocess_exec(
