@@ -13,7 +13,7 @@ case "$1" in
   ;;
 "r")      
   while read file; do
-    cp "${file}" "$HOME/Pictures/jaison_jasmine_wedding/netto//"
+    cp "${file}" "$HOME/Pictures/jaison_jasmine_wedding/jaison_jasmine_selected_by_mom/"
   done
   ;;
 "y")      
