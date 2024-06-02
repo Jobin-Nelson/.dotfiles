@@ -1,4 +1,4 @@
----@diagnostic disable: lowercase-global
+---@diagnostic disable: lowercase-global, undefined-global
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
@@ -212,10 +212,10 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
+            -- mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
-            s.mylayoutbox,
+            -- s.mylayoutbox,
         },
     }
 end)
@@ -395,7 +395,13 @@ clientkeys = gears.table.join(
     awful.key({}, "XF86AudioNext", function()
      awful.util.spawn("playerctl next", false) end),
     awful.key({}, "XF86AudioPrev", function()
-     awful.util.spawn("playerctl previous", false) end)
+     awful.util.spawn("playerctl previous", false) end),
+    -- Lock screen keys
+    awful.key({ modkey, "Shift", "Control" }, "l",
+        function ()
+            awful.util.spawn("i3lock -d -c 808080")
+        end,
+        {description = "Lock screen", group = "client"})
 )
 
 -- Bind all key numbers to tags.
@@ -590,4 +596,3 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- Autostart Applications
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
-
