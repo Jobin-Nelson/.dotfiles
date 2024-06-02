@@ -372,7 +372,30 @@ clientkeys = gears.table.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
         end ,
-        {description = "(un)maximize horizontally", group = "client"})
+        {description = "(un)maximize horizontally", group = "client"}),
+    awful.key({}, "Print",
+        function ()
+          -- awful.util.spawn("scrot -e 'mv $f ~/Pictures/screenshots/ 2>/dev/null'", false)
+          awful.util.spawn("scrot -s -e 'mv $f ~/Pictures/screenshots/ 2>/dev/null'", false)
+        end ,
+        {description = "Screenshot", group = "client"}),
+    -- Volume Keys
+    awful.key({}, "XF86AudioLowerVolume", function ()
+     awful.util.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-", false) end),
+    awful.key({}, "XF86AudioRaiseVolume", function ()
+     awful.util.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+", false) end),
+    -- Brightness keys
+    awful.key({}, "XF86MonBrightnessUp", function ()
+     awful.util.spawn("brightnessctl -q set +5%", false) end),
+    awful.key({}, "XF86MonBrightnessDown", function ()
+     awful.util.spawn("brightnessctl -q set +5%-", false) end),
+    -- Media Keys
+    awful.key({}, "XF86AudioPlay", function()
+     awful.util.spawn("playerctl play-pause", false) end),
+    awful.key({}, "XF86AudioNext", function()
+     awful.util.spawn("playerctl next", false) end),
+    awful.key({}, "XF86AudioPrev", function()
+     awful.util.spawn("playerctl previous", false) end)
 )
 
 -- Bind all key numbers to tags.
@@ -566,5 +589,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- Autostart Applications
-awful.spawn.with_shell('picom --config ~/.config/picom/picom.conf')
-awful.spawn.with_shell('nitrogen --restore')
+awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+

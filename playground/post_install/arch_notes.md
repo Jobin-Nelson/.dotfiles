@@ -211,3 +211,7 @@ dev=/dev/sda
 - `sudoedit /etc/gdm/custom.conf`: uncomment the line "#WaylandEnable = False" 
 - Restart to switch to X11
 
+
+## Awesome WM
+
+- Install `scrot` for screenshots
