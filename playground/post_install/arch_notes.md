@@ -214,5 +214,5 @@ dev=/dev/sda
 
 ## Awesome WM
 
-- Install `scrot` for screenshots
+- Install `flameshot` for screenshots
 - Install `xautolock` and `i3lock` for locking
