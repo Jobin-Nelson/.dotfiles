@@ -5,7 +5,6 @@
 # | |_) | (_| \__ \ | | | | | (__
 # |____/ \__,_|___/_| |_|_|  \___|
 #
-#
 
 
 # If not running interactively, don't do anything
@@ -60,7 +59,6 @@ alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -W
 # Nice to have
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 [ -x /usr/bin/dircolors ] && eval "$(dircolors -b)"
-[ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
 # Setting editor
 export EDITOR='/usr/bin/nvim'
