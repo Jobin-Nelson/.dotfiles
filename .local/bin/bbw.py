@@ -87,7 +87,8 @@ def check_requirements():
         'gclone.sh',
     ]
     not_found = list(filter(lambda x: not shutil.which(x), executables))
-    if not_found: raise SystemExit(f"Executable {', '.join(not_found)} not found in PATH")
+    if not_found:
+        raise SystemExit(f"Executable {', '.join(not_found)} not found in PATH")
 
 
 if __name__ == '__main__':
