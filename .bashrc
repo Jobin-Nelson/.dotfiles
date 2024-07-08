@@ -91,15 +91,15 @@ eval "$(fzf --bash)"
 eval "$(zoxide init bash)"
 
 # Pyenv [Python version manager]
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# export PYENV_ROOT="$HOME/.pyenv"
+# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
 
 # Cargo [Rust]
 [[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
 
 # Go
-command -v go > /dev/null && [[ $PATH =~ $(go env GOPATH)/bin ]] || export PATH="$(go env GOPATH)/bin:${PATH}"
+# command -v go > /dev/null && [[ $PATH =~ $(go env GOPATH)/bin ]] || export PATH="$(go env GOPATH)/bin:${PATH}"
 
 # Starship prompt
 eval "$(starship init bash)"
