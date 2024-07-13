@@ -1,5 +1,12 @@
 # Dotfiles
 
+## Ansible Pull
+
+- `sudo pacman -S git ansible wl-clipboard`
+- `ansible-pull -K -U https://github.com/jobin-nelson/config-setup`
+
+## Setup dotfiles manually
+
 - Setup ssh key with github
 
 ```shell
@@ -11,7 +18,7 @@ dot checkout
 dot submodule update --init
 ```
 
-## Post Install
+## Post Install (OPTIONAL)
 
 ### Arch linux
 
@@ -27,17 +34,12 @@ Further setup is documented in [Arch notes](./playground/post_install/arch_notes
 - `sudo pacman -S gnome-browser-connector`: install connector package
 - https://extensions.gnome.org/extension/1319/gsconnect/
 
-### Ubuntu & derivatives
+### WSL
 
-```bash
-cd /home/jobin/playground/post_install
-./make_life_easy.sh
 ```
-
-if running on WSL
-
-```bash
-WSL=1 $HOME/make_life_easy.sh
+# UNCONFIGURED FSTAB FOR BASE SYSTEM
+C: /mnt/c drvfs rw,noatime,uid=1000,gid=1000,case=off,umask=0027,fmask=0137, 0 0
+/mnt/c/Users/jobin/playground/projects/second_brain /home/jobin/playground/projects/second_brain none bind,default 0 0
 ```
 
 ### Install packages manually
@@ -49,7 +51,3 @@ WSL=1 $HOME/make_life_easy.sh
 - [neovim](https://github.com/neovim/neovim)
 - [starship](https://starship.rs/)
 
-## Ansible Pull
-
-- `sudo pacman -S git ansible wl-clipboard`
-- `ansible-pull -K -U https://github.com/jobin-nelson/config-setup`

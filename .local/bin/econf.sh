@@ -65,6 +65,7 @@ function main() {
         "chde - $HOME/.local/bin/chde.sh"
         "bcon - $HOME/.local/bin/bcon.sh"
         "fzf-git - $HOME/.config/fzf/fzf-git.sh"
+        "readme - $HOME/README.md"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

@@ -28,6 +28,12 @@ shopt -s cdspell
 # Prompt
 PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
 
+# Setting editor
+export EDITOR='nvim'
+export VISUAL='nvim'
+export COLORTERM="truecolor"
+# export MANPAGER='nvim +Man!'
+
 # Aliases
 alias ls='ls --color=auto'
 alias ll='ls -alFh --group-directories-first --color=auto'
@@ -55,16 +61,11 @@ alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -W
 # alias brave='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 # export SCREENDIR=$HOME/.screen
 # service cron status &> /dev/null || sudo service cron start
+alias wpwd='pwsh.exe -Command "Get-Location"'
 
 # Nice to have
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 [ -x /usr/bin/dircolors ] && eval "$(dircolors -b)"
-
-# Setting editor
-export EDITOR='/usr/bin/nvim'
-export VISUAL='/usr/bin/nvim'
-export COLORTERM="truecolor"
-# export MANPAGER='nvim +Man!'
 
 # XDG
 export XDG_CACHE_HOME="$HOME/.cache"
