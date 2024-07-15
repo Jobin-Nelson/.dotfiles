@@ -1,5 +1,5 @@
 [user]
-	name = Jobin Nelson
+	name = jobin_nelson
 	email = jobinnelson369@gmail.com
 	signingkey = 1197D8169DB72B0C!
 [diff]
@@ -13,14 +13,17 @@
   cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c '$wincmd J'
 [core]
 	editor = nvim
-	excludesfile = /home/jobin/.config/git/.gitignore_global
+	excludesfile = ~/.config/git/.gitignore_global
 [fetch]
 	prune = true
 [commit]
-	template = /home/jobin/.config/git/commit_template.txt
+	template = ~/.config/git/commit_template.txt
 	gpgsign = true
 [alias]
   hist = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
+  which = !git branch -a | grep -i
+  standup = !git log --all --author="$(git config user.name)" --since='9am today' --format='- %s'
+  activity = "!git for-each-ref --count=10 --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)'"
 [init]
   defaultBranch = main
 [rebase]
