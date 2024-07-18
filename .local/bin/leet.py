@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import platform
 import subprocess
 import sys
 import urllib.error
@@ -51,13 +52,23 @@ def main(argv: Sequence[str] | None = None) -> int:
     leet_file = LEET_DAILY_DIR / Path(daily_qn_link).with_suffix(".py").name
 
     if args.browser:
-        webbrowser.open(daily_qn_link)
+        open_browser(daily_qn_link)
     if args.file:
         create_file(leet_file, daily_qn_link)
     if args.neovim:
         subprocess.run(["nvim", str(leet_file)])
 
     return 0
+
+
+def open_browser(daily_qn_link: str) -> None:
+    # if running WSL launch windows chrome
+    if platform.release().endswith('microsoft-standard-WSL2'):
+        chrome_executable = Path('/mnt/c/Program Files/Google/Chrome/Application/chrome.exe')
+        if not chrome_executable.exists(): return
+        subprocess.run([str(chrome_executable), daily_qn_link])
+        return
+    webbrowser.open(daily_qn_link)
 
 
 def get_daily_qn_link() -> str:

@@ -31,4 +31,4 @@
 [rebase]
 	updateRefs = true
 [includeIf "gitdir:~/playground/dev/illumina/"]
-    path = ~/playground/dev/illumina/.gitconfig
+  path = ~/playground/dev/illumina/.gitconfig
