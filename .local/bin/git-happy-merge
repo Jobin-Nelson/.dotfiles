@@ -9,14 +9,13 @@ if (( $# < 1 )); then
   exit 1
 fi
 
-git merge --no-ff --no-commit "$@"
-retv=$?
-git merge --abort
-
-if (( retv == 0 )); then
+if git merge --no-ff --no-commit "$@"; then
   echo -e "${GREEN}Merges fine${NORMAL}"
   exit 0
 else
   echo -e "${RED}Does not merge fine${NORMAL}"
   exit 1
 fi
+
+git merge --abort
+

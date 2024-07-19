@@ -66,6 +66,8 @@ function main() {
         "bcon - $HOME/.local/bin/bcon.sh"
         "fzf-git - $HOME/.config/fzf/fzf-git.sh"
         "readme - $HOME/README.md"
+        "git-open - $HOME/.local/bin/git-open"
+        "launch - $HOME/.local/bin/launch.sh"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
