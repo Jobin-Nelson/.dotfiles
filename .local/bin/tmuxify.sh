@@ -24,8 +24,8 @@ function sessionizer() {
   readarray -t tmux_sessions < <(tmux list-sessions -F '#{session_name}')
   readarray -t projects < <(find "$HOME/playground/projects" -mindepth 1 -maxdepth 1 -type d)
 
-  selected_dir="$( printf '%s\n' "${projects[@]}" "${tmux_sessions[@]}" "${zoxide_dirs[@]}" | sort -u |
-    fzf --prompt='Select project: ' --layout=reverse --height="${fzf_height}" --border --ansi)"
+  selected_dir="$(printf '%s\n' "${projects[@]}" "${tmux_sessions[@]}" "${zoxide_dirs[@]}" | sort -u |
+    fzf --prompt='Select project: ' --layout=reverse --height="${fzf_height}" --border=none --ansi)"
 
   [[ -z $selected_dir ]] && exit 1
 
