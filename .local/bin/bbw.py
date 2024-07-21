@@ -12,11 +12,9 @@ from __future__ import annotations
 import asyncio
 import itertools
 import shutil
-import sys
 from dataclasses import dataclass, field
 from functools import partial
 from pathlib import Path
-from pprint import pprint
 from typing import Callable
 
 # Actual workers are NUM_WORKERS * 4 (commit, push, status, result)
@@ -68,7 +66,7 @@ async def exec_cmd(cmd: list[str], cap_output: bool = False):
     return await asyncio.create_subprocess_exec(
         *cmd,
         stdout=pipe,
-        stderr=pipe,
+        stderr=asyncio.subprocess.DEVNULL,
     )
 
 
@@ -86,13 +84,7 @@ async def _worker(
     while True:
         task = await work_queue.get()
         if task.proc is not None:
-            stdout, stderr = await task.proc.communicate()
-            if task.proc.returncode != 0:
-                print(f'git operation failed on {task.cwd}', file=sys.stderr)
-                print(f'[stderr]: {stderr}')
-                print(f'[stdout]: {stdout}')
-                work_queue.task_done()
-                continue
+            await task.proc.wait()
         await callback(task)()
         await result_queue.put(task)
         work_queue.task_done()
