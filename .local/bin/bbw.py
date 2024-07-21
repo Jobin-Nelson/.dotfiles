@@ -20,7 +20,7 @@ from pprint import pprint
 from typing import Callable
 
 # Actual workers are NUM_WORKERS * 4 (commit, push, status, result)
-NUM_WORKERS = 3
+NUM_WORKERS = 5
 QUEUE_MAX_SIZE = 20
 
 
