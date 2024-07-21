@@ -96,6 +96,11 @@ eval "$(zoxide init bash)"
 # command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 # eval "$(pyenv init -)"
 
+# NVM [Node version manager]
+export NVM_DIR="$HOME/.config/nvm"
+[[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"
+[[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"
+
 # Cargo [Rust]
 [[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
 

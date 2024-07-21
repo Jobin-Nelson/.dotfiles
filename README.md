@@ -9,7 +9,7 @@
 
 - Setup ssh key with github
 
-```shell
+```bash
 mkdir -p $HOME/playground/backup && mv $HOME/.{bash_profile,bashrc} $_
 git clone --depth 5 --bare git@github.com:Jobin-Nelson/.dotfiles.git $HOME/.dotfiles
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -36,6 +36,7 @@ Further setup is documented in [Arch notes](./playground/post_install/arch_notes
 
 ### WSL
 
+```
 # UNCONFIGURED FSTAB FOR BASE SYSTEM
 # C: /mnt/c drvfs rw,noatime,uid=1000,gid=1000,case=off,umask=0027,fmask=0137, 0 0
 C:/Users/jobin/playground/projects/second_brain /home/jobin/playground/projects/second_brain drvfs rw,noatime,uid=1000,gid=1000,case=off 0 0

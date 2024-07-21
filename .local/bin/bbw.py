@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""
+'''
 Things to backup before wipe (bbw) 😄
 - dotfiles
 - projects
 - nvim
 - gclone
-"""
+'''
 
 from __future__ import annotations
+
+import asyncio
+import shutil
 from pathlib import Path
 from typing import overload
-import shutil
-import asyncio
 
 
 async def exec_cmd(cmd: list[str]) -> bool:
@@ -29,10 +30,15 @@ def git_cmd(cwd: Path, git_dir: None = None, work_tree: None = None) -> list[str
 @overload
 def git_cmd(cwd: Path, git_dir: Path, work_tree: Path) -> list[str]: ...
 
-def git_cmd(cwd: Path, git_dir: Path|None = None, work_tree: Path|None = None) -> list[str]:
+
+def git_cmd(
+    cwd: Path, git_dir: Path | None = None, work_tree: Path | None = None
+) -> list[str]:
     cmd = ['git', '-C', str(cwd)]
-    if git_dir: cmd.extend(['--git-dir', str(git_dir)])
-    if work_tree: cmd.extend(['--work-tree', str(work_tree)])
+    if git_dir:
+        cmd.extend(['--git-dir', str(git_dir)])
+    if work_tree:
+        cmd.extend(['--work-tree', str(work_tree)])
     return cmd
 
 
@@ -56,19 +62,18 @@ async def git_status(cmd: list[str]):
     )
 
     stdout, _ = await proc.communicate()
-    if stdout: print(f'{cmd[2]} repo is dirty')
+    if stdout:
+        print(f'{cmd[2]} repo is dirty')
+
 
 async def main() -> int:
     home = Path.home()
     dotfiles = home / '.dotfiles'
     projects = home / 'playground' / 'projects'
 
-    extra_repos = [
-        home / '.config' / 'nvim',
-        home / '.password-store'
-    ]
+    extra_repos = [home / '.config' / 'nvim', home / '.password-store']
 
-    git_operations = [ git_push, git_status ]
+    git_operations = [git_push, git_status]
 
     await git_push(git_cmd(home, dotfiles, home))
 
@@ -76,7 +81,7 @@ async def main() -> int:
         print('=' * 40)
         await asyncio.gather(
             *(operation(git_cmd(p)) for p in projects.iterdir() if p.is_dir()),
-            *(operation(git_cmd(p)) for p in extra_repos if p.is_dir())
+            *(operation(git_cmd(p)) for p in extra_repos if p.is_dir()),
         )
     return 0
 
@@ -88,7 +93,7 @@ def check_requirements():
     ]
     not_found = list(filter(lambda x: not shutil.which(x), executables))
     if not_found:
-        raise SystemExit(f"Executable {', '.join(not_found)} not found in PATH")
+        raise SystemExit(f'Executable {', '.join(not_found)} not found in PATH')
 
 
 if __name__ == '__main__':

@@ -46,7 +46,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         daily_qn_link = get_daily_qn_link()
     except urllib.error.URLError:
-        print(f'Unable to get response from leetcode. Check your network connection', file=sys.stderr)
+        print(
+            f'Unable to get response from leetcode. Check your network connection',
+            file=sys.stderr,
+        )
         return 1
 
     leet_file = LEET_DAILY_DIR / Path(daily_qn_link).with_suffix(".py").name
@@ -64,8 +67,11 @@ def main(argv: Sequence[str] | None = None) -> int:
 def open_browser(daily_qn_link: str) -> None:
     # if running WSL launch windows chrome
     if platform.release().endswith('microsoft-standard-WSL2'):
-        chrome_executable = Path('/mnt/c/Program Files/Google/Chrome/Application/chrome.exe')
-        if not chrome_executable.exists(): return
+        chrome_executable = Path(
+            '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'
+        )
+        if not chrome_executable.exists():
+            return
         subprocess.run([str(chrome_executable), daily_qn_link])
         return
     webbrowser.open(daily_qn_link)
