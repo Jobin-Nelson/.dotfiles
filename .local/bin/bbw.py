@@ -90,6 +90,7 @@ async def _worker(
             if task.proc.returncode != 0:
                 print(f'git operation failed on {task.cwd}', file=sys.stderr)
                 print(f'[stderr]: {stderr}')
+                print(f'[stdout]: {stdout}')
                 work_queue.task_done()
                 continue
         await callback(task)()
