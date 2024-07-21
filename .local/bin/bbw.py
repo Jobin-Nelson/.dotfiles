@@ -10,80 +10,167 @@ Things to backup before wipe (bbw) 😄
 from __future__ import annotations
 
 import asyncio
+import itertools
 import shutil
+import sys
+from dataclasses import dataclass, field
+from functools import partial
 from pathlib import Path
-from typing import overload
+from pprint import pprint
+from typing import Callable
+
+# Actual workers are NUM_WORKERS * 4 (commit, push, status, result)
+NUM_WORKERS = 3
+QUEUE_MAX_SIZE = 20
 
 
-async def exec_cmd(cmd: list[str]) -> bool:
-    proc = await asyncio.create_subprocess_exec(
-        *cmd,
-        stdout=asyncio.subprocess.DEVNULL,
-        stderr=asyncio.subprocess.DEVNULL,
-    )
-    await proc.wait()
-    return proc.returncode == 0
-
-
-@overload
-def git_cmd(cwd: Path, git_dir: None = None, work_tree: None = None) -> list[str]: ...
-@overload
-def git_cmd(cwd: Path, git_dir: Path, work_tree: Path) -> list[str]: ...
-
-
-def git_cmd(
-    cwd: Path, git_dir: Path | None = None, work_tree: Path | None = None
-) -> list[str]:
-    cmd = ['git', '-C', str(cwd)]
-    if git_dir:
-        cmd.extend(['--git-dir', str(git_dir)])
-    if work_tree:
-        cmd.extend(['--work-tree', str(work_tree)])
-    return cmd
-
-
-async def git_push(cmd: list[str]):
-    commit_args = ['commit', '--no-gpg-sign', '-a', '-m', 'chore: bbw.py backup commit']
-    push_args = ['push', 'origin', 'HEAD']
-
-    await exec_cmd(cmd + commit_args)
-    if await exec_cmd(cmd + push_args):
-        print(f'{cmd[2]} successfully pushed to remote')
-
-
-async def git_status(cmd: list[str]):
-    status_args = ['status', '--porcelain', '--untracked-files=normal']
-    cmd.extend(status_args)
-
-    proc = await asyncio.create_subprocess_exec(
-        *cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.DEVNULL,
+@dataclass
+class Git:
+    cwd: Path
+    git_dir: Path | None = None
+    work_tree: Path | None = None
+    cmd: list[str] = field(init=False)
+    proc: asyncio.subprocess.Process | None = field(
+        init=False, repr=False, default=None
     )
 
-    stdout, _ = await proc.communicate()
-    if stdout:
-        print(f'{cmd[2]} repo is dirty')
+    def __post_init__(self):
+        self.cmd = ['git', '-C', str(self.cwd)]
+        if self.git_dir:
+            self.cmd.extend(['--git-dir', str(self.git_dir)])
+        if self.work_tree:
+            self.cmd.extend(['--work-tree', str(self.work_tree)])
+
+    async def commit(self):
+        commit_args = [
+            'commit',
+            '--no-gpg-sign',
+            '-a',
+            '-m',
+            'chore: bbw.py backup commit',
+        ]
+        self.proc = await exec_cmd(self.cmd + commit_args)
+
+    async def push(self):
+        push_args = ['push', 'origin', 'HEAD']
+        self.proc = await exec_cmd(self.cmd + push_args)
+
+    async def status(self):
+        status_args = ['status', '--porcelain']
+        if self.git_dir is None:
+            status_args.append('--untracked-files=normal')
+        cmd = self.cmd + status_args
+        self.proc = await exec_cmd(cmd, True)
 
 
-async def main() -> int:
+async def exec_cmd(cmd: list[str], cap_stdout: bool = False):
+    stdout = asyncio.subprocess.PIPE if cap_stdout else asyncio.subprocess.DEVNULL
+    return await asyncio.create_subprocess_exec(
+        *cmd,
+        stdout=stdout,
+        stderr=asyncio.subprocess.DEVNULL,
+    )
+
+
+async def _producer(
+    batch: list[Git], work_queue: asyncio.Queue, producer_completed: asyncio.Event
+):
+    for job in batch:
+        await work_queue.put(job)
+    producer_completed.set()
+
+
+async def _worker(
+    work_queue: asyncio.Queue, result_queue: asyncio.Queue, callback: Callable
+):
+    while True:
+        task = await work_queue.get()
+        if task.proc is not None:
+            await task.proc.wait()
+            if task.proc.returncode != 0:
+                print(f'git operation failed on {task.cwd}', file=sys.stderr)
+                work_queue.task_done()
+                continue
+        await callback(task)()
+        await result_queue.put(task)
+        work_queue.task_done()
+
+
+async def _janitor(queue: asyncio.Queue):
+    while True:
+        task = await queue.get()
+        stdout, _ = await task.proc.communicate()
+        if stdout:
+            print(f'{task.cwd} repo is dirty')
+        queue.task_done()
+
+
+def commit_callback(git: Git):
+    return git.commit
+
+
+def push_callback(git: Git):
+    return git.push
+
+
+def status_callback(git: Git):
+    return git.status
+
+
+def hook_workers_handler(
+    tasks: list, in_queue: asyncio.Queue, out_queue: asyncio.Queue, callback: Callable
+):
+    for _ in range(NUM_WORKERS):
+        tasks.append(asyncio.create_task(_worker(in_queue, out_queue, callback)))
+
+
+def hook_cleanup_handler(tasks: list, end_queue: asyncio.Queue):
+    for _ in range(NUM_WORKERS):
+        tasks.append(asyncio.create_task(_janitor(end_queue)))
+
+
+async def _controller() -> int:
     home = Path.home()
     dotfiles = home / '.dotfiles'
-    projects = home / 'playground' / 'projects'
-
+    projects = (p for p in (home / 'playground' / 'projects').iterdir() if p.is_dir())
     extra_repos = [home / '.config' / 'nvim', home / '.password-store']
 
-    git_operations = [git_push, git_status]
+    batch = [Git(p) for p in itertools.chain(projects, extra_repos)]
+    batch.append(Git(home, dotfiles, home))
 
-    await git_push(git_cmd(home, dotfiles, home))
+    tasks = []
+    commit_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
+    push_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
+    status_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
+    result_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
 
-    for operation in git_operations:
-        print('=' * 40)
-        await asyncio.gather(
-            *(operation(git_cmd(p)) for p in projects.iterdir() if p.is_dir()),
-            *(operation(git_cmd(p)) for p in extra_repos if p.is_dir()),
-        )
+    producer_completed = asyncio.Event()
+    producer_completed.clear()
+
+    await _producer(batch, commit_queue, producer_completed)
+
+    hook_workers = partial(hook_workers_handler, tasks)
+    hook_workers(commit_queue, push_queue, commit_callback)
+    hook_workers(push_queue, status_queue, push_callback)
+    hook_workers(status_queue, result_queue, status_callback)
+    hook_cleanup_handler(tasks, result_queue)
+
+    await producer_completed.wait()
+    await commit_queue.join()
+    await push_queue.join()
+    await status_queue.join()
+    await result_queue.join()
+
+    pprint(tasks)
+
+    for task in tasks:
+        task.cancel()
+
     return 0
+
+
+def main() -> int:
+    return asyncio.run(_controller())
 
 
 def check_requirements():
@@ -93,9 +180,9 @@ def check_requirements():
     ]
     not_found = list(filter(lambda x: not shutil.which(x), executables))
     if not_found:
-        raise SystemExit(f'Executable {', '.join(not_found)} not found in PATH')
+        raise SystemExit(f"Executable {', '.join(not_found)} not found in PATH")
 
 
 if __name__ == '__main__':
     check_requirements()
-    raise SystemExit(asyncio.run(main()))
+    raise SystemExit(main())
