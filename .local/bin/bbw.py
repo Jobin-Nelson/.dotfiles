@@ -86,7 +86,7 @@ async def _worker(
     while True:
         task = await work_queue.get()
         if task.proc is not None:
-            await task.proc.wait()
+            await task.proc.communicate()
             if task.proc.returncode != 0:
                 print(f'git operation failed on {task.cwd}', file=sys.stderr)
                 print(f'[stderr]: {task.proc.stderr.decode()}')
