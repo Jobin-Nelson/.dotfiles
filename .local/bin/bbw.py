@@ -63,12 +63,12 @@ class Git:
         self.proc = await exec_cmd(cmd, True)
 
 
-async def exec_cmd(cmd: list[str], cap_stdout: bool = False):
-    stdout = asyncio.subprocess.PIPE if cap_stdout else asyncio.subprocess.DEVNULL
+async def exec_cmd(cmd: list[str], cap_output: bool = False):
+    pipe = asyncio.subprocess.PIPE if cap_output else asyncio.subprocess.DEVNULL
     return await asyncio.create_subprocess_exec(
         *cmd,
-        stdout=stdout,
-        stderr=asyncio.subprocess.DEVNULL,
+        stdout=pipe,
+        stderr=pipe,
     )
 
 
@@ -89,6 +89,7 @@ async def _worker(
             await task.proc.wait()
             if task.proc.returncode != 0:
                 print(f'git operation failed on {task.cwd}', file=sys.stderr)
+                print(f'[stderr]: {task.proc.stderr.decode()}')
                 work_queue.task_done()
                 continue
         await callback(task)()
@@ -160,8 +161,6 @@ async def _controller() -> int:
     await push_queue.join()
     await status_queue.join()
     await result_queue.join()
-
-    pprint(tasks)
 
     for task in tasks:
         task.cancel()
