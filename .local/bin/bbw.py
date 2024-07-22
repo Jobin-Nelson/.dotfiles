@@ -170,7 +170,7 @@ def main() -> int:
 def check_requirements():
     executables = [
         'git',
-        'gclone.sh',
+        # 'gclone.sh',
     ]
     not_found = list(filter(lambda x: not shutil.which(x), executables))
     if not_found:
