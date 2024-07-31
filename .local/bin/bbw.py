@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+#
+#  _     _
+# | |__ | |____      __
+# | '_ \| '_ \ \ /\ / /
+# | |_) | |_) \ V  V /
+# |_.__/|_.__/ \_/\_/
+#
+
 '''
-Things to backup before wipe (bbw) 😄
-- dotfiles
-- projects
-- nvim
-- gclone
+Script to backup before wipe
 '''
 
 from __future__ import annotations
