@@ -1,9 +1,9 @@
 #!/usr/bin/bash
-#  ____            _
-# | __ )  __ _ ___| |__  _ __ ___
-# |  _ \ / _` / __| '_ \| '__/ __|
-# | |_) | (_| \__ \ | | | | | (__
-# |____/ \__,_|___/_| |_|_|  \___|
+#  _               _              
+# | |__   __ _ ___| |__  _ __ ___ 
+# | '_ \ / _` / __| '_ \| '__/ __|
+# | |_) | (_| \__ \ | | | | | (__ 
+# |_.__/ \__,_|___/_| |_|_|  \___|
 #
 
 
@@ -55,6 +55,8 @@ alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/so
 # alias n='NVIM_APPNAME=my_nvim nvim'
 alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "${instanceId}"; done'
 alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -Wno-unused-parameter -g -fmax-errors=1 -Wfatal-errors -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address'
+alias starwars='nc towel.blinkenlights.nl 23'
+alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
