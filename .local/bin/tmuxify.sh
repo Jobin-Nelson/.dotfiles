@@ -10,8 +10,6 @@ function sessionizer() {
   local selected_dir session_name fzf_height
   local -a tmux_sessions projects zoxide_dirs
 
-  # selected_dir="$(find "$HOME/playground/projects" -mindepth 1 -maxdepth 1 -type d |
-  #   fzf --prompt='Select project: ' --layout=reverse --height=50% --border --ansi)"
   if command -v 'zoxide' &>/dev/null; then
     readarray -t zoxide_dirs < <(zoxide query -l)
   else
@@ -29,8 +27,6 @@ function sessionizer() {
 
   [[ -z $selected_dir ]] && exit 1
 
-  # session_name=$(basename "$PWD")
-  # read -rp "Session Name: " session_name
   session_name="${selected_dir##*/}"
 
   if ! tmux has-session -t "${session_name}" &> /dev/null; then
