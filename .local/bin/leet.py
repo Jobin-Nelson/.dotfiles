@@ -89,10 +89,9 @@ def get_daily_qn_link() -> str:
     req.add_header("User-Agent", "Mozilla/5.0")
     req.add_header("Accept", "*/*")
     res = urllib.request.urlopen(req, timeout=5.0)
-    return (
-        base_url.removesuffix("/graphql/")
-        + json.loads(res.read())["data"]["activeDailyCodingChallengeQuestion"]["link"]
-    )
+    res_data = json.loads(res.read())
+    daily_qn = res_data["data"]["activeDailyCodingChallengeQuestion"]["link"]
+    return base_url.removesuffix("/graphql/") + daily_qn
 
 
 def create_file(leet_file: Path, daily_qn_link: str):

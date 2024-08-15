@@ -68,6 +68,7 @@ function main() {
         "readme - $HOME/README.md"
         "git-open - $HOME/.local/bin/git-open"
         "launch - $HOME/.local/bin/launch.sh"
+        "git-recover - $HOME/.local/bin/git-recover"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
