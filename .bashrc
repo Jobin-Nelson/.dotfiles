@@ -107,7 +107,7 @@ export NVM_DIR="$HOME/.config/nvm"
 [[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
 
 # Go
-# command -v go > /dev/null && [[ $PATH =~ $(go env GOPATH)/bin ]] || export PATH="$(go env GOPATH)/bin:${PATH}"
+[[ -d $HOME/go/bin && ! $PATH =~ $HOME/go/bin ]] && export PATH="$HOME/go/bin:${PATH}" 
 
 # Starship prompt
 eval "$(starship init bash)"
