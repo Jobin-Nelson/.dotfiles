@@ -25,9 +25,14 @@
   standup = !git log --all --author="$(git config user.name)" --since='9am today' --format='- %s'
   activity = !git for-each-ref --count=10 --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)'
   spull = !git stash --keep-index && git pull --rebase && git stash pop
+  subup = submodule update --init --recursive
+  rdiff = diff --submodule=diff
+  discard = !git checkout -- . && git submodule foreach git checkout -- .
 [init]
   defaultBranch = main
 [rebase]
 	updateRefs = true
+[branch]
+	sort = -committerdate
 [includeIf "gitdir:~/playground/dev/illumina/"]
   path = ~/playground/dev/illumina/.gitconfig
