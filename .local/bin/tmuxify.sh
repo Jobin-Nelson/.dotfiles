@@ -65,7 +65,7 @@ function help() {
   echo 'options:'
   echo 'h   Print this [h]elp'
   echo 's   Start or switch [s]essions'
-  echo 'w   Send commands to [w]indows'
+  echo 'w   Send command to [w]indows'
   echo
 }
 
