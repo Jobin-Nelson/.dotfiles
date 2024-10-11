@@ -70,6 +70,7 @@ function main() {
         "launch - $HOME/.local/bin/launch.sh"
         "git-recover - $HOME/.local/bin/git-recover"
         "nix - $HOME/.config/nix/nix.conf"
+        "odinslock - $HOME/.local/bin/odinslock.py"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

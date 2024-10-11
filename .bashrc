@@ -47,17 +47,19 @@ alias wl='nsxiv $HOME/Pictures/wallpapers/**/*'
 alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 alias rwl='w=$(find $HOME/Pictures/wallpapers -type f -name '"'"'*.png'"'"' -or -name '"'"'*.jpg'"'"' | shuf -n 1) && if [[ $XDG_CURRENT_DESKTOP = "GNOME" ]]; then gsettings set org.gnome.desktop.background picture-uri-dark "file://$w"; elif [[ $XDG_CURRENT_DESKTOP == "Hyprland" ]]; then reload.sh -p $w; elif [[ $XDG_CURRENT_DESKTOP = "KDE" ]]; then reload.sh -k "$w"; fi'
 alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
+alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "${instanceId}"; done'
+alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -Wno-unused-parameter -g -fmax-errors=1 -Wfatal-errors -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address'
+alias starwars='nc towel.blinkenlights.nl 23'
+alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
+alias path='echo -e "${PATH//:/\\n}"'
+
+# Obselete aliases
 # alias emacs='emacsclient -nc -a ""'
 # alias todo='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $HOME/playground/projects/org_files/refile.org +$'
 # alias ftodo='file=$(rg --line-number --no-heading --with-filename "\*+ TODO" $HOME/playground/projects/org_files | fzf -d ":" --prompt "Find Todo: " --with-nth "3.." --layout=reverse --height=50% --ansi --border | sed -E "s/(.*):([0-9]+):.*/\1 +\2/") && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $file'
 # alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
 # alias fnote='file=$(find $HOME/playground/projects/second_brain/ -type f -not -path "*.git*" -a -not -path "*/attachments/*" -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" -a -not -path "*/.trash/*" | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi --border) && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain | set wrap linebreak" $file'
 # alias n='NVIM_APPNAME=my_nvim nvim'
-alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "${instanceId}"; done'
-alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -Wno-unused-parameter -g -fmax-errors=1 -Wfatal-errors -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address'
-alias starwars='nc towel.blinkenlights.nl 23'
-alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
-alias path='echo -e "${PATH//:/\\n}"'
 
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
@@ -109,6 +111,9 @@ export NVM_DIR="$HOME/.config/nvm"
 
 # Go
 [[ -d $HOME/go/bin && ! $PATH =~ $HOME/go/bin ]] && export PATH="$HOME/go/bin:${PATH}" 
+
+# Hashkell
+[[ -s "/home/jobin/.ghcup/env" ]] && . "/home/jobin/.ghcup/env"
 
 # Starship prompt
 eval "$(starship init bash)"
