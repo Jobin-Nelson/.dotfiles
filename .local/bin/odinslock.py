@@ -48,7 +48,7 @@ def compose(f: Callable[[B], C], g: Callable[[A], B]) -> Callable[[A], C]:
 
 class OpenSSL:
     executable = 'openssl'
-    args = [
+    __args = [
         'enc',
         '-aes-256-cbc',
         '-salt',
@@ -64,7 +64,7 @@ class OpenSSL:
         self.in_file = ['-in', str(in_file)]
 
     def _cmd(self) -> list[str]:
-        return [OpenSSL.executable] + OpenSSL.args + self.in_file
+        return [OpenSSL.executable] + OpenSSL.__args + self.in_file
 
     def _encrypt_cmd(self) -> list[str]:
         return self._cmd() + ['-e']
@@ -90,20 +90,16 @@ def exec_cmd(cmd: list[str], failure_message: str) -> NoReturn | None:
     try:
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError:
-        bail(failure_message, 2)
+        bail(failure_message, 4)
 
 
 def to_path(path: str | Path) -> Path:
     return Path(path).expanduser().resolve()
 
 
-def print_banner(banner: str, it: Iterable[Path]) -> None:
-    items = list(it)
-    if not items:
-        return
-    print(banner)
-    for i in items:
-        print(i)
+def print_prefix(banner: str, it: Iterable[Path]) -> None:
+    for i in it:
+        print(banner, i)
 
 
 def bail(message: str, code: int) -> NoReturn:
@@ -151,7 +147,7 @@ def copy_n_compress(input_files: list[Path], output_file: Path) -> str:
 
     paths = map(to_path, input_files)
     missing_paths, existing_paths = partition(is_present, paths)
-    print_banner('Missing paths:', missing_paths)
+    print_prefix('Missing path:', missing_paths)
     copy(existing_paths, output_dir)
     return archive(output_file, output_dir)
 
@@ -163,17 +159,21 @@ def archive(compress_name: Path, directory: Path) -> str:
 
 
 def unarchive(filepath: Path):
-    with tarfile.open(filepath, 'r:gz') as tar:
-        tar.extractall()
+    try:
+        with tarfile.open(filepath, 'r:gz') as tar:
+            tar.extractall()
+    except FileNotFoundError:
+        bail(f'File {filepath} not found', 3)
 
 
 def encrypt(args: argparse.Namespace) -> None:
     check_executable_exists()
-    compressed_output = copy_n_compress(args.input, args.output)
-    encrypted_output = compressed_output + '.enc'
-    openssl = OpenSSL(to_path(compressed_output))
-    openssl.encrypt(encrypted_output)
-    cleanup(to_path(compressed_output), args.output)
+    compressed_output_str = copy_n_compress(args.input, args.output)
+    encrypted_output_str = compressed_output_str + '.enc'
+    compressed_output = to_path(compressed_output_str)
+    openssl = OpenSSL(compressed_output)
+    openssl.encrypt(encrypted_output_str)
+    cleanup(compressed_output, args.output)
 
 
 def decrypt(args: argparse.Namespace) -> None:
