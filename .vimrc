@@ -40,5 +40,6 @@ autocmd filetype python nnoremap <F5> :update <bar> !python %<CR>
 autocmd filetype javascript nnoremap <F5> :update <bar> !node %<CR>
 autocmd filetype go nnoremap <F5> :update <bar> !go run %<CR>
 autocmd filetype markdown :hi link markdownError Normal
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
 
 " colorscheme habamax
