@@ -96,11 +96,6 @@ eval "$(fzf --bash)"
 # Directory jumper
 eval "$(zoxide init bash)"
 
-# Pyenv [Python version manager]
-# export PYENV_ROOT="$HOME/.pyenv"
-# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-
 # NVM [Node version manager]
 export NVM_DIR="$HOME/.config/nvm"
 [[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"

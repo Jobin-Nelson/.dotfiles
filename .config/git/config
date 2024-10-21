@@ -20,7 +20,7 @@
 	template = ~/.config/git/commit_template.txt
 	gpgsign = true
 [alias]
-  hist = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
+  hist = log --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
   which = !git branch -a | grep -i
   standup = !git log --all --author="$(git config user.name)" --since='9am today' --format='- %s'
   activity = !git for-each-ref --count=10 --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)'
