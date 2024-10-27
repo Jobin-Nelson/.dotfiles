@@ -7,7 +7,7 @@
 #                                 |___/ 
 
 function sessionizer() {
-  local selected_dir session_name fzf_height
+  local selected_dir session_name fzf_height venv_activate
   local -a tmux_sessions projects zoxide_dirs
 
   if command -v 'zoxide' &>/dev/null; then
@@ -31,6 +31,8 @@ function sessionizer() {
 
   if ! tmux has-session -t "${session_name}" &> /dev/null; then
     tmux new-session -s "${session_name}" -c "${selected_dir}" -n 'editor' -d
+    venv_activate='./.venv/bin/activate'
+    tmux send-keys -t "${session_name}:0" "[[ -s $venv_activate ]] && . ${venv_activate}" Enter
     tmux send-keys -t "${session_name}:0" 'nvim' Enter
   fi
 

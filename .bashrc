@@ -69,8 +69,8 @@ alias path='echo -e "${PATH//:/\\n}"'
 alias wpwd='pwsh.exe -Command "Get-Location"'
 
 # Nice to have
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-[ -x /usr/bin/dircolors ] && eval "$(dircolors -b)"
+[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+[[ -x /usr/bin/dircolors ]] && eval "$(dircolors -b)"
 
 # XDG
 export XDG_CACHE_HOME="$HOME/.cache"

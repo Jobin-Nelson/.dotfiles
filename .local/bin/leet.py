@@ -108,10 +108,25 @@ Qn:
 Link: {daily_qn_link}
 Notes:
 """
-def main():
-    pass
+
+import unittest
+
+
+class Solution:
+    def main(self):
+        pass
+
+
+class TestSolution(unittest.TestCase):
+    def setUp(self):
+        self.sol = Solution()
+
+    def test_main(self):
+        pass
+
 
 if __name__ == '__main__':
+    unittest.main()
 '''
         )
         print(f'File created {leet_file}')

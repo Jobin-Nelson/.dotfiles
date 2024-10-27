@@ -16,11 +16,10 @@ import shutil
 import subprocess
 import sys
 import tarfile
-from collections.abc import Callable
 from itertools import compress, tee
 from operator import methodcaller, not_
 from pathlib import Path
-from typing import Iterable, NoReturn, Sequence, TypeVar
+from typing import Iterable, NoReturn, Sequence, TypeVar, Callable
 
 # Region: -- utility functions
 A = TypeVar('A')
