@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """This program sets up everything for the daily leetcode problems"""
+
 from __future__ import annotations
 
 import argparse
@@ -11,6 +12,7 @@ import sys
 import urllib.error
 import urllib.request
 import webbrowser
+from contextlib import closing
 from pathlib import Path
 from typing import Sequence
 
@@ -88,10 +90,10 @@ def get_daily_qn_link() -> str:
     req.add_header("Content-Type", "application/json")
     req.add_header("User-Agent", "Mozilla/5.0")
     req.add_header("Accept", "*/*")
-    res = urllib.request.urlopen(req, timeout=5.0)
-    res_data = json.loads(res.read())
-    daily_qn = res_data["data"]["activeDailyCodingChallengeQuestion"]["link"]
-    return base_url.removesuffix("/graphql/") + daily_qn
+    with closing(urllib.request.urlopen(req, timeout=5.0)) as res:
+        res_data = json.loads(res.read())
+        daily_qn = res_data["data"]["activeDailyCodingChallengeQuestion"]["link"]
+        return base_url.removesuffix("/graphql/") + daily_qn
 
 
 def create_file(leet_file: Path, daily_qn_link: str):
