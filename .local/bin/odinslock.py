@@ -34,9 +34,9 @@ from typing import (
 )
 
 
-# =========== #
-# Error Codes #
-# =========== #
+# ============= #
+#  Error Codes  #
+# ============= #
 
 
 class ExitCode(IntEnum):
@@ -46,9 +46,9 @@ class ExitCode(IntEnum):
     CMD_FAILED = 4
 
 
-# ===================================== #
-# 3rd party Encryption Decryption tools #
-# ===================================== #
+# ======================================= #
+#  3rd party Encryption Decryption tools  #
+# ======================================= #
 
 
 class EDT(Protocol):
@@ -100,9 +100,9 @@ class OpenSSL:
         )
 
 
-# ================= #
-# Utility functions #
-# ================= #
+# =================== #
+#  Utility functions  #
+# =================== #
 
 
 A = TypeVar('A')
@@ -141,7 +141,7 @@ def exec_cmd(cmd: list[str], failure_message: str) -> NoReturn | None:
     try:
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError:
-        bail(failure_message, ExitCode.CMD_FAILED.value)
+        bail(failure_message, ExitCode.CMD_FAILED)
 
 
 def to_path(path: str | Path) -> Path:
@@ -153,9 +153,9 @@ def print_prefix(banner: str, it: Iterable[Path]) -> None:
         print(banner, i)
 
 
-def bail(message: str, code: int) -> NoReturn:
+def bail(message: str, code: ExitCode) -> NoReturn:
     print(message, file=sys.stderr)
-    raise SystemExit(code)
+    raise SystemExit(code.value)
 
 
 def copy(source: Path, destination: Path) -> None:
@@ -165,14 +165,14 @@ def copy(source: Path, destination: Path) -> None:
         else:
             shutil.copy2(source, destination)
     except FileNotFoundError:
-        bail(f'File {source} not found', ExitCode.FILE_NOT_FOUND.value)
+        bail(f'File {source} not found', ExitCode.FILE_NOT_FOUND)
 
 
 def create_dir(dir: Path) -> NoReturn | None:
     try:
         dir.mkdir()
     except FileExistsError:
-        bail(f'{dir} already exists', ExitCode.FILE_EXISTS.value)
+        bail(f'{dir} already exists', ExitCode.FILE_EXISTS)
 
 
 def file2dir(filepath: Path) -> Path:
@@ -187,7 +187,7 @@ def verify_executable_exists(executable: str) -> NoReturn | None:
     if not shutil.which(executable):
         bail(
             f'Executable {executable} not found in PATH',
-            ExitCode.EXE_NOT_FOUND.value,
+            ExitCode.EXE_NOT_FOUND,
         )
 
 
@@ -201,13 +201,13 @@ def stage_n_cleanup(
     copy2output = partial(copy, destination=output_dir)
     input_paths1, input_paths2 = tee(map(to_path, input_files))
     missing_paths = filterfalse(is_present, input_paths1)
+    existing_paths = filter(is_present, input_paths2)
     print_prefix('Missing path:', missing_paths)
-    # in case failure occurs before this variable is binded
+    # in case failure occurs before this variable is binded again
     compressed_output = output_dir
 
     try:
         create_dir(output_dir)
-        existing_paths = filter(is_present, input_paths2)
         consume(map(copy2output, existing_paths))
         compressed_output = archive(output_file, output_dir)
         yield compressed_output
@@ -225,7 +225,7 @@ def archive(compress_name: Path, directory: Path) -> Path:
         )
         return to_path(output_str)
     except FileNotFoundError:
-        bail(f'Directory {directory} not found', ExitCode.FILE_NOT_FOUND.value)
+        bail(f'Directory {directory} not found', ExitCode.FILE_NOT_FOUND)
 
 
 def unarchive(filepath: Path):
@@ -233,7 +233,7 @@ def unarchive(filepath: Path):
         with tarfile.open(filepath, 'r:gz') as tar:
             tar.extractall()
     except FileNotFoundError:
-        bail(f'File {filepath} not found', ExitCode.FILE_NOT_FOUND.value)
+        bail(f'File {filepath} not found', ExitCode.FILE_NOT_FOUND)
 
 
 def unarchive_n_cleanup(filepath: Path) -> None:
