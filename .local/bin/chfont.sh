@@ -11,7 +11,8 @@ function get_font() {
     'MesloLGS Nerd Font'
     'Hack Nerd Font'
     'SauceCodePro Nerd Font'
-    'Caskaydia Cove Nerd Font'
+    'CaskaydiaCove Nerd Font'
+    'Hasklug Nerd Font'
     'Ubuntu Mono Nerd Font'
     'FiraCode Nerd Font'
     'RobotoMono Nerd Font'
@@ -58,17 +59,41 @@ function set_alacritty_size() {
     'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
     'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 14.3/' "${alacritty_file}" ;;
-    'Caskaydia Cove Nerd Font')    sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
+    'CaskaydiaCove Nerd Font')     sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     *)                             sed -i 's/^size .*/size = 14/' "${alacritty_file}" ;;
   esac
 }
 
+function set_kitty_style() {
+  sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Regular"/' "${kitty_file}"
+  sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Italic"/' "${kitty_file}"
+  if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
+    || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
+    || [[ $FONT == 'Hasklug Nerd Font' ]] \
+    then
+    sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Medium"/' "${kitty_file}"
+    sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/' "${kitty_file}"
+  fi
+}
+
 function set_kitty_font() {
-  local kitty_file
+  local kitty_file ff
+  local -a font_families
 
   kitty_file="$HOME/.config/kitty/kitty.conf"
-  sed -i "s/^\(font_family\s*\).*/\1${FONT}/1" "${kitty_file}"
+  font_families=(
+    font_family
+    bold_font
+    italic_font
+    bold_italic_font
+  )
+  for ff in "${font_families[@]}"; do
+    sed -i 's/^\('"${ff}"'\s*family=\)"[^"]*"/\1"'"${FONT}"'"/1' "${kitty_file}"
+  done
+
+  set_kitty_style
+
   [[ -n $KITTY_PID ]] && kill -SIGUSR1 "${KITTY_PID}"
 }
 

@@ -54,8 +54,8 @@ function install_packages() {
 	banner 'Installing packages'
 	sudo pacman -Sy --noconfirm \
 		pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
-		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv tk \
-		starship cronie podman aria2 rsync pacman-contrib netcat neofetch \
+		shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv \
+		starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
 		ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
     syncthing net-tools nodejs
 

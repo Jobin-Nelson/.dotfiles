@@ -108,7 +108,7 @@ export NVM_DIR="$HOME/.config/nvm"
 [[ -d $HOME/go/bin && ! $PATH =~ $HOME/go/bin ]] && export PATH="$HOME/go/bin:${PATH}" 
 
 # Hashkell
-[[ -s "/home/jobin/.ghcup/env" ]] && . "/home/jobin/.ghcup/env"
+[[ -s "${HOME}/.ghcup/env" ]] && . "${HOME}/.ghcup/env"
 
 # Starship prompt
 eval "$(starship init bash)"

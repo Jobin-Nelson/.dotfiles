@@ -11,23 +11,23 @@ opacity = 0.9
   y = 3
 
 [font]
-size = 14
+size = 14.3
 
   [font.bold]
-  family = "MesloLGS Nerd Font"
+  family = "SauceCodePro Nerd Font"
   style = "Bold"
 
   [font.bold_italic]
-  family = "MesloLGS Nerd Font"
+  family = "SauceCodePro Nerd Font"
   style = "Bold Italic"
 
   [font.italic]
-  family = "MesloLGS Nerd Font"
-  style = "Italic"
+  family = "SauceCodePro Nerd Font"
+  style = "Medium Italic"
 
   [font.normal]
-  family = "MesloLGS Nerd Font"
-  style = "Regular"
+  family = "SauceCodePro Nerd Font"
+  style = "Medium"
 
 [colors]
 draw_bold_text_with_bright_colors = true

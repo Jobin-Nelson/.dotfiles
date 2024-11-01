@@ -149,7 +149,7 @@
     
     // Power Menu
     "custom/exit": {
-        "format": "",
+        "format": " ",
         "on-click": "wlogout",
         "tooltip": false
     },
@@ -174,7 +174,7 @@
     // Clock
     "clock": {
         // "timezone": "America/New_York",
-        "format": " {:%H:%M}",
+        "format": " {:%I:%M %p}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": " {:%Y-%m-%d}"
     },
