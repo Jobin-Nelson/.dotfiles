@@ -38,6 +38,10 @@ Section "InputClass"
 EndSection
 ```
 
+## Terminal settings
+
+- `stty icrnl`: to fix keyboard enter issue of typing ^M 
+
 ## Rclone
 
 ```bash
