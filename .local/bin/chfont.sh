@@ -77,6 +77,20 @@ function set_kitty_style() {
   fi
 }
 
+function set_kitty_style() {
+  if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
+    || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
+    || [[ $FONT == 'Hasklug Nerd Font' ]] \
+    then
+    sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Medium"/' "${kitty_file}"
+    sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/' "${kitty_file}"
+    return
+  fi
+
+  sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Regular"/' "${kitty_file}"
+  sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Italic"/' "${kitty_file}"
+}
+
 function set_kitty_font() {
   local kitty_file ff
   local -a font_families

@@ -71,6 +71,7 @@ function main() {
         "git-recover - $HOME/.local/bin/git-recover"
         "nix - $HOME/.config/nix/nix.conf"
         "odinslock - $HOME/.local/bin/odinslock.py"
+        "awesome - $HOME/.config/awesome/rc.lua"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \
