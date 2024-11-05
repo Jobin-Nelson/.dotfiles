@@ -247,6 +247,14 @@ function install_hyprland() {
 		hyprpaper grim slurp brightnessctl wlr-randr hyprlock wofi
 }
 
+function install_awesome() {
+  banner'Installing Awesome window manager'
+
+  pacman -S --noconfirm --needed \
+    xorg-server xorg-xinit awesome nitrogen ly \
+    brightnessctl pipewire-pulse pipewire-alsa
+}
+
 function setup_done() {
 	banner 'Setup Done!!!'
 

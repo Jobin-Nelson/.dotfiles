@@ -2,20 +2,30 @@
 
 # ~/scripts/slay.sh -l 2
 
-. /etc/os-release
+function main() {
+  local dest_dir session_name
 
-if [[ $ID = "arch" ]]; then
-  /usr/bin/google-chrome-stable &>/dev/null & \
-      flatpak run com.github.IsmaelMartinez.teams_for_linux &>/dev/null & \
-      /opt/cisco/anyconnect/bin/vpnui &>/dev/null & 
-fi
+  . /etc/os-release
 
-DEST_DIR="$HOME/playground/dev/illumina"
-SESSION_NAME='Illumina'
+  if [[ $ID == "arch" ]]; then
+    flatpak run com.microsoft.Teams &>/dev/null & \
+    flatpak run com.microsoft.Edge &>/dev/null & \
+    /opt/cisco/secureclient/bin/vpnui >/dev/null & 
+  fi
 
-if ! tmux has-session -t "${SESSION_NAME}" &>/dev/null; then
-    tmux new-session -s "${SESSION_NAME}" -c "${DEST_DIR}" -n 'Editor' -d
-    tmux send-keys -t "${SESSION_NAME}:0" "nvim" Enter
-fi
+  dest_dir="$HOME/playground/dev/illumina"
+  session_name='Illumina'
 
-tmux attach-session -t "${SESSION_NAME}"
+  if ! tmux has-session -t "${session_name}" &>/dev/null; then
+    tmux new-session -s "${session_name}" -c "${dest_dir}" -n 'Editor' -d
+    tmux send-keys -t "${session_name}:0" "nvim" Enter
+  fi
+
+  if [[ -z $TMUX ]]; then
+    tmux attach -t "${session_name}"
+  else
+    tmux switch-client -t "${session_name}"
+  fi
+}
+
+main

@@ -48,10 +48,11 @@ end
 -- Themes define colours, icons, font and wallpapers.
 -- beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 beautiful.init("~/.config/awesome/theme.lua")
+beautiful.font = "MesloLGS Nerd Font 10"
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -109,7 +110,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock(" %a %b %d, %I:%M %p ")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -198,7 +199,7 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = 30 })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -373,12 +374,16 @@ clientkeys = gears.table.join(
             c:raise()
         end ,
         {description = "(un)maximize horizontally", group = "client"}),
+    awful.key({ modkey, "Shift"}, "s",
+        function ()
+          awful.util.spawn_with_shell([[scrot --select --line mode=edge --freeze "$HOME/Pictures/screenshots/screenshot_%Y-%m-%d_%H.%M.%S.png" -e 'xclip -selection clipboard -t image/png -i $f']], false)
+        end ,
+        {description = "Screenshot with select", group = "client"}),
     awful.key({}, "Print",
         function ()
-          -- awful.util.spawn("scrot -e 'mv $f ~/Pictures/screenshots/ 2>/dev/null'", false)
-          awful.util.spawn("scrot -s -e 'mv $f ~/Pictures/screenshots/ 2>/dev/null'", false)
+          awful.util.spawn_with_shell([[scrot --focused --border "$HOME/Pictures/screenshots/screenshot_%Y-%m-%d_%H.%M.%S.png" -e 'xclip -selection clipboard -t image/png -i $f']], false)
         end ,
-        {description = "Screenshot", group = "client"}),
+        {description = "Screenshot current window", group = "client"}),
     -- Volume Keys
     awful.key({}, "XF86AudioLowerVolume", function ()
      awful.util.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-", false) end),
@@ -518,6 +523,20 @@ awful.rules.rules = {
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
       }, properties = { floating = true }},
+
+    -- Work related apps
+    { rule = {
+        class = "Microsoft Teams - Preview",
+      }, properties = { tag = "2" }
+    },
+    { rule = {
+        class = "Microsoft-edge",
+      }, properties = { tag = "3" }
+    },
+    { rule = {
+        class = "Com.cisco.secureclient.gui",
+      }, properties = { tag = "4" }
+    },
 
     -- Add titlebars to normal clients and dialogs
     -- { rule_any = {type = { "normal", "dialog" }
