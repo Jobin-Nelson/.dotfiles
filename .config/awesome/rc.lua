@@ -238,7 +238,7 @@ globalkeys = gears.table.join(
               {description = "view previous", group = "tag"}),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+    awful.key({ modkey,           }, "-", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
     awful.key({ modkey,           }, "j",
@@ -408,7 +408,7 @@ clientkeys = gears.table.join(
     awful.key({}, "XF86AudioPrev", function()
      awful.util.spawn("playerctl previous", false) end),
     -- Lock screen keys
-    awful.key({ modkey, "Shift", "Control" }, "l",
+    awful.key({ modkey }, "Escape",
         function ()
             awful.util.spawn("i3lock -d -c 808080")
         end,
@@ -568,6 +568,11 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
+end)
+
+-- Handle screen being removed
+tag.connect_signal("request::screen", function(t)
+  t.screen = awful.screen.focused()
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
