@@ -4,13 +4,12 @@ function help() {
   echo
   echo "This script reloads anything"
   echo 
-  echo "Syntax: ${0##*/} [-h|w|p <wallpaper>|g|k <wallpaper>]"
+  echo "Syntax: ${0##*/} [-h|w <wallpaper>|g|b]"
   echo 'options:'
   echo 'h   Print this [h]elp'
-  echo 'w   Reload waybar'
-  echo 'p   Reload hyprpaper'
+  echo 'b   Reload waybar'
+  echo 'w   Set wallpaper'
   echo 'g   Reload gpg-agent'
-  echo 'k   Reload kde wallpaper'
   echo
 }
 
@@ -41,6 +40,23 @@ function gpg_agent() {
   gpg-connect-agent reloadagent /bye
 }
 
+function set_wallpaper() {
+  local wallpaper
+
+  wallpaper=$1
+  case "${XDG_CURRENT_DESKTOP}" in
+    'Hyprland') hyprpaper "${wallpaper}" ;;
+    'KDE') kde_wallpaper "${wallpaper}" ;;
+    *) bail 'Could not detect current desktop'
+  esac
+}
+
+function bail() {
+  echo "$1"
+  exit 1
+}
+
+
 function kde_wallpaper() {
   local wallpaper
 
@@ -60,13 +76,12 @@ function kde_wallpaper() {
   '
 }
 
-while getopts 'hwp:gk:' option; do
+while getopts 'hw:g' option; do
   case $option in
     h) help ;;
-    w) [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]] && waybar ;;
-    p) [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]] && hyprpaper "${OPTARG}";;
+    w) set_wallpaper "${OPTARG}" ;;
+    b) [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]] && waybar ;;
     g) command -v gpg &>/dev/null && gpg_agent ;;
-    k) [[ $XDG_CURRENT_DESKTOP == 'KDE' ]] && kde_wallpaper "${OPTARG}";;
     *) echo "Invalid flag" && help ;;
   esac
 done

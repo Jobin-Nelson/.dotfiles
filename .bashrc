@@ -66,7 +66,7 @@ alias path='echo -e "${PATH//:/\\n}"'
 # alias brave='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 # export SCREENDIR=$HOME/.screen
 # service cron status &> /dev/null || sudo service cron start
-alias wpwd='pwsh.exe -Command "Get-Location"'
+# alias wpwd='pwsh.exe -Command "Get-Location"'
 
 # Nice to have
 [[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"

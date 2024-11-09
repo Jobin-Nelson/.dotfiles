@@ -18,6 +18,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+-- Recipes
+local xrandr = require("xrandr")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -188,6 +190,10 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
+        layout = {
+          spacing = 8,
+          layout = wibox.layout.fixed.horizontal,
+        },
         buttons = taglist_buttons
     }
 
@@ -199,7 +205,7 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = 30 })
+    s.mywibox = awful.wibar({ position = "top", screen = s })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -229,6 +235,47 @@ root.buttons(gears.table.join(
     awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
+
+-- credits https://github.com/meain/dotfiles/blob/master/awesome/.config/awesome/rc.lua
+function rotate_screens(direction)
+    local current_screen = awful.screen.focused()
+    local initial_scren = current_screen
+    while (true) do
+        awful.screen.focus_relative(direction)
+        local next_screen = awful.screen.focused()
+        if next_screen == initial_scren then
+            return
+        end
+
+        local current_screen_tag_name = current_screen.selected_tag.name
+        local next_screen_tag_name = next_screen.selected_tag.name
+
+        for _, t in ipairs(current_screen.tags) do
+            local fallback_tag = awful.tag.find_by_name(next_screen, t.name)
+            local self_clients = t:clients()
+            local other_clients
+
+            if not fallback_tag then
+                -- if not available, use first tag
+                fallback_tag = next_screen.tags[1]
+                other_clients = {}
+            else
+                other_clients = fallback_tag:clients()
+            end
+
+            for _, c in ipairs(self_clients) do
+                c:move_to_tag(fallback_tag)
+            end
+
+            for _, c in ipairs(other_clients) do
+                c:move_to_tag(t)
+            end
+        end
+        awful.tag.find_by_name(next_screen, current_screen_tag_name):view_only()
+        awful.tag.find_by_name(current_screen, next_screen_tag_name):view_only()
+        current_screen = next_screen
+    end
+end
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
@@ -317,16 +364,16 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
+    -- awful.key({ modkey }, "x",
+    --           function ()
+    --               awful.prompt.run {
+    --                 prompt       = "Run Lua code: ",
+    --                 textbox      = awful.screen.focused().mypromptbox.widget,
+    --                 exe_callback = awful.util.eval,
+    --                 history_path = awful.util.get_cache_dir() .. "/history_eval"
+    --               }
+    --           end,
+    --           {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"})
@@ -351,6 +398,24 @@ clientkeys = gears.table.join(
     end, {description = "focus master", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
+    awful.key(
+        {modkey, "Control"},
+        "o",
+        function()
+            rotate_screens(-1)
+        end,
+        {description = "rotate screens right", group = "screen"}
+    ),
+    awful.key(
+        {modkey, "Control", "Shift"},
+        "o",
+        function()
+            rotate_screens(1)
+        end,
+        {description = "rotate screens left", group = "screen"}
+    ),
+    awful.key({ modkey,           }, "x",      function () xrandr.xrandr() end,
+              {description = "call xrandr", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
     awful.key({ modkey,  "Shift" }, "t",      function (c) c.sticky = not c.sticky            end,
@@ -568,11 +633,6 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
-end)
-
--- Handle screen being removed
-tag.connect_signal("request::screen", function(t)
-  t.screen = awful.screen.focused()
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.

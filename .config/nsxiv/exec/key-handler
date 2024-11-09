@@ -35,20 +35,9 @@ case "$1" in
   done
   ;;
 "w")      
-  if [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]]; then 
-    while read file; do 
-      ~/.local/bin/reload.sh -p "$file"
-    done
-  elif [[ $XDG_CURRENT_DESKTOP == 'GNOME' ]]; then 
-    while read file; do 
-      gsettings set org.gnome.desktop.background picture-uri-dark "file://$file"
-      gsettings set org.gnome.desktop.background picture-options "zoom"
-    done
-  elif [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then 
-    while read file; do
-      ~/.local/bin/reload.sh -k "$file"
-    done
-  fi
+  while read file; do 
+    ~/.local/bin/reload.sh -w "$file"
+  done
   ;;
 "d")      while read file; do rm "$file"; done ;;
 esac
