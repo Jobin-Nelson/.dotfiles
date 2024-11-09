@@ -72,6 +72,8 @@ function main() {
         "nix - $HOME/.config/nix/nix.conf"
         "odinslock - $HOME/.local/bin/odinslock.py"
         "awesome - $HOME/.config/awesome/rc.lua"
+        "autorun - $HOME/.config/awesome/autorun.sh"
+        "picom - $HOME/.config/picom/picom.conf"
     )
 
     choice=$(printf '%s\n' "${FILES[@]}" \

@@ -252,7 +252,8 @@ function install_awesome() {
 
   pacman -S --noconfirm --needed \
     xorg-server xorg-xinit awesome nitrogen ly \
-    brightnessctl pipewire-pulse pipewire-alsa
+    brightnessctl pipewire-pulse pipewire-alsa awesome \
+    xclip 
 }
 
 function setup_done() {

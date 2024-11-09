@@ -240,41 +240,39 @@ root.buttons(gears.table.join(
 function rotate_screens(direction)
     local current_screen = awful.screen.focused()
     local initial_scren = current_screen
-    while (true) do
-        awful.screen.focus_relative(direction)
-        local next_screen = awful.screen.focused()
-        if next_screen == initial_scren then
-            return
-        end
-
-        local current_screen_tag_name = current_screen.selected_tag.name
-        local next_screen_tag_name = next_screen.selected_tag.name
-
-        for _, t in ipairs(current_screen.tags) do
-            local fallback_tag = awful.tag.find_by_name(next_screen, t.name)
-            local self_clients = t:clients()
-            local other_clients
-
-            if not fallback_tag then
-                -- if not available, use first tag
-                fallback_tag = next_screen.tags[1]
-                other_clients = {}
-            else
-                other_clients = fallback_tag:clients()
-            end
-
-            for _, c in ipairs(self_clients) do
-                c:move_to_tag(fallback_tag)
-            end
-
-            for _, c in ipairs(other_clients) do
-                c:move_to_tag(t)
-            end
-        end
-        awful.tag.find_by_name(next_screen, current_screen_tag_name):view_only()
-        awful.tag.find_by_name(current_screen, next_screen_tag_name):view_only()
-        current_screen = next_screen
+    awful.screen.focus_relative(direction)
+    local next_screen = awful.screen.focused()
+    if next_screen == initial_scren then
+        return
     end
+
+    local current_screen_tag_name = current_screen.selected_tag.name
+    local next_screen_tag_name = next_screen.selected_tag.name
+
+    for _, t in ipairs(current_screen.tags) do
+        local fallback_tag = awful.tag.find_by_name(next_screen, t.name)
+        local self_clients = t:clients()
+        local other_clients
+
+        if not fallback_tag then
+            -- if not available, use first tag
+            fallback_tag = next_screen.tags[1]
+            other_clients = {}
+        else
+            other_clients = fallback_tag:clients()
+        end
+
+        for _, c in ipairs(self_clients) do
+            c:move_to_tag(fallback_tag)
+        end
+
+        for _, c in ipairs(other_clients) do
+            c:move_to_tag(t)
+        end
+    end
+    awful.tag.find_by_name(next_screen, current_screen_tag_name):view_only()
+    awful.tag.find_by_name(current_screen, next_screen_tag_name):view_only()
+    current_screen = next_screen
 end
 
 -- {{{ Key bindings
