@@ -48,7 +48,7 @@ alias wl='nsxiv $HOME/Pictures/wallpapers/**/*'
 alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 alias rwl='w=$(find $HOME/Pictures/wallpapers -type f -name '"'"'*.png'"'"' -or -name '"'"'*.jpg'"'"' | shuf -n 1) && if [[ $XDG_CURRENT_DESKTOP = "GNOME" ]]; then gsettings set org.gnome.desktop.background picture-uri-dark "file://$w"; elif [[ $XDG_CURRENT_DESKTOP == "Hyprland" ]]; then reload.sh -p $w; elif [[ $XDG_CURRENT_DESKTOP = "KDE" ]]; then reload.sh -k "$w"; fi'
 alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
-alias fkill='for instanceId in $(flatpak ps --columns=instance | sed "1d"); do flatpak kill "${instanceId}"; done'
+alias fkill='flatpak ps --columns=instance | xargs -rn1 flatpak kill'
 alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -Wno-unused-parameter -g -fmax-errors=1 -Wfatal-errors -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address'
 alias starwars='nc towel.blinkenlights.nl 23'
 alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
