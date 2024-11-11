@@ -449,14 +449,24 @@ clientkeys = gears.table.join(
         {description = "(un)maximize horizontally", group = "client"}),
     awful.key({ modkey, "Shift"}, "s",
         function ()
-          awful.util.spawn_with_shell([[scrot --select --line mode=edge --freeze "$HOME/Pictures/screenshots/screenshot_%Y-%m-%d_%H.%M.%S.png" -e 'xclip -selection clipboard -t image/png -i $f']], false)
+          awful.util.spawn_with_shell([[scrot --select --freeze - | xclip -sel c -t image/png]], false)
         end ,
         {description = "Screenshot with select", group = "client"}),
+    awful.key({ modkey, "Mod1"}, "s",
+        function ()
+          awful.util.spawn_with_shell([[scrot --select --line mode=edge --freeze "$HOME/Pictures/screenshots/screenshot_%Y-%m-%d_%H.%M.%S.png" -e 'xclip -selection clipboard -t image/png -i $f']], false)
+        end ,
+        {description = "Screenshot with select and save", group = "client"}),
     awful.key({}, "Print",
+        function ()
+          awful.util.spawn_with_shell([[ scrot --focused --border - | xclip -sel c -t image/png]], false)
+        end ,
+        {description = "Screenshot current window", group = "client"}),
+    awful.key({"Mod1"}, "Print",
         function ()
           awful.util.spawn_with_shell([[scrot --focused --border "$HOME/Pictures/screenshots/screenshot_%Y-%m-%d_%H.%M.%S.png" -e 'xclip -selection clipboard -t image/png -i $f']], false)
         end ,
-        {description = "Screenshot current window", group = "client"}),
+        {description = "Screenshot current window and save", group = "client"}),
     -- Volume Keys
     awful.key({}, "XF86AudioLowerVolume", function ()
      awful.util.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-", false) end),
