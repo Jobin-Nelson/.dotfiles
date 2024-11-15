@@ -18,7 +18,7 @@
 	prune = true
 [commit]
 	template = ~/.config/git/commit_template.txt
-	; gpgsign = true
+	gpgsign = true
 [alias]
   hist = log --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
   which = !git branch -a | grep -i
