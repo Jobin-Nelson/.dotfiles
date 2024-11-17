@@ -32,7 +32,8 @@ PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00
 export EDITOR='nvim'
 export VISUAL='nvim'
 export COLORTERM="truecolor"
-# export MANPAGER='nvim +Man!'
+export MANPAGER='less -R --use-color -Dd+r -Du+b'
+export SCREENRC="${HOME}/.config/screen/screenrc"
 
 # Aliases
 alias ls='ls --color=auto'
