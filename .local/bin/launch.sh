@@ -8,9 +8,9 @@ function main() {
   . /etc/os-release
 
   if [[ $ID == "arch" ]]; then
-    flatpak run com.microsoft.Teams &>/dev/null & \
-    flatpak run com.microsoft.Edge &>/dev/null & \
-    /opt/cisco/secureclient/bin/vpnui >/dev/null & 
+    flatpak run com.microsoft.Teams &>/dev/null & disown
+    flatpak run com.microsoft.Edge &>/dev/null & disown
+    /opt/cisco/secureclient/bin/vpnui &>/dev/null & disown 
   fi
 
   dest_dir="$HOME/playground/dev/illumina"
