@@ -54,6 +54,7 @@ alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -W
 alias starwars='nc towel.blinkenlights.nl 23'
 alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
 alias path='echo -e "${PATH//:/\\n}"'
+alias rr='while (( $? != 0 )); do eval $(history -p '"'"'!!'"'"'); done'
 
 # Obselete aliases
 # alias emacs='emacsclient -nc -a ""'
