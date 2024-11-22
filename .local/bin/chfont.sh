@@ -91,6 +91,13 @@ function set_kitty_style() {
   sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Italic"/' "${kitty_file}"
 }
 
+function set_kitty_size() {
+  case "$FONT" in
+    Rec*\ Nerd\ Font)              sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
+    *)                             sed -i 's/^\(font_size\) .*/\1 11.3/' "${kitty_file}" ;;
+  esac
+}
+
 function set_kitty_font() {
   local kitty_file ff
   local -a font_families
@@ -107,6 +114,7 @@ function set_kitty_font() {
   done
 
   set_kitty_style
+  set_kitty_size
 
   [[ -n $KITTY_PID ]] && kill -SIGUSR1 "${KITTY_PID}"
 }
