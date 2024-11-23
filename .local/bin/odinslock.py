@@ -231,7 +231,7 @@ def archive(compress_name: Path, directory: Path) -> Path:
 def unarchive(filepath: Path):
     try:
         with tarfile.open(filepath, 'r:gz') as tar:
-            tar.extractall()
+            tar.extractall(filter='data')
     except FileNotFoundError:
         bail(f'File {filepath} not found', ExitCode.FILE_NOT_FOUND)
 

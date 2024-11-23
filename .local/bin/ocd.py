@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 
 def organise_dir(dir: Path):
@@ -20,7 +20,7 @@ def organize_file(file: Path):
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser('OCD')
+    parser = argparse.ArgumentParser()
     parser.add_argument('dir', type=Path, help='Directory to operate on')
     args = parser.parse_args()
     organise_dir(args.dir)
