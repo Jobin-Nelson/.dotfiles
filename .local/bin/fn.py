@@ -1,3 +1,18 @@
+# 
+#  _____                 _   _                   _ 
+# |  ___|   _ _ __   ___| |_(_) ___  _ __   __ _| |
+# | |_ | | | | '_ \ / __| __| |/ _ \| '_ \ / _` | |
+# |  _|| |_| | | | | (__| |_| | (_) | | | | (_| | |
+# |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|\__,_|_|
+#                                                  
+#  ____        _   _                 
+# |  _ \ _   _| |_| |__   ___  _ __  
+# | |_) | | | | __| '_ \ / _ \| '_ \ 
+# |  __/| |_| | |_| | | | (_) | | | |
+# |_|    \__, |\__|_| |_|\___/|_| |_|
+#        |___/                       
+# 
+
 from abc import ABC, abstractmethod
 from functools import partial, reduce
 from inspect import signature
@@ -11,6 +26,9 @@ E = TypeVar('E')
 
 URCallable: TypeAlias = Callable[[A], B | 'URCallable']
 
+# ======== #
+#  Monads  #
+# ======== #
 
 class Maybe(Generic[A]):
     def __init__(self, value: A) -> None:
@@ -155,6 +173,9 @@ class Right(Either[B, A]):
     def __eq__(self, value: object, /) -> bool:
         return isinstance(value, Right) and self.value == self.value
 
+# =========== #
+#  Functions  #
+# =========== #
 
 def curry(fn: Callable):
     def inner(arg):
@@ -190,3 +211,20 @@ def compose(*fn):
 # def liftA2(fn: URCallable[A, C], a: Either[B, A], b: Either[B, C]) -> REither[B, A, D]: ...
 def liftA2(fn, a, b):
     return a.map(fn).apply(b)
+
+# ============= #
+#  Combinators  #
+# ============= #
+
+def i  (x):       return x
+def k  (x, y):    return x
+def ki (x, y):    return y
+def s  (f, g):    return lambda x: f(x, g(x))
+def b  (f, g):    return lambda x: f(g(x))
+def c  (f):       return lambda x, y: f(y, x)
+def w  (f):       return lambda x: f(x, x)
+def d  (f, g):    return lambda x, y: f(x, g(y))
+def b1 (f, g):    return lambda x, y: f(g(x, y))
+def psi(f, g):    return lambda x, y: f(g(x), g(y))
+def phi(f, g, h): return lambda x: g(f(x), h(x))
+
