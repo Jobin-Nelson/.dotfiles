@@ -26,9 +26,11 @@ E = TypeVar('E')
 
 URCallable: TypeAlias = Callable[[A], B | 'URCallable']
 
-# ======== #
-#  Monads  #
-# ======== #
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                         Monads                           ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
 
 class Maybe(Generic[A]):
     def __init__(self, value: A) -> None:
@@ -173,9 +175,11 @@ class Right(Either[B, A]):
     def __eq__(self, value: object, /) -> bool:
         return isinstance(value, Right) and self.value == self.value
 
-# =========== #
-#  Functions  #
-# =========== #
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                        Functions                         ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
 
 def curry(fn: Callable):
     def inner(arg):
@@ -212,9 +216,11 @@ def compose(*fn):
 def liftA2(fn, a, b):
     return a.map(fn).apply(b)
 
-# ============= #
-#  Combinators  #
-# ============= #
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                       Combinators                        ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
 
 def i  (x):       return x
 def k  (x, y):    return x
