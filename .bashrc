@@ -7,8 +7,14 @@
 #
 
 
-# If not running interactively, don't do anything
+# If not running interactively, exit early
 [[ $- == *i* ]] || return
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                    Global Variables                      ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
 
 # Environment variables
 HISTCONTROL=ignoreboth
@@ -17,7 +23,36 @@ HISTSIZE=10000
 HISTFILESIZE=10000
 PROMPT_DIRTRIM=2
 
-# Options
+# Prompt
+PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
+
+# XDG
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Setting editor
+export EDITOR='nvim'
+export VISUAL='nvim'
+export COLORTERM="truecolor"
+export MANPAGER='less -R --use-color -Dd+r -Du+b'
+# export MANPAGER='nvim +Man!'
+export SCREENRC="${HOME}/.config/screen/screenrc"
+
+# Language
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
+
+# Git commit signing
+export GPG_TTY=$(tty)
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                         Options                          ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
 set -o vi
 shopt -s histappend
 shopt -s checkwinsize
@@ -25,17 +60,12 @@ shopt -s globstar
 shopt -s extglob
 shopt -s cdspell
 
-# Prompt
-PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
 
-# Setting editor
-export EDITOR='nvim'
-export VISUAL='nvim'
-export COLORTERM="truecolor"
-export MANPAGER='less -R --use-color -Dd+r -Du+b'
-export SCREENRC="${HOME}/.config/screen/screenrc"
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                         Aliases                          ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-# Aliases
+
 alias ls='ls --color=auto'
 alias ll='ls -alFh --group-directories-first --color=auto'
 alias grep='grep --color=auto'
@@ -71,22 +101,15 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do sleep 1; echo $'"'"'\nTrying
 # service cron status &> /dev/null || sudo service cron start
 # alias wpwd='pwsh.exe -Command "Get-Location"'
 
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                    General Utilities                     ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
 # Nice to have
 [[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 [[ -x /usr/bin/dircolors ]] && eval "$(dircolors -b)"
-
-# XDG
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-
-# Language
-export LANG='en_US.UTF-8'
-export LC_ALL='en_US.UTF-8'
-
-# Git commit signing
-export GPG_TTY=$(tty)
 
 # Scripts
 [[ $PATH =~ ~/.local/bin ]] || export PATH="$HOME/.local/bin:$PATH"
@@ -98,20 +121,6 @@ eval "$(fzf --bash)"
 
 # Directory jumper
 eval "$(zoxide init bash)"
-
-# NVM [Node version manager]
-export NVM_DIR="$HOME/.config/nvm"
-[[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"
-[[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"
-
-# Cargo [Rust]
-[[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
-
-# Go
-[[ -d $HOME/go/bin && ! $PATH =~ $HOME/go/bin ]] && export PATH="$HOME/go/bin:${PATH}" 
-
-# Hashkell
-[[ -s "${HOME}/.ghcup/env" ]] && . "${HOME}/.ghcup/env"
 
 # Starship prompt
 eval "$(starship init bash)"
@@ -126,6 +135,26 @@ cat <<EOF
              (> <)
               " "
 EOF
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                    Language Configs                      ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+# NVM [Node version manager]
+export NVM_DIR="$HOME/.config/nvm"
+[[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"
+[[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"
+
+# Cargo [Rust]
+[[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
+
+# Go
+[[ -d $HOME/go/bin && ! $PATH =~ $HOME/go/bin ]] && export PATH="$HOME/go/bin:${PATH}" 
+
+# Haskell
+[[ -s "${HOME}/.ghcup/env" ]] && . "${HOME}/.ghcup/env"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
