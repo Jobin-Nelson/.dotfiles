@@ -25,12 +25,21 @@ case "$1" in
     fi
   done
   ;;
+"Y")      
+  while read file; do
+    if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
+      echo "${file##*/}" | wl-copy
+    elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
+      xclip -selection clipboard -t image/png -i "${file}"
+    fi
+  done
+  ;;
 "C-c")      
   while read file; do
     if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
       wl-copy < "$file"
     elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
-      xclip -selection clipboard -target image/png "$file"
+      xclip -selection clipboard -t image/png -i "${file}"
     fi
   done
   ;;
