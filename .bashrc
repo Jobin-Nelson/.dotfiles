@@ -82,7 +82,7 @@ alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/so
 alias fkill='flatpak ps --columns=instance | xargs -rn1 flatpak kill'
 alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -Wno-unused-parameter -g -fmax-errors=1 -Wfatal-errors -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address'
 alias starwars='nc towel.blinkenlights.nl 23'
-alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
+alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' -o -path '*/.git' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
 alias path='echo -e "${PATH//:/\\n}"'
 alias rr='until eval $(history -p '"'"'!!'"'"'); do sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
 
@@ -114,7 +114,7 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do sleep 1; echo $'"'"'\nTrying
 # Scripts
 [[ $PATH =~ ~/.local/bin ]] || export PATH="$HOME/.local/bin:$PATH"
 
-# Fzf completion
+# FZF completion
 export FZF_DEFAULT_OPTS='--border --layout=reverse --height=40% --info=right --cycle'
 eval "$(fzf --bash)"
 [[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
@@ -127,9 +127,9 @@ eval "$(starship init bash)"
 
 # Greeting
 cat <<EOF
-  .----------------.
-  |  Hello Friend  |
-  '----------------'
+  .----------------------------------------------.
+  |  The Force is strong with you, young mortal  |
+  '----------------------------------------------'
       ^      (\_/)
       '----- (O.o)
              (> <)
