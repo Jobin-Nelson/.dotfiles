@@ -20,6 +20,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 -- Recipes
 local xrandr = require("xrandr")
+local batteryarc_widget = require('batteryarc-widget.batteryarc')
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -222,6 +223,12 @@ awful.screen.connect_for_each_screen(function(s)
             -- mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
+            batteryarc_widget({
+                show_current_level = true,
+                arc_thickness = 2,
+                show_notification_mode = 'on_click',
+                size = 30,
+            }),
             s.mylayoutbox,
         },
     }

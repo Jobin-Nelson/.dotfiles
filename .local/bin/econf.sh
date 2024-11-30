@@ -74,7 +74,6 @@ function main() {
         "awesome - $HOME/.config/awesome/rc.lua"
         "autorun - $HOME/.config/awesome/autorun.sh"
         "picom - $HOME/.config/picom/picom.conf"
-        "fn.py - $HOME/.local/bin/fn.py"
         "ocd.py - $HOME/.local/bin/ocd.py"
     )
 
