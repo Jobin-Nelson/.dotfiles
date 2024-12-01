@@ -65,6 +65,10 @@ shopt -s cdspell
 # ┃                        Keybinds                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
+# General
+bind "set colored-stats On"
+bind "set colored-completion-prefix On"
+bind "set completion-ignore-case On"
 
 # Change mode
 bind -m emacs-standard '"\C-z": vi-editing-mode'
@@ -84,6 +88,7 @@ bind -m vi-insert '"\C-e": "\C-z\e\C-e\er\C-z"'
 alias ls='ls --color=auto'
 alias ll='ls -alFh --group-directories-first --color=auto'
 alias grep='grep --color=auto'
+alias diff='diff --color=auto'
 alias less='less -i -R'
 alias path='echo -e "${PATH//:/\\n}"'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -139,7 +144,7 @@ export FZF_DEFAULT_OPTS="\
   --bind 'ctrl-y:execute-silent(printf {} | xclip -sel clip -r)' \
   --border --layout=reverse --height=40% --info=right --cycle"
 eval "$(fzf --bash)"
-# [[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
+[[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
 
 # Directory jumper
 eval "$(zoxide init bash)"
