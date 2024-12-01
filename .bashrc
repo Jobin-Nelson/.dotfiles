@@ -141,8 +141,14 @@ alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"
 
 # FZF completion
 export FZF_DEFAULT_OPTS="\
-  --bind 'ctrl-y:execute-silent(printf {} | xclip -sel clip -r)' \
-  --border --layout=reverse --height=40% --info=right --cycle"
+  --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300' \
+  --preview-window='right:hidden:wrap' \
+  --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)' \
+  --bind='f3:execute(bat --style=numbers {} || less -f {})' \
+  --bind='f4:toggle-preview' \
+  --bind='ctrl-f:half-page-down,ctrl-b:half-page-up' \
+  --bind='ctrl-a:select-all+accept' \
+  --multi --border --layout=reverse --height=40% --info=right --cycle"
 eval "$(fzf --bash)"
 [[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
 
