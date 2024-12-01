@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+function __gi() {
+  curl -L -s https://www.gitignore.io/api/"$@"
+}
+
+function __gi_select() {
+  local ignore_list
+
+  IFS+=","
+  ignore_list=$(printf "%s\n" $(__gi list) \
+    | fzf --multi --ansi \
+    | paste -s -d "," - )
+
+  [[ -z $ignore_list ]] && return
+  __gi "${ignore_list}"
+}
+
+if  (( $# == 0 )); then
+  __gi_select
+else
+  __gi "$@"
+fi

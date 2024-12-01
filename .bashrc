@@ -62,29 +62,49 @@ shopt -s cdspell
 
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                        Keybinds                          ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+# Change mode
+bind -m emacs-standard '"\C-z": vi-editing-mode'
+bind -m vi-command     '"\C-z": emacs-editing-mode'
+bind -m vi-insert      '"\C-z": emacs-editing-mode'
+
+# Expand subshell
+bind -m vi-insert '"\C-e": "\C-z\e\C-e\er\C-z"'
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                         Aliases                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 
+# General
 alias ls='ls --color=auto'
 alias ll='ls -alFh --group-directories-first --color=auto'
 alias grep='grep --color=auto'
 alias less='less -i -R'
+alias path='echo -e "${PATH//:/\\n}"'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias eup='${EDITOR:-nvim} $HOME/playground/dev/illumina/daily_updates/$(date -d "$([[ $(date -d "+6 hours" +%u) -gt 5 ]] && echo "next Monday" || echo "+6 hours")" +%Y-%m-%d).md'
 alias bt="upower -i \$(upower -e | grep 'BAT') | grep -E \"state|to full|percentage|time to empty\""
 alias vl="pactl list sinks | grep 'Volume'"
+alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
+
+# Wallpaper
 alias wl='nsxiv $HOME/Pictures/wallpapers/**/*'
 alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
+
+# Custom
+alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias eup='${EDITOR:-nvim} $HOME/playground/dev/illumina/daily_updates/$(date -d "$([[ $(date -d "+6 hours" +%u) -gt 5 ]] && echo "next Monday" || echo "+6 hours")" +%Y-%m-%d).md'
 alias rwl='w=$(find $HOME/Pictures/wallpapers -type f -name '"'"'*.png'"'"' -or -name '"'"'*.jpg'"'"' | shuf -n 1) && if [[ $XDG_CURRENT_DESKTOP = "GNOME" ]]; then gsettings set org.gnome.desktop.background picture-uri-dark "file://$w"; elif [[ $XDG_CURRENT_DESKTOP == "Hyprland" ]]; then reload.sh -p $w; elif [[ $XDG_CURRENT_DESKTOP = "KDE" ]]; then reload.sh -k "$w"; fi'
-alias pomo='sleep 1h && notify-send "Focus Session Over" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
 alias fkill='flatpak ps --columns=instance | xargs -rn1 flatpak kill'
 alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -Wno-unused-parameter -g -fmax-errors=1 -Wfatal-errors -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address'
 alias starwars='nc towel.blinkenlights.nl 23'
 alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' -o -path '*/.git' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
-alias path='echo -e "${PATH//:/\\n}"'
 alias rr='until eval $(history -p '"'"'!!'"'"'); do sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
+alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"'
 
 # Obselete aliases
 # alias emacs='emacsclient -nc -a ""'
@@ -115,9 +135,11 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do sleep 1; echo $'"'"'\nTrying
 [[ $PATH =~ ~/.local/bin ]] || export PATH="$HOME/.local/bin:$PATH"
 
 # FZF completion
-export FZF_DEFAULT_OPTS='--border --layout=reverse --height=40% --info=right --cycle'
+export FZF_DEFAULT_OPTS="\
+  --bind 'ctrl-y:execute-silent(printf {} | xclip -sel clip -r)' \
+  --border --layout=reverse --height=40% --info=right --cycle"
 eval "$(fzf --bash)"
-[[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
+# [[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
 
 # Directory jumper
 eval "$(zoxide init bash)"
