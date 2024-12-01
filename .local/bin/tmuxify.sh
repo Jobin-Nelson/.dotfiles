@@ -60,6 +60,20 @@ function windowizer() {
   tmux send-keys -t "${target}" "${cmd}" Enter
 }
 
+function kill_session() {
+  local session
+  local -a sessions
+
+  sessions=$(tmux list-sessions -F '#{?session_attached,yes,no} #{session_name}' \
+    | awk '$1 == "no" { print $2 }' \
+    | fzf --exit-0 --multi) || return $?
+
+  for session in "${sessions[@]}"; do
+    tmux kill-session -t "${session}"
+  done
+}
+
+
 function help() {
   echo
   echo "This script sets up tmux sessions and windows"
@@ -69,16 +83,18 @@ function help() {
   echo 'h   Print this [h]elp'
   echo 's   Start or switch [s]essions'
   echo 'w   Send command to [w]indows'
+  echo 'k   [K]ill sessions'
   echo
 }
 
-while getopts 'hsw:' option; do
+while getopts 'hsw:k' option; do
   case $option in
     h)
       help
       exit 0;;
     s) sessionizer ;;
     w) windowizer "${OPTARG}" ;;
+    k) kill_session ;;
     *)
       echo "Invalid flag"
       help
