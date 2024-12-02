@@ -109,7 +109,11 @@ alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -W
 alias starwars='nc towel.blinkenlights.nl 23'
 alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' -o -path '*/.git' \) -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr | awk '{ print \$NF; }; NR == 10 { exit; }'"
 alias rr='until eval $(history -p '"'"'!!'"'"'); do sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
+
+# FZF
 alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"'
+alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias pu="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 
 # Obselete aliases
 # alias emacs='emacsclient -nc -a ""'
@@ -141,6 +145,7 @@ alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"
 
 # FZF completion
 export FZF_DEFAULT_OPTS="\
+  --exit-0 \
   --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300' \
   --preview-window='right:hidden:wrap' \
   --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)' \
