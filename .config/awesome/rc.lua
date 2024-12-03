@@ -461,7 +461,7 @@ clientkeys = gears.table.join(
         {description = "Screenshot with select", group = "client"}),
     awful.key({ modkey, "Mod1"}, "s",
         function ()
-          awful.util.spawn_with_shell([[scrot --select --line mode=edge --freeze "$HOME/Pictures/screenshots/screenshot_%Y-%m-%d_%H.%M.%S.png" -e 'xclip -selection clipboard -t image/png -i $f']], false)
+          awful.util.spawn_with_shell([[scrot --select --freeze "$HOME/Pictures/screenshots/screenshot_%Y-%m-%d_%H.%M.%S.png" -e 'xclip -selection clipboard -t image/png -i $f']], false)
         end ,
         {description = "Screenshot with select and save", group = "client"}),
     awful.key({}, "Print",
