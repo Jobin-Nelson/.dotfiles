@@ -145,7 +145,7 @@ alias pu="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo p
 
 # FZF completion
 export FZF_DEFAULT_OPTS="\
-  --exit-0 --select-1 \
+  --select-1 \
   --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300' \
   --preview-window='right:hidden:wrap' \
   --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)' \

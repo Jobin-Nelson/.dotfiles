@@ -33,8 +33,11 @@ nnoremap <leader>so :source $HOME/.vimrc<CR>
 nnoremap <leader>i :e $HOME/.vimrc<CR>
 nnoremap <leader>e :Lexplore 30<CR>
 nnoremap <leader>E :Lexplore %:h<CR>
-nnoremap <leader>+ :vertical resize +3<CR>
-nnoremap <leader>- :vertical resize -3<CR>
+nnoremap <C-Up> :resize +2<CR>
+nnoremap <C-Down> :resize -2<CR>
+nnoremap <C-Right> :vertical resize +2<CR>
+nnoremap <C-Left> :vertical resize -2<CR>
+nnoremap - :Ex<CR>
 
 autocmd filetype python nnoremap <F5> :update <bar> !python %<CR>
 autocmd filetype javascript nnoremap <F5> :update <bar> !node %<CR>
