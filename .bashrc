@@ -114,6 +114,7 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do sleep 1; echo $'"'"'\nTrying
 alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"'
 alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 alias pu="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias ap='compgen -c | sort -u | fzf'
 
 # Obselete aliases
 # alias emacs='emacsclient -nc -a ""'
@@ -148,13 +149,13 @@ export FZF_DEFAULT_OPTS="\
   --select-1 \
   --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300' \
   --preview-window='right:hidden:wrap' \
-  --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)' \
   --bind='f3:execute(bat --style=numbers {} || less -f {})' \
   --bind='f4:toggle-preview' \
+  --bind='shift-down:preview-page-down,shift-up:preview-page-up' \
   --bind='ctrl-f:half-page-down,ctrl-b:half-page-up' \
-  --bind='ctrl-d:preview-page-down,ctrl-u:preview-page-up' \
-  --bind='ctrl-a:select-all+accept' \
+  --bind='ctrl-q:select-all+accept' \
   --bind='ctrl-x:jump' \
+  --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)' \
   --multi --border --layout=reverse --height=40% --info=inline-right --cycle"
 eval "$(fzf --bash)"
 [[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
