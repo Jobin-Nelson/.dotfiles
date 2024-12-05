@@ -29,6 +29,8 @@ function sessionizer() {
 
   session_name="${selected_dir##*/}"
   session_name="${session_name//./_}"
+  session_name="${session_name//:/_}"
+  session_name="${session_name//,/_}"
 
   if ! tmux has-session -t "${session_name}" &> /dev/null; then
     tmux new-session -s "${session_name}" -c "${selected_dir}" -n 'editor' -d
