@@ -93,6 +93,7 @@ function set_kitty_style() {
 
 function set_kitty_size() {
   case "$FONT" in
+    'SauceCodePro Nerd Font')      sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
     *)                             sed -i 's/^\(font_size\) .*/\1 11.3/' "${kitty_file}" ;;
   esac
