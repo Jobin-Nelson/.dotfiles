@@ -77,23 +77,10 @@ function set_kitty_style() {
   fi
 }
 
-function set_kitty_style() {
-  if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
-    || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
-    || [[ $FONT == 'Hasklug Nerd Font' ]] \
-    then
-    sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Medium"/' "${kitty_file}"
-    sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/' "${kitty_file}"
-    return
-  fi
-
-  sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Regular"/' "${kitty_file}"
-  sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Italic"/' "${kitty_file}"
-}
-
 function set_kitty_size() {
   case "$FONT" in
     'SauceCodePro Nerd Font')      sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
+    'CaskaydiaCove Nerd Font')     sed -i 's/^\(font_size\) .*/\1 12.3/' "${kitty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
     *)                             sed -i 's/^\(font_size\) .*/\1 11.3/' "${kitty_file}" ;;
   esac

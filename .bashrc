@@ -65,6 +65,7 @@ shopt -s cdspell
 # ┃                        Keybinds                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
+
 # General
 bind "set colored-stats On"
 bind "set colored-completion-prefix On"
