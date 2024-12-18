@@ -155,12 +155,22 @@ alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo 
 alias pr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 alias ap='compgen -c | sort -u | fzf'
 alias lg="fzf --disabled --ansi --multi \
-  --bind 'start:reload:rg --column --line-number --no-heading --color=always --smart-case {q} || :' \
-  --bind 'change:reload:rg --column --line-number --no-heading --color=always --smart-case {q} || :' \
-  --bind 'enter:become:(( \$FZF_SELECT_COUNT == 0 )) && nvim {1} +{2} || nvim +cw -q {+f}' \
-  --bind 'ctrl-o:execute:(( \$FZF_SELECT_COUNT == 0 )) && nvim {1} +{2} || nvim +cw -q {+f}' \
-  --bind 'alt-a:select-all,alt-d:deselect-all' \
+  --bind 'start:reload:rg --column --line-number --no-heading \
+          --color=always --smart-case {q} || :' \
+  --bind 'change:reload:sleep 0.1; rg --column --line-number \
+          --no-heading --color=always --smart-case {q} || :' \
+  --bind 'enter:become:(( \$FZF_SELECT_COUNT == 0 )) && nvim {1} +{2} \
+          || nvim +cw -q {+f}' \
+  --bind 'ctrl-o:execute:(( \$FZF_SELECT_COUNT == 0 )) && nvim {1} +{2} \
+          || nvim +cw -q {+f}' \
+  --bind 'ctrl-g:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] && \
+      echo \"rebind(change)+change-prompt(ripgrep> )+disable-search+transform-query:echo \{q} \
+      > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" || \
+      echo \"unbind(change)+change-prompt(fzf> )+enable-search+transform-query:echo \{q} \
+      > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"' \
+  --prompt 'ripgrep> ' \
   --delimiter : \
+  --header 'CTRL-G: Toggle between ripgrep/fzf' \
   --preview 'bat --style=full --color=always --highlight-line {2} {1}' \
   --preview-window '~4,nohidden,+{2}+4/3,<80(up)' \
   --height 90% --query "
@@ -191,15 +201,16 @@ alias lg="fzf --disabled --ansi --multi \
 
 # FZF completion
 export FZF_DEFAULT_OPTS="\
-  --select-1 \
   --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file \
   || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300' \
   --preview-window='right:hidden:wrap' \
+  --bind='f2:execute(bat --style=numbers {} || less -f {})' \
   --bind='f3:toggle-preview-wrap' \
   --bind='f4:toggle-preview' \
-  --bind='f5:execute(bat --style=numbers {} || less -f {})' \
+  --bind='f5:change-preview-window(up,40%|left,60%|down,40%|right,60%)' \
+  --bind='f6:change-preview-window(down,40%|left,60%|up,40%|right,60%)' \
   --bind='shift-down:preview-page-down,shift-up:preview-page-up' \
-  --bind='alt-a:select-all,alt-d:deselect-all' \
+  --bind='alt-a:toggle-all' \
   --bind='alt-g:first,alt-G:last' \
   --bind='ctrl-f:half-page-down,ctrl-b:half-page-up' \
   --bind='ctrl-q:select-all+accept' \
