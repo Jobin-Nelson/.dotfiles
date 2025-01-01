@@ -47,6 +47,8 @@ export LC_ALL='en_US.UTF-8'
 # Git commit signing
 export GPG_TTY=$(tty)
 
+# Python old repl
+export PYTHON_BASIC_REPL=1
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                         Options                          ┃
