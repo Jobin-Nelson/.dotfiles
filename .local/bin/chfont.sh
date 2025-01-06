@@ -20,6 +20,7 @@ function get_font() {
     'RecMonoSmCasual Nerd Font'
     'RecMonoDuotone Nerd Font'
     'RecMonoLinear Nerd Font'
+    'GeistMono Nerd Font'
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" \
@@ -58,7 +59,7 @@ function set_alacritty_size() {
   case "$FONT" in
     'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
-    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 14.3/' "${alacritty_file}" ;;
+    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 11.3/' "${alacritty_file}" ;;
     'CaskaydiaCove Nerd Font')     sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     *)                             sed -i 's/^size .*/size = 14/' "${alacritty_file}" ;;
@@ -79,7 +80,7 @@ function set_kitty_style() {
 
 function set_kitty_size() {
   case "$FONT" in
-    # 'SauceCodePro Nerd Font')      sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
+    'SauceCodePro Nerd Font')      sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
     'CaskaydiaCove Nerd Font')     sed -i 's/^\(font_size\) .*/\1 12.3/' "${kitty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
     *)                             sed -i 's/^\(font_size\) .*/\1 11.3/' "${kitty_file}" ;;
