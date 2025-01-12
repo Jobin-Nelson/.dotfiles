@@ -223,9 +223,13 @@ function configure_gnome() {
 	banner 'Configuring Gnome'
 	# echo 1 | sudo tee '/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode'
 	gsettings set org.gnome.shell.app-switcher current-workspace-only true
-	gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
-	gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Pictures/wallpapers/wallhaven-m96d8m.jpg"
+  gsettings set org.gnome.desktop.interface show-battery-percentage true
+	gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,maximize,close"
 	gsettings set org.gnome.TextEditor keybindings 'vim'
+
+  for i in {1..9}; do
+    gsettings set org.gnome.shell.keybindings "switch-to-application-${i}" "['<Super>${i}']"
+  done
 }
 
 function switch_to_integrated_graphics() {

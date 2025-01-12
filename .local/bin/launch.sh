@@ -2,17 +2,19 @@
 
 # ~/scripts/slay.sh -l 2
 
-function main() {
-  local dest_dir session_name
 
+function launch_applications() {
   . /etc/os-release
 
   if [[ $ID == "arch" ]]; then
-    nohup flatpak run com.microsoft.Teams &>/dev/null &
-    nohup flatpak run com.microsoft.Edge &>/dev/null &
-    nohup /opt/cisco/secureclient/bin/vpnui &>/dev/null &
-    disown -a
+    pgrep -i teams || setsid flatpak run com.microsoft.Teams &>/dev/null &
+    pgrep -i edge || setsid flatpak run com.microsoft.Edge &>/dev/null &
+    pgrep -i cisco || setsid /opt/cisco/secureclient/bin/vpnui &>/dev/null &
   fi
+}
+
+function launch_tmux() {
+  local dest_dir session_name
 
   dest_dir="$HOME/playground/dev/illumina"
   session_name='Illumina'
@@ -27,6 +29,12 @@ function main() {
   else
     tmux switch-client -t "${session_name}"
   fi
+}
+
+
+function main() {
+  launch_applications
+  launch_tmux
 }
 
 main
