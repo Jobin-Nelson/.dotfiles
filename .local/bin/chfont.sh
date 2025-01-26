@@ -21,6 +21,8 @@ function get_font() {
     'RecMonoDuotone Nerd Font'
     'RecMonoLinear Nerd Font'
     'GeistMono Nerd Font'
+    'Iosevka Nerd Font'
+    'Cousine Nerd Font'
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" \
@@ -40,8 +42,8 @@ function set_alacritty_font() {
 
 function set_alacritty_style() {
   if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
-    || [[ $FONT == 'RobotoMono Nerd Font' ]] \
     || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
+    || [[ $FONT == 'FiraCode Nerd Font' ]] \
     then
     sed -zi '
     s/style = "[^"]*"/style = "Medium Italic"/3
@@ -61,6 +63,7 @@ function set_alacritty_size() {
     'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
     'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 11.3/' "${alacritty_file}" ;;
     'CaskaydiaCove Nerd Font')     sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
+     'RobotoMono Nerd Font')       sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     *)                             sed -i 's/^size .*/size = 14/' "${alacritty_file}" ;;
   esac
@@ -72,6 +75,7 @@ function set_kitty_style() {
   if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
     || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
     || [[ $FONT == 'Hasklug Nerd Font' ]] \
+    || [[ $FONT == 'FiraCode Nerd Font' ]] \
     then
     sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Medium"/' "${kitty_file}"
     sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/' "${kitty_file}"
@@ -80,8 +84,9 @@ function set_kitty_style() {
 
 function set_kitty_size() {
   case "$FONT" in
-    'SauceCodePro Nerd Font')      sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
+    'SauceCodePro Nerd Font')      sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
     'CaskaydiaCove Nerd Font')     sed -i 's/^\(font_size\) .*/\1 12.3/' "${kitty_file}" ;;
+    'RobotoMono Nerd Font')        sed -i 's/^\(font_size\) .*/\1 12/'   "${kitty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
     *)                             sed -i 's/^\(font_size\) .*/\1 11.3/' "${kitty_file}" ;;
   esac
