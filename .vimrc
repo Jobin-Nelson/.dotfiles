@@ -45,4 +45,14 @@ autocmd filetype go nnoremap <F5> :update <bar> !go run %<CR>
 autocmd filetype markdown :hi link markdownError Normal
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
 
+" Copy yank buffer to system clipboard
+" Use OSC52 to put things into system clipboard, works over SSH!
+function! Osc52yank()
+  let buffer=system('base64 -w0', @0) " - w0 to disable 76 char line wrapping
+  let buffer='\ePtmux;\e\e]52;c;'.buffer.'\x07\e\\'
+  silent exe "!echo -ne ".shellescape(buffer)." > /dev/fd/2"
+endfunction
+
+nnoremap <leader>y :call Osc52Yank()<CR>
+
 " colorscheme habamax
