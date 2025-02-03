@@ -7,9 +7,9 @@ function launch_applications() {
   . /etc/os-release
 
   if [[ $ID == "arch" ]]; then
-    pgrep -i teams || setsid flatpak run com.microsoft.Teams &>/dev/null &
-    pgrep -i edge || setsid flatpak run com.microsoft.Edge &>/dev/null &
-    pgrep -i cisco || setsid /opt/cisco/secureclient/bin/vpnui &>/dev/null &
+    pgrep -i edge || setsid -f microsoft-edge-stable &>/dev/null &
+    pgrep -i msedge || setsid -f /opt/microsoft/msedge/microsoft-edge --profile-directory=Default --app-id=cifhbcnohmdccbgoicgdjpfamggdegmo "--app-url=https://teams.microsoft.com/v2/?clientType=pwa" &>/dev/null &
+    pgrep -i cisco || setsid -f /opt/cisco/secureclient/bin/vpnui &>/dev/null &
   fi
 }
 

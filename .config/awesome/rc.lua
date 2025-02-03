@@ -615,8 +615,8 @@ awful.rules.rules = {
       }, properties = { floating = true }},
 
     -- Work related apps
-    { rule = {
-        class = "Microsoft Teams - Preview",
+    { rule_any = {
+        class = { "Microsoft Teams - Preview", "teams-for-linux" },
       }, properties = { tag = "2" }
     },
     { rule = {

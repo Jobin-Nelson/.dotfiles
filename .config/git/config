@@ -31,6 +31,7 @@
   rdiff = diff --submodule=diff
   discard = !git checkout -- . && git submodule foreach git checkout -- .
   recommit = !git commit --edit --file="$(git rev-parse --git-dir)/COMMIT_EDITMSG" --cleanup=strip
+  capush = !git commit --amend --no-edit && git push --force-with-lease
 [init]
   defaultBranch = main
 [rebase]
