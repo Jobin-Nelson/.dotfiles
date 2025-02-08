@@ -2,4 +2,7 @@
 quote-style = "preserve"
 
 [tool.ruff.lint]
-extend-select = ["I"]
+extend-select = ["B", "I"]
+
+[tool.ruff.lint.isort]
+force-wrap-aliases = true
