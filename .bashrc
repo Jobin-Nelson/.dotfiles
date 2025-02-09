@@ -1,12 +1,12 @@
 #!/usr/bin/bash
-# 
+#
 # ██████╗  █████╗ ███████╗██╗  ██╗██████╗  ██████╗
 # ██╔══██╗██╔══██╗██╔════╝██║  ██║██╔══██╗██╔════╝
-# ██████╔╝███████║███████╗███████║██████╔╝██║     
-# ██╔══██╗██╔══██║╚════██║██╔══██║██╔══██╗██║     
+# ██████╔╝███████║███████╗███████║██████╔╝██║
+# ██╔══██╗██╔══██║╚════██║██╔══██║██╔══██╗██║
 # ██████╔╝██║  ██║███████║██║  ██║██║  ██║╚██████╗
 # ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
-#                                                 
+#
 
 
 # If not running interactively, exit early
@@ -58,6 +58,7 @@ export PYTHON_BASIC_REPL=1
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 
+stty -ixon # avoid freezing terminal when pressing <c-s>
 set -o vi
 shopt -s histappend
 shopt -s checkwinsize
@@ -140,21 +141,21 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do \
 # FZF
 alias todo='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" \
   $HOME/playground/projects/org_files/refile.org +$'
-alias ftodo='file=$(rg --line-number --no-heading --with-filename \
+alias ftodo='rg --line-number --no-heading --with-filename \
   "\*+ TODO" $HOME/playground/projects/org_files \
   | fzf -d ":" --prompt "Find Todo: " --with-nth "3.." \
   --layout=reverse --height=50% --ansi --border \
-  | sed -E "s/(.*):([0-9]+):.*/\1 +\2/") && [[ -n $file ]] \
-  && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" $file'
+  | sed -E "s/(.*):([0-9]+):.*/\1 +\2/" \
+  | xargs -r ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files"'
 alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain \
   | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
-alias fnote='file=$(find $HOME/playground/projects/second_brain/ \
+alias fnote='find $HOME/playground/projects/second_brain/ \
   -type f -not -path "*.git*" -a -not -path "*/attachments/*" \
   -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" \
-  -a -not -path "*/.trash/*" | fzf --prompt "Find Note: " \
-  --layout=reverse --height=50% --ansi --border) \
-  && [[ -n $file ]] && ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain \
-  | set wrap linebreak" $file'
+  -a -not -path "*/.trash/*" \
+  | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi --border \
+  | xargs -r ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain \
+  | set wrap linebreak"'
 alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"'
 alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 alias pr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
@@ -190,6 +191,24 @@ alias lg="fzf --disabled --ansi --multi \
 # export SCREENDIR=$HOME/.screen
 # service cron status &> /dev/null || sudo service cron start
 # alias wpwd='pwsh.exe -Command "Get-Location"'
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                        Functions                         ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+function memtop() {
+  local i
+  {
+    echo "PID Name Memory"
+    for i in /proc/[0-9]*; do
+      echo -e "${i##*/}\t$(<"${i}/comm")\t$(grep -oP 'VmRSS:\s*\K\d+ kB' "${i}/status")"
+    done \
+      | sort -nrk3 \
+      | head "-$(( ${LINES:-24} - 4 ))"
+  } | column -t
+} 2>/dev/null
 
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
