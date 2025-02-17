@@ -242,7 +242,10 @@ export FZF_DEFAULT_OPTS="\
   --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)' \
   --multi --border --layout=reverse --height=40% --info=inline-right --cycle"
 eval "$(fzf --bash)"
+
 [[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
+[[ -s $HOME/.config/fzf/fzf-comp.sh ]] && \. "${HOME}/.config/fzf/fzf-comp.sh"
+
 
 # Directory jumper
 eval "$(zoxide init bash)"
