@@ -2,11 +2,11 @@
 #
 # ████████╗███╗   ███╗██╗   ██╗██╗  ██╗██╗███████╗██╗   ██╗
 # ╚══██╔══╝████╗ ████║██║   ██║╚██╗██╔╝██║██╔════╝╚██╗ ██╔╝
-#    ██║   ██╔████╔██║██║   ██║ ╚███╔╝ ██║█████╗   ╚████╔╝ 
-#    ██║   ██║╚██╔╝██║██║   ██║ ██╔██╗ ██║██╔══╝    ╚██╔╝  
-#    ██║   ██║ ╚═╝ ██║╚██████╔╝██╔╝ ██╗██║██║        ██║   
-#    ╚═╝   ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝        ╚═╝   
-#                                                          
+#    ██║   ██╔████╔██║██║   ██║ ╚███╔╝ ██║█████╗   ╚████╔╝
+#    ██║   ██║╚██╔╝██║██║   ██║ ██╔██╗ ██║██╔══╝    ╚██╔╝
+#    ██║   ██║ ╚═╝ ██║╚██████╔╝██╔╝ ██╗██║██║        ██║
+#    ╚═╝   ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝        ╚═╝
+#
 
 function sessionizer() {
   local selected_dir session_name fzf_height venv_activate
@@ -20,7 +20,7 @@ function sessionizer() {
 
   fzf_height='50%'
   [[ -n $TMUX ]] && fzf_height='100%'
- 
+
   readarray -t tmux_sessions < <(tmux list-sessions -F '#{session_name}')
   readarray -t projects < <(find "$HOME/playground/projects" -mindepth 1 -maxdepth 1 -type d)
 
