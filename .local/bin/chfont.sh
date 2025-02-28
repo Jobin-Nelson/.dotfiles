@@ -13,7 +13,7 @@ function get_font() {
     'SauceCodePro Nerd Font'
     'CaskaydiaCove Nerd Font'
     'Hasklug Nerd Font'
-    'Ubuntu Mono Nerd Font'
+    'UbuntuMono Nerd Font'
     'FiraCode Nerd Font'
     'RobotoMono Nerd Font'
     'RecMonoCasual Nerd Font'
@@ -43,8 +43,7 @@ function set_alacritty_font() {
 function set_alacritty_style() {
   if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
     || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
-    || [[ $FONT == 'FiraCode Nerd Font' ]] \
-    then
+    || [[ $FONT == 'FiraCode Nerd Font' ]]; then
     sed -zi '
     s/style = "[^"]*"/style = "Medium Italic"/3
     s/style = "[^"]*"/style = "Medium"/4
@@ -59,11 +58,11 @@ function set_alacritty_style() {
 
 function set_alacritty_size() {
   case "$FONT" in
-    'Ubuntu Mono Nerd Font')       sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
+    'UbuntuMono Nerd Font')        sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
     'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
     'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 11.3/' "${alacritty_file}" ;;
     'CaskaydiaCove Nerd Font')     sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
-     'RobotoMono Nerd Font')       sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
+    'RobotoMono Nerd Font')        sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
     *)                             sed -i 's/^size .*/size = 14/' "${alacritty_file}" ;;
   esac
@@ -75,8 +74,7 @@ function set_kitty_style() {
   if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
     || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
     || [[ $FONT == 'Hasklug Nerd Font' ]] \
-    || [[ $FONT == 'FiraCode Nerd Font' ]] \
-    then
+    || [[ $FONT == 'FiraCode Nerd Font' ]]; then
     sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Medium"/' "${kitty_file}"
     sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/' "${kitty_file}"
   fi

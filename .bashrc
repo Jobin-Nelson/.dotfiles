@@ -9,6 +9,7 @@
 #
 
 
+# shellcheck disable=SC1091 # Disable errors when sourcing files
 # If not running interactively, exit early
 [[ $- == *i* ]] || return
 
@@ -17,6 +18,12 @@
 # ┃                    Global Variables                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
+
+# XDG
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
 
 # Environment variables
 HISTCONTROL=ignoreboth
@@ -28,26 +35,21 @@ PROMPT_DIRTRIM=2
 # Prompt
 PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
 
-# XDG
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-
-# Setting editor
+# Setting general variables
 export EDITOR='nvim'
 export VISUAL='nvim'
 export COLORTERM="truecolor"
 export MANPAGER='less -R --use-color -Dd+r -Du+b'
 # export MANPAGER='nvim +Man!'
-export SCREENRC="${HOME}/.config/screen/screenrc"
+export SCREENRC="${XDG_CONFIG_HOME}/screen/screenrc"
 
 # Language
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
 # Git commit signing
-export GPG_TTY=$(tty)
+export GPG_TTY
+GPG_TTY=$(tty)
 
 # Python old repl
 export PYTHON_BASIC_REPL=1
@@ -117,16 +119,6 @@ alias eup='${EDITOR:-nvim} \
   $HOME/playground/dev/illumina/daily_updates/$(date -d \
   "$([[ $(date -d "+2 hours" +%u) -gt 5 ]] \
   && echo "next Monday" || echo "+2 hours")" +%Y-%m-%d).md'
-alias rwl='w=$(\
-  find $HOME/Pictures/wallpapers -type f -name '"'"'*.png'"'"' -or -name '"'"'*.jpg'"'"' \
-  | shuf -n 1) \
-  && if [[ $XDG_CURRENT_DESKTOP == "GNOME" ]]; then \
-  gsettings set org.gnome.desktop.background picture-uri-dark "file://$w"; \
-  elif [[ $XDG_CURRENT_DESKTOP == "Hyprland" ]]; then \
-  reload.sh -p $w; \
-  elif [[ $XDG_CURRENT_DESKTOP == "KDE" ]]; then \
-  reload.sh -k "$w"; \
-  else echo "Not implemented for ${XDG_CURRENT_DESKTOP}"; fi'
 alias fkill='flatpak ps --columns=instance | xargs -rn1 flatpak kill'
 alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable \
   -Wno-unused-parameter -g -fmax-errors=1 -Wfatal-errors -D_GLIBCXX_DEBUG \
@@ -210,6 +202,25 @@ function memtop() {
   } | column -t
 } 2>/dev/null
 
+function rwl() {
+  local wallpaper
+
+  wallpaper=$(find "$HOME/Pictures/wallpapers" -type f \
+    -name '*.png' -or -name '*.jpg' \
+    | shuf -n 1)
+
+  case "${XDG_CURRENT_DESKTOP}" in
+    "GNOME")
+      gsettings set org.gnome.desktop.background picture-uri-dark "file://${wallpaper}" ;;
+    "Hyprland")
+      reload.sh -p "${wallpaper}" ;;
+    "KDE")
+      reload.sh -k "${wallpaper}" ;;
+    *)
+      echo "Not implemented for ${XDG_CURRENT_DESKTOP}" >&2 ;;
+  esac
+}
+
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    General Utilities                     ┃
@@ -243,8 +254,8 @@ export FZF_DEFAULT_OPTS="\
   --multi --border --layout=reverse --height=40% --info=inline-right --cycle"
 eval "$(fzf --bash)"
 
-[[ -s $HOME/.config/fzf/fzf-git.sh ]] && \. "${HOME}/.config/fzf/fzf-git.sh"
-[[ -s $HOME/.config/fzf/fzf-comp.sh ]] && \. "${HOME}/.config/fzf/fzf-comp.sh"
+[[ -s ${XDG_CONFIG_HOME}/fzf/fzf-git.sh ]] && \. "${XDG_CONFIG_HOME}/fzf/fzf-git.sh"
+[[ -s ${XDG_CONFIG_HOME}/fzf/fzf-comp.sh ]] && \. "${XDG_CONFIG_HOME}/fzf/fzf-comp.sh"
 
 
 # Directory jumper
@@ -271,7 +282,7 @@ EOF
 
 
 # NVM [Node version manager]
-export NVM_DIR="$HOME/.config/nvm"
+export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
 [[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"
 [[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"
 
@@ -279,7 +290,7 @@ export NVM_DIR="$HOME/.config/nvm"
 [[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
 
 # Go
-[[ -d $HOME/go/bin && ! $PATH =~ $HOME/go/bin ]] && export PATH="$HOME/go/bin:${PATH}" 
+[[ -d $HOME/go/bin && ! $PATH =~ $HOME/go/bin ]] && export PATH="$HOME/go/bin:${PATH}"
 
 # Haskell
 [[ -s "${HOME}/.ghcup/env" ]] && . "${HOME}/.ghcup/env"
