@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+#
+# ██████╗  █████╗ ██████╗ ███████╗     ██████╗██╗      ██████╗ ███╗   ██╗███████╗
+# ██╔══██╗██╔══██╗██╔══██╗██╔════╝    ██╔════╝██║     ██╔═══██╗████╗  ██║██╔════╝
+# ██████╔╝███████║██████╔╝█████╗      ██║     ██║     ██║   ██║██╔██╗ ██║█████╗
+# ██╔══██╗██╔══██║██╔══██╗██╔══╝      ██║     ██║     ██║   ██║██║╚██╗██║██╔══╝
+# ██████╔╝██║  ██║██║  ██║███████╗    ╚██████╗███████╗╚██████╔╝██║ ╚████║███████╗
+# ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝     ╚═════╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+#
+
+set -Eeuo pipefail
+trap cleanup SIGINT SIGTERM ERR EXIT
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                    Global Variables                      ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                    Utility Functions                     ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+usage() {
+  local script
+  script=$(basename "${BASH_SOURCE[0]}")
+
+  cat <<EOF
+SYNOPSIS
+    ${script} [-h] [-v] [-l <bare-repo>] git_url
+
+DESCRIPTION
+    Clone a bare git repo and set up environment for working comfortably and
+    exclusively from worktrees.
+
+OPTIONS
+    -h, --help                     Print this help and exit
+    -v, --verbose                  Print script debug info
+    -l, --location [bare-repo]     Location of bare repo (default: .bare)
+    git_url                        Repository url to clone
+
+EXAMPLES
+    ${script} https://github.com/example.git
+
+EOF
+  exit
+}
+
+cleanup() {
+  trap - SIGINT SIGTERM ERR EXIT
+  # script cleanup here
+}
+
+setup_colors() {
+  if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
+    NOFORMAT='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
+  else
+    NOFORMAT='' RED='' GREEN='' ORANGE='' BLUE='' PURPLE='' CYAN='' YELLOW=''
+  fi
+}
+
+msg() {
+  echo >&2 -e "${1-}"
+}
+
+die() {
+  local msg=$1
+  local code=${2-1} # default exit status 1
+  msg "${RED}$msg${NOFORMAT}"
+  exit "$code"
+}
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                   Core Implementation                    ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+path_from_git_url() {
+  local url=$1
+  local repo_name="${url##*/}"
+
+  echo -n "${repo_name%.git}"
+}
+
+bare_clone() {
+  [[ -d ${location} ]] && die "ERROR: ${location} already exists"
+
+  msg "${YELLOW}Cloning bare repository to ${location}...${NOFORMAT}"
+  git clone --bare "${args[0]}" "${location}" \
+    || die "ERROR: Failed to clone ${args[*]}"
+
+  msg "${YELLOW}Configuring origin fetch settings...${NOFORMAT}"
+  git -C "${location}" config remote.origin.fetch "+refs/heads/*:refs/remote/origin/*" \
+    || die "ERROR: Failed to configure fetch"
+
+  msg "${YELLOW}Setting .git file contents...${NOFORMAT}"
+  echo "gitdir: ./${location##*/}" > "${location%/*}/.git"
+}
+
+setup_worktree() {
+  pushd "$(path_from_git_url "${args[0]}")" >/dev/null \
+    || die "ERROR: Failed to change directory into ${args[0]}"
+
+  local default_branch
+  default_branch=$(git rev-parse --abbrev-ref HEAD)
+  default_branch="${default_branch##*/}"
+
+  msg "${YELLOW}Checking out ${default_branch}...${NOFORMAT}"
+  git worktree add "${default_branch}"
+
+  popd >/dev/null
+}
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                     Parse Arguments                      ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+parse_params() {
+  # default values of variables set from params
+  location='.bare'
+
+  while :; do
+    case "${1-}" in
+    -h | --help) usage ;;
+    -v | --verbose) set -x ;;
+    --no-color) NO_COLOR=1 ;;
+    -l | --location)
+      location="${2-$location}"
+      shift
+      ;;
+    -?*) die "Unknown option: $1" ;;
+    *) break ;;
+    esac
+    shift
+  done
+
+  args=("$@")
+
+  # check required params and arguments
+  [[ ${#args[@]} -eq 0 ]] && die "Missing script arguments"
+
+  location="$(path_from_git_url "${args[0]}")/${location}"
+
+  return 0
+}
+
+[[ $# == 0 ]] && usage
+parse_params "$@"
+setup_colors
+
+# script logic goes here
+bare_clone
+setup_worktree

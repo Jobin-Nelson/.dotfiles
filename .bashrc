@@ -150,7 +150,9 @@ alias fnote='find $HOME/playground/projects/second_brain/ \
   | set wrap linebreak"'
 alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"'
 alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias ai="paru -Slq | fzf --multi --preview 'paru -Si {1}' | xargs -ro sudo paru -S"
 alias pr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias ar="paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro sudo paru -Rns"
 alias ap='compgen -c | sort -u | fzf'
 alias lg="fzf --disabled --ansi --multi \
   --bind 'start:reload:rg --column --line-number --no-heading \
