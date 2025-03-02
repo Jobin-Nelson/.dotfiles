@@ -115,7 +115,7 @@ alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 
 # Custom
 alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias eup='${EDITOR:-nvim} \
+alias eup='${EDITOR:-vim} \
   $HOME/playground/dev/illumina/daily_updates/$(date -d \
   "$([[ $(date -d "+2 hours" +%u) -gt 5 ]] \
   && echo "next Monday" || echo "+2 hours")" +%Y-%m-%d).md'
@@ -131,22 +131,22 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do \
   sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
 
 # FZF
-alias todo='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files" \
+alias todo='${EDITOR:-vim} -c ":cd $HOME/playground/projects/org_files" \
   $HOME/playground/projects/org_files/refile.org +$'
 alias ftodo='rg --line-number --no-heading --with-filename \
   "\*+ TODO" $HOME/playground/projects/org_files \
   | fzf -d ":" --prompt "Find Todo: " --with-nth "3.." \
-  --layout=reverse --height=50% --ansi --border \
+  --layout=reverse --height=50% --ansi \
   | sed -E "s/(.*):([0-9]+):.*/\1 +\2/" \
-  | xargs -r ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/org_files"'
-alias note='${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain \
+  | xargs -r ${EDITOR:-vim} -c ":cd $HOME/playground/projects/org_files"'
+alias note='${EDITOR:-vim} -c ":cd $HOME/playground/projects/second_brain \
   | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
 alias fnote='find $HOME/playground/projects/second_brain/ \
   -type f -not -path "*.git*" -a -not -path "*/attachments/*" \
   -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" \
   -a -not -path "*/.trash/*" \
-  | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi --border \
-  | xargs -r ${EDITOR:-nvim} -c ":cd $HOME/playground/projects/second_brain \
+  | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi \
+  | xargs -r ${EDITOR:-vim} -c ":cd $HOME/playground/projects/second_brain \
   | set wrap linebreak"'
 alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"'
 alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
@@ -155,25 +155,22 @@ alias pr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo p
 alias ar="paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro sudo paru -Rns"
 alias ap='compgen -c | sort -u | fzf'
 alias lg="fzf --disabled --ansi --multi \
-  --bind 'start:reload:rg --column --line-number --no-heading \
-          --color=always --smart-case {q} || :' \
-  --bind 'change:reload:sleep 0.1; rg --column --line-number \
-          --no-heading --color=always --smart-case {q} || :' \
-  --bind 'enter:become:(( \$FZF_SELECT_COUNT == 0 )) && nvim {1} +{2} \
-          || nvim +cw -q {+f}' \
-  --bind 'ctrl-o:execute:(( \$FZF_SELECT_COUNT == 0 )) && nvim {1} +{2} \
-          || nvim +cw -q {+f}' \
-  --bind 'ctrl-g:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] && \
+  --prompt='ripgrep> ' \
+  --height 90% \
+  --delimiter : \
+  --header='CTRL-G: Toggle between ripgrep/fzf' \
+  --preview 'bat --style=full --color=always --highlight-line {2} {1}' \
+  --preview-window '~4,nohidden,+{2}+4/3,<80(up)' \
+  --bind='start:reload:rg --column --line-number --no-heading --color=always --smart-case {q} || :' \
+  --bind='change:reload:sleep 0.1; rg --column --line-number --no-heading --color=always --smart-case {q} || :' \
+  --bind='enter:become:(( \$FZF_SELECT_COUNT == 0 )) && \${EDITOR:-vim} {1} +{2} || \${EDITOR:-vim} +cw -q {+f}' \
+  --bind='ctrl-o:execute:(( \$FZF_SELECT_COUNT == 0 )) && \${EDITOR:-vim} {1} +{2} || \${EDITOR:-vim} +cw -q {+f}' \
+  --bind='ctrl-g:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] && \
       echo \"rebind(change)+change-prompt(ripgrep> )+disable-search+transform-query:echo \{q} \
       > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" || \
       echo \"unbind(change)+change-prompt(fzf> )+enable-search+transform-query:echo \{q} \
       > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"' \
-  --prompt 'ripgrep> ' \
-  --delimiter : \
-  --header 'CTRL-G: Toggle between ripgrep/fzf' \
-  --preview 'bat --style=full --color=always --highlight-line {2} {1}' \
-  --preview-window '~4,nohidden,+{2}+4/3,<80(up)' \
-  --height 90% --query "
+  --query "
 
 # Obselete aliases
 # alias emacs='emacsclient -nc -a ""'
@@ -206,7 +203,6 @@ function memtop() {
 
 function rwl() {
   local wallpaper
-
   wallpaper=$(find "$HOME/Pictures/wallpapers" -type f \
     -name '*.png' -or -name '*.jpg' \
     | shuf -n 1)
@@ -223,6 +219,77 @@ function rwl() {
   esac
 }
 
+function fgf() {
+  local -r prompt_add="Add > "
+  local -r prompt_reset="Reset > "
+
+  local -r git_root_dir=$(git rev-parse --show-toplevel)
+  local -r git_unstaged_files="git ls-files --modified --deleted --other --exclude-standard --deduplicate $git_root_dir"
+
+  # shellcheck disable=SC2016
+  local -r git_staged_files='git status --short | grep "^[A-Z]" | awk "{print \$NF}"'
+
+  local -r git_reset="git reset -- {+}"
+  local -r enter_cmd="($git_unstaged_files | grep {} && git add {+}) || $git_reset"
+
+  local -r preview_status_label=" Status "
+  local -r preview_status="git status --short"
+
+  local -r header=$(cat <<EOF
+> CTRL-G to switch between Add Mode and Reset mode
+> CTRL-T for status preview | CTRL-F for diff preview | CTRL-B for blame preview
+> ALT-E to open files in your editor
+> ALT-C to commit | ALT-A to append to the last commit
+EOF
+  )
+
+  local -r add_header=$(cat <<EOF
+$header
+> ENTER to add files
+> ALT-P to add patch
+EOF
+  )
+
+  local -r reset_header=$(cat <<EOF
+$header
+> ENTER to reset files
+> ALT-D to reset and checkout files
+EOF
+  )
+
+  local -r mode_reset="change-prompt($prompt_reset)+reload($git_staged_files)+change-header($reset_header)+unbind(alt-p)+rebind(alt-d)"
+  local -r mode_add="change-prompt($prompt_add)+reload($git_unstaged_files)+change-header($add_header)+rebind(alt-p)+unbind(alt-d)"
+
+  # shellcheck disable=SC2016
+  eval "$git_unstaged_files" | fzf \
+  --height=60% \
+  --multi \
+  --no-sort \
+  --prompt="Add > " \
+  --preview-label="$preview_status_label" \
+  --preview="$preview_status" \
+  --preview-window='nohidden' \
+  --header "$add_header" \
+  --header-first \
+  --bind='start:unbind(alt-d)' \
+  --bind="ctrl-t:change-preview-label($preview_status_label)" \
+  --bind="ctrl-t:+change-preview($preview_status)" \
+  --bind='ctrl-f:change-preview-label( Diff )' \
+  --bind='ctrl-f:+change-preview(git diff --color=always {} | sed "1,4d")' \
+  --bind='ctrl-b:change-preview-label( Blame )' \
+  --bind='ctrl-b:+change-preview(git blame --color-by-age {})' \
+  --bind="ctrl-g:transform:[[ \$FZF_PROMPT =~ '$prompt_add' ]] && echo '$mode_reset' || echo '$mode_add'" \
+  --bind="enter:execute($enter_cmd)" \
+  --bind="enter:+reload([[ \$FZF_PROMPT =~ '$prompt_add' ]] && $git_unstaged_files || $git_staged_files)" \
+  --bind="enter:+refresh-preview" \
+  --bind='alt-p:execute(git add --patch {+})' \
+  --bind="alt-p:+reload($git_unstaged_files)" \
+  --bind="alt-d:execute($git_reset && git checkout {+})" \
+  --bind="alt-d:+reload($git_staged_files)" \
+  --bind='alt-c:execute(git commit)+abort' \
+  --bind='alt-a:execute(git commit --amend)+abort' \
+  --bind='alt-e:execute(${EDITOR:-vim} {+})'
+}
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    General Utilities                     ┃
@@ -238,22 +305,25 @@ function rwl() {
 
 # FZF completion
 export FZF_DEFAULT_OPTS="\
-  --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file \
-  || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300' \
-  --preview-window='right:hidden:wrap' \
+  --style=full \
+  --info=inline-right \
+  --multi \
+  --layout=reverse \
+  --height=40% \
+  --cycle \
+  --bind='f1:toggle-header' \
   --bind='f2:execute(bat --style=numbers {} || less -f {})' \
   --bind='f3:toggle-preview-wrap' \
   --bind='f4:toggle-preview' \
   --bind='f5:change-preview-window(up,40%|left,60%|down,40%|right,60%)' \
   --bind='f6:change-preview-window(down,40%|left,60%|up,40%|right,60%)' \
-  --bind='shift-down:preview-page-down,shift-up:preview-page-up' \
+  --bind='shift-down:preview-half-page-down,shift-up:preview-half-page-up' \
   --bind='alt-a:toggle-all' \
   --bind='alt-g:first,alt-G:last' \
   --bind='ctrl-f:half-page-down,ctrl-b:half-page-up' \
   --bind='ctrl-q:select-all+accept' \
   --bind='ctrl-x:jump' \
-  --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)' \
-  --multi --border --layout=reverse --height=40% --info=inline-right --cycle"
+  --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)'"
 eval "$(fzf --bash)"
 
 [[ -s ${XDG_CONFIG_HOME}/fzf/fzf-git.sh ]] && \. "${XDG_CONFIG_HOME}/fzf/fzf-git.sh"

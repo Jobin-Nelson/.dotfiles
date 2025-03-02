@@ -95,31 +95,23 @@ attach_session() {
     tmux send-keys -t "${session_name}:0" 'nvim' Enter
   fi
 
-  if [[ -z ${TMUX-} ]]; then
-    tmux attach -t "${session_name}"
-  else
-    tmux switch-client -t "${session_name}"
-  fi
+  local change
+  [[ -n ${TMUX-} ]] && change='switch-client' || change='attach-session'
+  tmux "${change}" -t "${session_name}"
 }
 
 sessionizer() {
-  local -a zoxide_dirs
-  if command -v 'zoxide' &>/dev/null; then
-    readarray -t zoxide_dirs < <(zoxide query -l)
-  else
-    zoxide_dirs=()
-  fi
-
-  local -a tmux_sessions projects
-  readarray -t tmux_sessions < <(tmux list-sessions -F '#{session_name}')
+  local -a zoxide_dirs tmux_sessions projects
+  readarray -t zoxide_dirs < <(zoxide query -l) || true
+  readarray -t tmux_sessions < <(tmux list-sessions -F '#{session_name}') || true
   readarray -t projects < <(find "$HOME/playground/projects" -mindepth 1 -maxdepth 1 -type d)
 
   local selected_dir
-  selected_dir="$(printf '%s\n' "${projects[@]}" "${tmux_sessions[@]}" "${zoxide_dirs[@]}" |
+  selected_dir=$(printf '%s\n' "${projects[@]}" "${tmux_sessions[@]}" "${zoxide_dirs[@]}" |
     sort -u |
-    fzf --prompt='Select project: ' --height="${fzf_height}" --ansi)"
+    fzf --style=full --tmux --border=none --no-multi --prompt='Select project: ' --ansi)
 
-  [[ -z $selected_dir ]] && exit 1
+  [[ -z ${selected_dir-} ]] && exit 1
 
   local session_name
   session_name=$(get_session_name "${selected_dir}")
@@ -152,16 +144,20 @@ attach_worktree() {
     current_pane_path=$(pwd -P)
   fi
 
+  # Exit if not git repo
+  git -C "${current_pane_path}" rev-parse HEAD &>/dev/null || return $?
+
   local worktree
   worktree=$(git -C "${current_pane_path}" worktree list |
     sed '/(bare)/d' |
-    fzf --no-multi --prompt 'Worktree: ' --height="${fzf_height}" |
+    fzf --style=full --tmux --border=none --border=none --no-multi --prompt 'Worktree: ' |
     awk '{ print $1 }')
+
   local branch
-  branch=$(get_session_name "${worktree}")
+  branch=$(get_session_name "$(git -C "${current_pane_path}" rev-parse --abbrev-ref HEAD)")
 
   local repo_name
-  repo_name=$(get_session_name "$(git config remote.origin.url)")
+  repo_name=$(get_session_name "$(git -C "${current_pane_path}" config remote.origin.url)")
 
   local target_session="${repo_name}--${branch}"
   attach_session "${target_session}" "${worktree}"
@@ -171,7 +167,7 @@ kill_session() {
   local -a sessions
   sessions=$(tmux list-sessions -F '#{?session_attached,yes,no} #{session_name}' \
     | awk '$1 == "no" { print $2 }' \
-    | fzf --multi --height="${fzf_height}" --ansi) || return $?
+    | fzf --style=full --tmux --border=none --border=none --multi --ansi) || return $?
 
   local session
   for session in "${sessions[@]}"; do
@@ -187,7 +183,6 @@ kill_session() {
 
 parse_params() {
   # default values of variables set from params
-  [[ -n ${TMUX-} ]] && fzf_height='100%' || fzf_height='50%'
 
   while :; do
     case "${1-}" in
