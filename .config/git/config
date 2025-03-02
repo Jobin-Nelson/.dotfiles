@@ -1,24 +1,24 @@
 [user]
-	name = jobin_nelson
-	email = jobinnelson369@gmail.com
-	signingkey = 1197D8169DB72B0C!
+  name = jobin_nelson
+  email = jobinnelson369@gmail.com
+  signingkey = 1197D8169DB72B0C!
 [diff]
-	tool = nvimdiff
+  tool = nvimdiff
 [difftool "nvimdiff"]
-	cmd = nvim -d \"$LOCAL\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd L\"
+  cmd = nvim -d \"$LOCAL\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd L\"
 [merge]
   tool = nvimdiff4
   prompt = false
 [mergetool "nvimdiff4"]
   cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c '$wincmd J'
 [core]
-	editor = nvim
-	excludesfile = ~/.config/git/.gitignore_global
+  editor = nvim
+  excludesfile = ~/.config/git/.gitignore_global
 [fetch]
-	prune = true
+  prune = true
 [commit]
-	template = ~/.config/git/commit_template.txt
-	gpgsign = true
+  template = ~/.config/git/commit_template.txt
+  gpgsign = true
 [alias]
   hist = log --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
   which = !git branch -a | grep -i
@@ -35,8 +35,8 @@
 [init]
   defaultBranch = main
 [rebase]
-	updateRefs = true
+  updateRefs = true
 [branch]
-	sort = -committerdate
+  sort = -committerdate
 [includeIf "gitdir:~/playground/dev/illumina/"]
   path = ~/playground/dev/illumina/.gitconfig

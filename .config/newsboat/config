@@ -27,7 +27,7 @@ bind-key D pb-download
 bind-key U show-urls
 
 # Browser
-browser "google-chrome-stable %u"
+browser "com.google.Chrome %u"
 
 # Gruvbox colorscheme
 color background          color223   color0
@@ -51,5 +51,5 @@ bookmark-cmd "~/.config/newsboat/bookmark.sh"
 bookmark-autopilot yes
 
 # Macros
-macro a set browser "setsid -f mpv"; open-in-browser; set browser google-chrome-stable
-macro w set browser "lynx"; open-in-browser; set browser google-chrome-stable
+macro a set browser "setsid -f mpv"; open-in-browser; set browser com.google.Chrome
+macro w set browser "lynx"; open-in-browser; set browser com.google.Chrome
