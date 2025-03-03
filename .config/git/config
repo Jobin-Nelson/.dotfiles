@@ -24,9 +24,9 @@
   which = !git branch -a | grep -i
   standup = !git log --all --author="$(git config user.name)" --since='9am today' --format='- %s'
   activity = !git for-each-ref --count=10 --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)'
-  spull = !git stash --keep-index && git pull --rebase && git stash pop
+  spull = pull --rebase --autostash
   rpull = pull --recurse-submodules
-  rspull = !git pull --autostash && git submodule foreach git pull --autostash
+  rspull = !git pull --no-recurse-submodules --rebase --autostash && git submodule foreach git pull --rebase --autostash
   subup = submodule update --init --recursive
   rdiff = diff --submodule=diff
   discard = !git checkout -- . && git submodule foreach git checkout -- .
