@@ -9,7 +9,7 @@ function launch_applications() {
   if [[ $ID == "arch" ]]; then
     pgrep -i edge || setsid -f microsoft-edge-stable &>/dev/null &
     pgrep -i msedge || setsid -f /opt/microsoft/msedge/microsoft-edge --profile-directory=Default --app-id=cifhbcnohmdccbgoicgdjpfamggdegmo "--app-url=https://teams.microsoft.com/v2/?clientType=pwa" &>/dev/null &
-    pgrep -i cisco || setsid -f /opt/cisco/secureclient/bin/vpnui &>/dev/null &
+    pgrep -i vpn || setsid -f /opt/cisco/secureclient/bin/vpnui &>/dev/null &
   fi
 }
 
