@@ -150,9 +150,9 @@ alias fnote='find $HOME/playground/projects/second_brain/ \
   | set wrap linebreak"'
 alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"'
 alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
-alias ai="paru -Slq | fzf --multi --preview 'paru -Si {1}' | xargs -ro sudo paru -S"
+alias ai="paru -Slq | fzf --multi --preview 'paru -Si {1}' | xargs -ro paru -S"
 alias pr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
-alias ar="paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro sudo paru -Rns"
+alias ar="paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro paru -Rns"
 alias ap='compgen -c | sort -u | fzf'
 alias lg="fzf --disabled --ansi --multi \
   --prompt='ripgrep> ' \
@@ -166,10 +166,10 @@ alias lg="fzf --disabled --ansi --multi \
   --bind='enter:become:(( \$FZF_SELECT_COUNT == 0 )) && \${EDITOR:-vim} {1} +{2} || \${EDITOR:-vim} +cw -q {+f}' \
   --bind='ctrl-o:execute:(( \$FZF_SELECT_COUNT == 0 )) && \${EDITOR:-vim} {1} +{2} || \${EDITOR:-vim} +cw -q {+f}' \
   --bind='ctrl-g:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] && \
-      echo \"rebind(change)+change-prompt(ripgrep> )+disable-search+transform-query:echo \{q} \
-      > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" || \
-      echo \"unbind(change)+change-prompt(fzf> )+enable-search+transform-query:echo \{q} \
-      > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"' \
+          echo \"rebind(change)+change-prompt(ripgrep> )+disable-search+transform-query:echo \{q} \
+          > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" || \
+          echo \"unbind(change)+change-prompt(fzf> )+enable-search+transform-query:echo \{q} \
+          > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"' \
   --query "
 
 # Obselete aliases
