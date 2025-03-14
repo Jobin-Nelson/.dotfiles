@@ -1,23 +1,60 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import shlex
 import subprocess
+import sys
+import webbrowser
+from typing import NoReturn
+
+
+def bail(message: str, code: int = 1) -> NoReturn:
+    print(message, file=sys.stderr)
+    raise SystemExit(code)
+
+
+def get_config_url() -> str:
+    cmd = shlex.split("git config remote.origin.url")
+    try:
+        return subprocess.check_output(cmd, encoding="UTF-8").strip()
+    except Exception as e:
+        bail(f'git command failed with exception: {e}', 1)
+
+
+def config_to_remote_url(config_url: str) -> str:
+    ssh_prefix = "git@"
+    if config_url.startswith(ssh_prefix):
+        config_url = config_url.replace(":", "/").replace(ssh_prefix, "https://")
+    elif not config_url.startswith("https://"):
+        bail(f'Unsupported remote URL format: {config_url}', 2)
+
+    if config_url.endswith('.git'):
+        config_url = config_url[:-4]
+    return config_url
+
+
+def get_url() -> str:
+    config_url = get_config_url()
+    remote_url = config_to_remote_url(config_url)
+    return remote_url
 
 
 def main() -> int:
-    ssh = "git@github.com:"
-    dot_git = ".git"
+    parser = argparse.ArgumentParser(
+        description="Get the GitHub URL of the current repository."
+    )
+    parser.add_argument(
+        "-o", "--open", action="store_true", help="Open the URL in a web browser"
+    )
+    args = parser.parse_args()
 
-    cmd = shlex.split("git config remote.origin.url")
-    remote = subprocess.check_output(cmd, encoding="UTF-8").strip()
+    remote_url = get_url()
 
-    if remote.startswith(ssh):
-        remote = remote[len(ssh) :]
-    if remote.endswith(dot_git):
-        remote = remote[: -1 * len(dot_git)]
-
-    print(f"https://github.com/{remote}")
+    if args.open:
+        webbrowser.open(remote_url)
+    else:
+        print(remote_url)
     return 0
 
 
