@@ -41,12 +41,11 @@ function gpg_agent() {
 }
 
 function set_wallpaper() {
-  local wallpaper
-
-  wallpaper=$1
+  local wallpaper=$1
   case "${XDG_CURRENT_DESKTOP}" in
     'Hyprland') hyprpaper "${wallpaper}" ;;
     'KDE') kde_wallpaper "${wallpaper}" ;;
+    'GNOME') gnome_wallpaper "${wallpaper}" ;;
     *) bail 'Could not detect current desktop'
   esac
 }
@@ -58,9 +57,7 @@ function bail() {
 
 
 function kde_wallpaper() {
-  local wallpaper
-
-  wallpaper=$1
+  local wallpaper=$1
 
   qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
     var allDesktops = desktops();
@@ -76,7 +73,13 @@ function kde_wallpaper() {
   '
 }
 
-while getopts 'hw:g' option; do
+function gnome_wallpaper() {
+  local wallpaper=$1
+
+  gsettings set org.gnome.desktop.background picture-uri-dark "file://${wallpaper}"
+}
+
+while getopts 'hw:gb' option; do
   case $option in
     h) help ;;
     w) set_wallpaper "${OPTARG}" ;;
