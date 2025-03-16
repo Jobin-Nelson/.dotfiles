@@ -5,6 +5,10 @@
 - `sudo pacman -S git ansible wl-clipboard`
 - `ansible-pull -K -U https://github.com/jobin-nelson/config-setup`
 
+## Custom setup script
+
+- `curl --proto '=https' --tlsv1.2 -sSfL 'https://raw.githubusercontent.com/Jobin-Nelson/.dotfiles/refs/heads/main/playground/post_install/arch_post_install.sh' | sh -s -- -a`
+
 ## Setup dotfiles manually
 
 - Setup ssh key with github

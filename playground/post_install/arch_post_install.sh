@@ -15,7 +15,53 @@
 # ╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝
 #
 
-function banner() {
+set -euo pipefail
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                    Utility Functions                     ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+usage() {
+  local script
+
+  script=$(basename "${BASH_SOURCE[0]}")
+
+  cat <<EOF
+SYNOPSIS
+    ${script} [-h] [-v] [-d]
+
+DESCRIPTION
+    Arch post install script
+
+OPTIONS
+    -h, --help          Print this help and exit
+    -v, --verbose       Print script debug info
+    -d, --dotfiles      Setup dotfiles
+    -p, --packages      Install all packages
+    -n, --nvm           Install node version manager
+    -g, --gnome         Configure gnome
+    -w, --wallpapers    Download wallpapers
+    -a, --all           Setup all
+
+EXAMPLES
+    ${script} -d
+
+EOF
+  exit
+}
+
+setup_colors() {
+  if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
+    NOFORMAT='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
+  else
+    # shellcheck disable=SC2034
+    NOFORMAT='' RED='' GREEN='' ORANGE='' BLUE='' PURPLE='' CYAN='' YELLOW=''
+  fi
+}
+
+banner() {
   local termwidth padding_len padding
   termwidth="$(tput cols)"
   padding_len="$(((termwidth - 2 - ${#1}) / 2))"
@@ -30,21 +76,43 @@ function banner() {
   tput sgr0
 }
 
-function update_packages() {
+msg() {
+  echo >&2 -e "${GREEN}${1-}${NOFORMAT}"
+}
+
+die() {
+  local msg=$1
+  local code=${2-1} # default exit status 1
+  msg "${RED}${msg}${NOFORMAT}"
+  exit "$code"
+}
+
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                   Core Implementation                    ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+update_packages() {
   banner 'Updating Packages'
   sudo pacman -Syyu --noconfirm
 }
 
-function install_rust() {
+install_rust() {
   banner 'Installing rust'
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y || return 0
+  # shellcheck disable=SC1091
   . "$HOME/.cargo/env"
   rustup component add rust-analyzer
 }
 
-function setup_aur() {
+setup_aur() {
   banner 'Setting up AUR'
   local paru_dir="$HOME/playground/open_source/paru"
+
+  install_rust
+
+  [[ -d $paru_dir ]] && return 0
 
   mkdir -pv "${paru_dir%/*}"
 
@@ -54,26 +122,39 @@ function setup_aur() {
   cd "${paru_dir}" && makepkg -si
 }
 
-function configure_package_manager() {
+configure_package_manager() {
   banner 'Configuring package managers'
   sudo sed -i 's/^#MAKEFLAGS=.*/MAKEFLAGS="-j8"/' /etc/makepkg.conf
   sudo sed -i "
         s/^#Color/Color/
         s/^#ParallelDownloads.*/ParallelDownloads = 5/
     " /etc/pacman.conf
+  grep -q '^ILoveCandy' /etc/pacman.conf \
+    || sudo sed -i '/# Misc options/a ILoveCandy' /etc/pacman.conf
 }
 
-function install_packages() {
+setup_dotfiles() {
+  local backup_dir="$HOME/playground/backup" 
+  local dotfiles="$HOME/.dotfiles"
+
+  [[ -d $dotfiles ]] && return 0
+
+  git clone --bare --depth 5 git@github.com:Jobin-Nelson/.dotfiles.git "${dotfiles}"
+
+  mkdir -p "${backup_dir}" && mv "$HOME"/.{bash_profile,bashrc} "${backup_dir}"
+  git --git-dir="${dotfiles}" --work-tree="$HOME" config --local status.showUntrackedFiles no
+  git --git-dir="${dotfiles}" --work-tree="$HOME" checkout -f
+  git --git-dir="${dotfiles}" --work-tree="$HOME" submodule update --init --depth 5
+}
+
+install_packages() {
   banner 'Installing packages'
   sudo pacman -Sy --noconfirm \
-    pyenv man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
+    man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
     shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv \
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
     ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
     syncthing net-tools
-
-  paru -S --noconfirm \
-    visual-studio-code-bin google-chrome
 
   # flatpak install \
   #   com.google.Chrome \
@@ -88,28 +169,29 @@ function install_packages() {
   # Enable services
   systemctl enable --now cronie.service
   systemctl enable --now "syncthing@${USER}"
+
+  paru -S --noconfirm \
+    visual-studio-code-bin google-chrome
 }
 
-function install_astronvim() {
+install_astronvim() {
   banner 'Installing Astronvim'
-  local CONFIG_DIR
+  local nvim_dir="$HOME/.config/nvim"
 
-  CONFIG_DIR="$HOME/.config/nvim"
-
-  git clone --depth 1 https://github.com/AstroNvim/AstroNvim "${CONFIG_DIR}" &&
-    git clone --depth 1 git@github.com:Jobin-Nelson/astronvim_config.git "${CONFIG_DIR}/lua/user"
+  [[ -d $nvim_dir ]] && return 0
+  git clone --depth 1 https://github.com/AstroNvim/AstroNvim "${nvim_dir}" &&
+    git clone --depth 1 git@github.com:Jobin-Nelson/astronvim_config.git "${nvim_dir}/lua/user"
 }
 
-function install_lazyvim() {
+install_lazyvim() {
   banner 'Installing LazyVim'
-  local CONFIG_DIR
+  local nvim_dir="$HOME/.config/nvim"
 
-  CONFIG_DIR="$HOME/.config/nvim"
-
-  git clone --depth 1 git@github.com:Jobin-Nelson/lazyvim_config.git "${CONFIG_DIR}"
+  [[ -d $nvim_dir ]] && return 0
+  git clone --depth 1 git@github.com:Jobin-Nelson/lazyvim_config.git "${nvim_dir}"
 }
 
-function install_neovim() {
+install_neovim() {
   banner 'Install Neovim'
   sudo pacman -S --noconfirm neovim
   # local DOWNLOAD_DIR NEOVIM_DIR
@@ -123,23 +205,33 @@ function install_neovim() {
   # rm -rf "${NEOVIM_DIR}" "${NEOVIM_DIR}.tar.gz"
 }
 
-function install_doom_emacs() {
+install_doom_emacs() {
   banner 'Installing Emacs'
+  local emacs_dir="$HOME/.config/emacs"
 
   sudo pacman -Sy --needed --noconfirm \
     emacs ripgrep fd
 
-  git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
-  ~/.config/emacs/bin/doom install
+  [[ -d $emacs_dir ]] && return 0
+  git clone --depth 1 https://github.com/doomemacs/doomemacs "${emacs_dir}" &&
+    "${emacs_dir}/bin/doom" install
 }
 
-function install_python() {
+install_python() {
   banner 'Installing python'
-  pyenv install 3.11 && pyenv global 3.11
-  curl -sSL https://install.python-poetry.org | python3 -
+  command -v uv &>/dev/null && return 0
+  curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 
-function setup_repos() {
+install_nvm() {
+  banner 'Installing Node Version Manager'
+  command -v nvm &>/dev/null && return 0
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | NVM_DIR="$HOME/.config/nvm" PROFILE=/dev/null bash
+  # shellcheck disable=SC1091
+  . "$HOME/.config/nvm/nvm.sh" && nvm install node && nvm install-latest-npm
+}
+
+setup_repos() {
   banner 'Setting Up Repositories'
   local REPOS PROJECT_DIR RUST_BINARIES
   REPOS=(
@@ -172,38 +264,26 @@ function setup_repos() {
   done
 }
 
-function download_wallpapers() {
+download_wallpapers() {
   banner 'Downloading Wallpapers'
-  local wallpapers wallpaper_dir
-  wallpapers=(
+  local -a wallpapers=(
     'https://w.wallhaven.cc/full/m9/wallhaven-m96d8m.jpg'
     'https://w.wallhaven.cc/full/49/wallhaven-49m5d1.jpg'
   )
-  wallpaper_dir="$HOME/Pictures/wallpapers"
+  local wallpaper_dir="$HOME/Pictures/wallpapers"
   mkdir -pv "${wallpaper_dir}"
 
+  local wallpaper
   for wallpaper in "${wallpapers[@]}"; do
     curl "${wallpaper}" -o "${wallpaper_dir}/${wallpaper##*/}"
   done
 }
 
-function install_recursive_font() {
-  local RECURSIVE_LINK DOWNLOAD_DIR FONT_DIR
-
-  RECURSIVE_LINK='https://github.com/arrowtype/recursive/releases/download/v1.085/ArrowType-Recursive-1.085.zip'
-  RECURSIVE_FONT="${RECURSIVE_LINK##*/}"
-  DOWNLOAD_DIR="$HOME/Downloads"
-  FONT_DIR="$HOME/.local/share/fonts"
-
-  curl -L "${RECURSIVE_LINK}" -o "${DOWNLOAD_DIR}/${RECURSIVE_FONT}"
-  unzip "${DOWNLOAD_DIR}/${RECURSIVE_FONT}" '*RecMono*' -d "${FONT_DIR}/${RECURSIVE_FONT%.zip}"
-  rm "${DOWNLOAD_DIR}/${RECURSIVE_FONT}"
-}
-
-function install_fonts() {
+install_fonts() {
   banner 'Installing Fonts'
-  local FONTS BASE_URL DOWNLOAD_DIR FONT_DIR
-  FONTS=(
+  local base_url download_dir font_dir
+  local -a fonts
+  fonts=(
     'JetBrainsMono'
     'Hack'
     'Meslo'
@@ -213,26 +293,24 @@ function install_fonts() {
     'Recursive'
   )
 
-  BASE_URL='https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1'
-  DOWNLOAD_DIR="$HOME/Downloads"
-  FONT_DIR="$HOME/.local/share/fonts"
-  mkdir -pv "${DOWNLOAD_DIR}" "${FONT_DIR}"
+  base_url='https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1'
+  download_dir="$HOME/Downloads"
+  font_dir="$HOME/.local/share/fonts"
+  mkdir -pv "${download_dir}" "${font_dir}"
 
-  for font in "${FONTS[@]}"; do
+  for font in "${fonts[@]}"; do
     echo -e "\nDownloading font ${font}\n"
-    curl -L "${BASE_URL}/${font}.zip" -o "${DOWNLOAD_DIR}/${font}.zip"
+    curl -L "${base_url}/${font}.zip" -o "${download_dir}/${font}.zip"
 
     echo -e "\nExtracting font ${font}\n"
-    unzip "${DOWNLOAD_DIR}/${font}.zip" -d "${FONT_DIR}/${font}" -x '*Windows*'
-    rm "${DOWNLOAD_DIR}/${font}.zip"
+    unzip "${download_dir}/${font}.zip" -d "${font_dir}/${font}" -x '*Windows*'
+    rm "${download_dir}/${font}.zip"
   done
-
-  install_recursive_font
 
   fc-cache
 }
 
-function configure_gnome() {
+configure_gnome() {
   banner 'Configuring Gnome'
   # echo 1 | sudo tee '/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode'
   gsettings set org.gnome.shell.app-switcher current-workspace-only true
@@ -245,18 +323,18 @@ function configure_gnome() {
   done
 }
 
-function switch_to_integrated_graphics() {
+switch_to_integrated_graphics() {
   banner 'Switching to integrated graphics'
   paru -S --noconfirm envycontrol
   envycontrol -s integrated
 }
 
-function switch_to_X11() {
+switch_to_X11() {
   banner 'Switching to X11'
   sudo sed -Ei 's/#(WaylandEnable=false)/\1/' /etc/gdm/custom.conf
 }
 
-function install_hyprland() {
+install_hyprland() {
   banner 'Installing Hyprland window manager'
 
   pacman -S --noconfirm --needed \
@@ -264,7 +342,7 @@ function install_hyprland() {
     hyprpaper grim slurp brightnessctl wlr-randr hyprlock wofi
 }
 
-function install_awesome() {
+install_awesome() {
   banner 'Installing Awesome window manager'
 
   pacman -S --noconfirm --needed \
@@ -273,32 +351,68 @@ function install_awesome() {
     xclip
 }
 
-function setup_done() {
+setup_done() {
   banner 'Setup Done!!!'
 
   echo $'\nRestart System for changes to take effect\n'
 }
 
-function main() {
+main() {
 
-  # update_packages
-  # install_rust
-  # setup_aur
-  # configure_package_manager
-  # install_packages
+  update_packages
+  setup_aur
+  configure_package_manager
+  install_packages
+  setup_dotfiles
   # install_astronvim
   # install_lazyvim
   # install_neovim
   # install_doom_emacs
-  # install_python
+  install_python
+  install_nvm
   # setup_repos
-  download_wallpapers
   # install_fonts
-  # configure_gnome
+  configure_gnome
+  download_wallpapers
   # switch_to_integrated_graphics
   # switch_to_X11
   # install_hyprland
   # setup_done
 }
 
-main
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                     Parse Arguments                      ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+
+parse_params() {
+  # default values of variables set from params
+
+  while :; do
+    case "${1-}" in
+    -h | --help) usage ;;
+    -v | --verbose) set -x ;;
+    -d | --dotfiles) setup_dotfiles ;;
+    -p | --packages) setup_aur; install_packages ;;
+    -n | --nvm) install_nvm ;;
+    -g | --gnome) configure_gnome ;;
+    -w | --wallpapers) download_wallpapers ;;
+    -a | --all) main ;;
+    -?*) die "Unknown option: $1" ;;
+    *) break ;;
+    esac
+    shift
+  done
+
+  args=("$@")
+
+  [[ ${#args[@]} -eq 0 ]] || die "${0} doesn't take positional arguments"
+
+  return 0
+}
+
+[[ $# == 0 ]] && usage
+setup_colors
+parse_params "$@"
+
