@@ -156,11 +156,10 @@ install_packages() {
     ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
     syncthing net-tools
 
-  # flatpak install \
-  #   com.google.Chrome \
-  #   com.brave.Browser \
-  #   com.github.IsmaelMartinez.teams_for_linux \
-  #   com.github.tchx84.Flatseal \
+  flatpak install \
+    com.visualstudio.code \
+    com.google.Chrome \
+    com.github.tchx84.Flatseal \
   #   org.gnome.Boxes
 
   # To setup man pages
@@ -170,8 +169,8 @@ install_packages() {
   systemctl enable --now cronie.service
   systemctl enable --now "syncthing@${USER}"
 
-  paru -S --noconfirm \
-    visual-studio-code-bin google-chrome
+  # paru -S --noconfirm \
+  #   visual-studio-code-bin google-chrome
 }
 
 install_astronvim() {
