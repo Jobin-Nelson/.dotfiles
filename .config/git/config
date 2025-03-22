@@ -20,18 +20,34 @@
   template = ~/.config/git/commit_template.txt
   gpgsign = true
 [alias]
+  # log
   hist = log --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
+  standup = !git log --all --author=\"$(git config user.name)\" --since='9am today' --format='- %s'
+
+  # branch
   which = !git branch -a | grep -i
-  standup = !git log --all --author="$(git config user.name)" --since='9am today' --format='- %s'
+  lucky = !sh -c 'git checkout $(git which $1 -m1)' -
   activity = !git for-each-ref --count=10 --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)'
+
+  # pull
   spull = pull --rebase --autostash
   rpull = pull --recurse-submodules
   rspull = !git pull --no-recurse-submodules --rebase --autostash && git submodule foreach git pull --rebase --autostash
+
+  # submodule
   subup = submodule update --init --recursive
   rdiff = diff --submodule=diff
+
+  # commit
   discard = !git checkout -- . && git submodule foreach git checkout -- .
-  recommit = !git commit --edit --file="$(git rev-parse --git-dir)/COMMIT_EDITMSG" --cleanup=strip
+  recommit = !git commit --edit --file=\"$(git rev-parse --git-dir)/COMMIT_EDITMSG\" --cleanup=strip
   capush = !git commit --amend --no-edit && git push --force-with-lease
+  wip = !git add -A && git commit -m \"[WIP]!: $(date)\"
+
+  # stash
+  stsh = stash --keep-index
+  staash = stash --include-untracked
+  staaash = stash --all
 [init]
   defaultBranch = main
 [rebase]
