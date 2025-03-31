@@ -21,19 +21,18 @@ from collections import deque
 from contextlib import contextmanager, suppress
 from enum import IntEnum
 from functools import partial
-from itertools import compress, filterfalse, tee, islice
+from itertools import compress, filterfalse, islice, tee
 from operator import methodcaller, not_
 from pathlib import Path
 from typing import (
+    Callable,
+    Generator,
     Iterable,
     NoReturn,
+    Protocol,
     Sequence,
     TypeVar,
-    Callable,
-    Protocol,
-    Generator,
 )
-
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                       Error Codes                        ┃

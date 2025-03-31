@@ -121,4 +121,4 @@ b = ":buffer-next"
 b = ":buffer-previous"
 
 [keys.normal.space.t]
-s = [":change-current-directory ~/playground/projects/second_brain", "file_picker_in_current_directory"]
+s = [":change-current-directory ~/playground/second_brain", "file_picker_in_current_directory"]

@@ -150,11 +150,11 @@ setup_dotfiles() {
 install_packages() {
   banner 'Installing packages'
   sudo pacman -Sy --noconfirm \
-    man-db man-pages curl unzip tmux zoxide fzf ripgrep fd nsxiv \
+    git man-db man-pages curl unzip tmux zoxide fzf ripgrep fd bat nsxiv \
     shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv \
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
     ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
-    syncthing net-tools
+    syncthing net-tools bash-completion
 
   flatpak install \
     com.visualstudio.code \
