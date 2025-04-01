@@ -153,7 +153,7 @@ alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo 
 alias ai="paru -Slq | fzf --multi --preview 'paru -Si {1}' | xargs -ro paru -S"
 alias pr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 alias ar="paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro paru -Rns"
-alias ap='compgen -c | sort -u | fzf'
+alias ap='$(compgen -c | sort -u | fzf)'
 alias lg="fzf --disabled --ansi --multi \
   --prompt='ripgrep> ' \
   --height 90% \
