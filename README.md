@@ -33,6 +33,14 @@ cd /home/jobin/playground/post_install
 
 Further setup is documented in [Arch notes](./playground/post_install/arch_notes.md)
 
+#### Cronjobs
+
+```crontab
+0 12 * * Sun /home/jobin/.local/bin/weekly_jobs.sh
+0 16 * * *   rclone -v sync ~/playground/second_brain GoogleDriveEncrypt:
+0 16 * * *   rclone -v sync ~/playground/org_files GoogleDriveOrgFiles:
+```
+
 #### Install gsconnect for Gnome
 
 - `sudo pacman -S gnome-browser-connector`: install connector package

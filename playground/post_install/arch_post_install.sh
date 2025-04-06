@@ -154,7 +154,7 @@ install_packages() {
     shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv \
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
     ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
-    syncthing net-tools bash-completion
+    syncthing net-tools bash-completion ufw
 
   flatpak install \
     com.visualstudio.code \
@@ -336,7 +336,7 @@ switch_to_X11() {
 install_hyprland() {
   banner 'Installing Hyprland window manager'
 
-  pacman -S --noconfirm --needed \
+  sudo pacman -S --noconfirm --needed \
     hyprland dunst polkit-kde-agent waybar wl-clipboard \
     hyprpaper grim slurp brightnessctl wlr-randr hyprlock wofi
 }
@@ -344,10 +344,27 @@ install_hyprland() {
 install_awesome() {
   banner 'Installing Awesome window manager'
 
-  pacman -S --noconfirm --needed \
+  sudo pacman -S --noconfirm --needed \
     xorg-server xorg-xinit awesome nitrogen ly \
     brightnessctl pipewire-pulse pipewire-alsa awesome \
     xclip
+}
+
+setup_firewall() {
+  systemctl disable --now ufw
+
+  sudo ufw disable
+  sudo ufw reset
+  sudo ufw default deny incoming
+  sudo ufw default allow outgoing
+  sudo ufw allow ssh
+  sudo ufw limit ssh
+  sudo ufw allow http
+  sudo ufw allow https
+  sudo ufw allow syncthing
+  sudo ufw enable
+
+  systemctl enable --now ufw
 }
 
 setup_done() {
@@ -357,7 +374,6 @@ setup_done() {
 }
 
 main() {
-
   update_packages
   setup_aur
   configure_package_manager
@@ -373,6 +389,7 @@ main() {
   # install_fonts
   configure_gnome
   download_wallpapers
+  setup_firewall
   # switch_to_integrated_graphics
   # switch_to_X11
   # install_hyprland
@@ -398,6 +415,7 @@ parse_params() {
     -g | --gnome) configure_gnome ;;
     -w | --wallpapers) download_wallpapers ;;
     -a | --all) main ;;
+    -f | --firewall) setup_firewall ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac

@@ -4,6 +4,10 @@
   signingkey = 1197D8169DB72B0C!
 [diff]
   tool = nvimdiff
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
 [difftool "nvimdiff"]
   cmd = nvim -d \"$LOCAL\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd L\"
 [merge]
@@ -19,6 +23,7 @@
 [commit]
   template = ~/.config/git/commit_template.txt
   gpgsign = true
+  verbose = true
 [alias]
   # log
   hist = log --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
@@ -54,5 +59,20 @@
   updateRefs = true
 [branch]
   sort = -committerdate
+[tag]
+  sort = version:refname
+[push]
+  default = simple
+[help]
+  autocorrect = prompt
+[rerere]
+  enabled = true
+  autoupdate = true
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
+[pull]
+  rebase = true
 [includeIf "gitdir:~/playground/dev/illumina/"]
   path = ~/playground/dev/illumina/.gitconfig
