@@ -141,7 +141,7 @@ setup_dotfiles() {
 
   git clone --bare --depth 5 git@github.com:Jobin-Nelson/.dotfiles.git "${dotfiles}"
 
-  mkdir -p "${backup_dir}" && mv "$HOME"/.{bash_profile,bashrc} "${backup_dir}"
+  mkdir -pv "${backup_dir}" && mv -v "$HOME"/.{bash_profile,bashrc} "${backup_dir}"
   git --git-dir="${dotfiles}" --work-tree="$HOME" config --local status.showUntrackedFiles no
   git --git-dir="${dotfiles}" --work-tree="$HOME" checkout -f
   git --git-dir="${dotfiles}" --work-tree="$HOME" submodule update --init --depth 5
@@ -154,7 +154,7 @@ install_packages() {
     shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv \
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
     ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
-    syncthing net-tools bash-completion ufw
+    syncthing net-tools bash-completion ufw pandoc
 
   flatpak install \
     com.visualstudio.code \
