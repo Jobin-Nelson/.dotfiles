@@ -114,7 +114,7 @@ alias wl='nsxiv $HOME/Pictures/wallpapers/**/*'
 alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 
 # Custom
-alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup='${EDITOR:-vim} \
   $HOME/playground/dev/illumina/daily_updates/$(date -d \
   "$([[ $(date -d "+2 hours" +%u) -gt 5 ]] \
