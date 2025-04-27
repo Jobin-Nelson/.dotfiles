@@ -22,7 +22,7 @@
   prune = true
 [commit]
   template = ~/.config/git/commit_template.txt
-  ; gpgsign = true
+  gpgsign = true
   verbose = true
 [alias]
   # log
