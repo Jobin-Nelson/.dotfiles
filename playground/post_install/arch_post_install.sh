@@ -154,7 +154,8 @@ install_packages() {
     shellcheck jq neovim vim alacritty zathura zathura-pdf-mupdf mpv \
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
     ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
-    syncthing net-tools bash-completion ufw pandoc
+    syncthing net-tools bash-completion ufw pandoc \
+    marksman bash-language-server pyright lua-language-server vscode-json-languageserver yaml-language-server
 
   flatpak install \
     com.visualstudio.code \
