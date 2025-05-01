@@ -60,7 +60,7 @@
 [branch]
   sort = -committerdate
 [tag]
-  sort = version:refname
+  sort = -taggerdate
 [push]
   default = simple
 [help]
@@ -76,3 +76,5 @@
   rebase = true
 [includeIf "gitdir:~/playground/dev/illumina/"]
   path = ~/playground/dev/illumina/.gitconfig
+[url "git@github.com:/Jobin-Nelson/"]
+  insteadOf = "jn:"
