@@ -16,7 +16,7 @@ function launch_applications() {
 function launch_tmux() {
   local dest_dir session_name
 
-  dest_dir="$HOME/playground/dev/illumina"
+  dest_dir="$HOME/playground/dev/illumina/ticket_notes"
   session_name='Illumina'
 
   if ! tmux has-session -t "${session_name}" &>/dev/null; then
