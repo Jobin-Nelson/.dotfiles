@@ -32,3 +32,10 @@ _fzf_complete_tmux() {
 }
 
 [[ -n "$BASH" ]] && complete -F _fzf_complete_tmux -o default -o bashdefault tmux
+
+# podman
+_fzf_complete_podman() {
+  _fzf_complete --no-multi --ansi -- "$@" < <(podman ps -a --format "{{.Names}}")
+}
+
+[[ -n "$BASH" ]] && complete -F _fzf_complete_podman -o default -o bashdefault podman
