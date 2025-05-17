@@ -108,6 +108,7 @@ alias bt="upower -i \$(upower -e | grep 'BAT') \
 alias vl="pactl list sinks | grep 'Volume'"
 alias pomo='sleep 1h && notify-send "Focus Session Over" \
   && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
+alias docker='podman'
 
 # Wallpaper
 alias wl='nsxiv $HOME/Pictures/wallpapers/**/*'
