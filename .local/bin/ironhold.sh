@@ -31,7 +31,7 @@ usage() {
 
   cat <<EOF
 SYNOPSIS
-    ${script} [-h] [-v]
+    ${script} [-h] [-v] [-b <dir>] [-i <dir>]
 
 DESCRIPTION
     Script to backup all data
@@ -39,7 +39,8 @@ DESCRIPTION
 OPTIONS
     -h   Print this [h]elp and exit
     -v   Print [v]erbose info
-    -a   Backup [a]ll services
+    -b   [B]ackup all services to directory
+    -i   [I]mport all services from directory
 
 EXAMPLES
     ${script} -h
@@ -72,7 +73,7 @@ backup_lab() {
   "${lab_script}" -b "${backup_dir}"
 }
 
-backup() {
+backup_to() {
   local backup_dir=$1
   local target_dir=$2
 
@@ -96,12 +97,12 @@ backup_others() {
 
   local backup_dir
   for backup_dir in "${backup_dirs[@]}"; do
-    backup "${backup_dir}" "${target_dir}"
+    backup_to "${backup_dir}" "${target_dir}"
   done
 }
 
 
-main() {
+backup_to() {
   local target_dir=$1
 
   [[ -d $target_dir ]] || bail "ERROR: ${target_dir} not a directory"
@@ -114,6 +115,26 @@ main() {
   backup_others "${backup_dir}"
 }
 
+import_file() {
+  local backup_dir=$1
+  local import_file="${backup_dir}/$2"
+  local import_to=$3
+
+  [[ -s $import_file ]] || bail "ERROR: ${import_file} not a file"
+
+  tar -xzf "{$import_file}" -C "${import_to}"
+}
+
+import_from() {
+  local backup_dir=$1
+
+  [[ -d $target_dir ]] || bail "ERROR: ${backup_dir} not a directory"
+
+  import_file "${backup_dir}" "second_brain.tar.gz" "$HOME/playground"
+  import_file "${backup_dir}" "org_files.tar.gz" "$HOME/playground"
+  import_file "${backup_dir}" ".password.tar.gz" "$HOME"
+}
+
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
@@ -122,11 +143,12 @@ main() {
 
 [[ $# == 0 ]] && usage
 
-while getopts ":hva:" option; do
+while getopts ":hvb:i:" option; do
   case $option in
   h) usage ;;
   v) set -x ;;
-  a) main "${OPTARG}" ;;
+  b) backup_to "${OPTARG}" ;;
+  i) import_from "${OPTARG}" ;;
   *) bail "Error: Invalid option" ;;
   esac
 done

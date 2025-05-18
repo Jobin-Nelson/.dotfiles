@@ -19,7 +19,7 @@ git clone --depth 5 --bare git@github.com:Jobin-Nelson/.dotfiles.git $HOME/.dotf
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 dot config --local status.showUntrackedFiles no
 dot checkout
-dot submodule update --init
+dot submodule update --init --depth 5
 ```
 
 ## Post Install (OPTIONAL)
