@@ -338,15 +338,7 @@ eval "$(zoxide init bash)"
 eval "$(starship init bash)"
 
 # Greeting
-cat <<EOF
-  .----------------------------------------------.
-  |  The Force is strong with you, young mortal  |
-  '----------------------------------------------'
-      ^      (\_/)
-      '----- (O.o)
-             (> <)
-              " "
-EOF
+fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓

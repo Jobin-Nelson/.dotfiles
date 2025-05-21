@@ -155,7 +155,12 @@ install_packages() {
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
     ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
     syncthing net-tools bash-completion ufw pandoc \
-    marksman bash-language-server pyright lua-language-server vscode-json-languageserver yaml-language-server
+    marksman\
+    bash-language-server shfmt \
+    pyright \
+    lua-language-server \
+    vscode-json-languageserver yaml-language-server \
+    github-cli
 
   flatpak install \
     com.visualstudio.code \
