@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 case "$1" in
 "C-x")      xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
