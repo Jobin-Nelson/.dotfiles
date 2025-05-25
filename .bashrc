@@ -100,6 +100,7 @@ alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias less='less -i -R'
 alias path='echo -e "${PATH//:/\\n}"'
+alias trash='mv -t $HOME/.local/share/Trash/'
 alias alert='notify-send --urgency=low -i \
   "$([ $? = 0 ] && echo terminal || echo error)" \
   "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
