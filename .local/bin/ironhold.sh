@@ -73,7 +73,7 @@ backup_lab() {
   "${lab_script}" -b "${backup_dir}"
 }
 
-backup_to() {
+backup_from_to() {
   local backup_dir=$1
   local target_dir=$2
 
@@ -97,7 +97,7 @@ backup_others() {
 
   local backup_dir
   for backup_dir in "${backup_dirs[@]}"; do
-    backup_to "${backup_dir}" "${target_dir}"
+    backup_from_to "${backup_dir}" "${target_dir}"
   done
 }
 
