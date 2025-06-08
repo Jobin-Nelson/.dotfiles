@@ -150,12 +150,13 @@ alias fnote='find $HOME/playground/projects/second_brain/ \
   | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi \
   | xargs -r ${EDITOR:-vim} -c ":cd $HOME/playground/projects/second_brain \
   | set wrap linebreak"'
-alias dc='docker ps -a | fzf --multi --nth 2 --bind "enter:become(echo -n {+1})"'
+alias dc='docker ps -a | fzf --multi --nth 2 --header-lines 1 --bind "enter:become(echo -n {+1})"'
 alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 alias ai="paru -Slq | fzf --multi --preview 'paru -Si {1}' | xargs -ro paru -S"
 alias pr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 alias ar="paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro paru -Rns"
 alias ap='$(compgen -c | sort -u | fzf)'
+alias fmoji='curl -sSL "https://git.io/JXXO7" | fzf'
 alias lg="fzf --disabled --ansi --multi \
   --prompt='ripgrep> ' \
   --height 90% \
@@ -173,6 +174,17 @@ alias lg="fzf --disabled --ansi --multi \
           echo \"unbind(change)+change-prompt(fzf> )+enable-search+transform-query:echo \{q} \
           > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"' \
   --query "
+alias fpods="fzf \
+    --header-lines=1 \
+    --prompt '\$(kubectl config current-context | sed \"s/-context$//\")> ' \
+    --header $'╱ Enter (kubectl exec) ╱ CTRL-O (open log in editor) ╱ CTRL-R (reload) ╱\n\n' \
+    --bind 'start,ctrl-r:reload:kubectl get pods --all-namespaces' \
+    --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
+    --bind 'enter:execute:kubectl exec -it --namespace {1} {2} -- bash' \
+    --bind 'ctrl-o:execute:\${EDITOR:-vim} <(kubectl logs --all-containers --namespace {1} {2})' \
+    --preview-window up:follow \
+    --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "
+
 
 # Obselete aliases
 # alias emacs='emacsclient -nc -a ""'

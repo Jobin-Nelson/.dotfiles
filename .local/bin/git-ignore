@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 function __gi() {
   curl -L -s https://www.gitignore.io/api/"$@"

@@ -88,10 +88,16 @@ attach_session() {
   local session_name=$1
   local target_dir=$2
 
-  if ! tmux has-session -t "${session_name}" &> /dev/null; then
+  if ! tmux has-session -t="${session_name}" &> /dev/null; then
     tmux new-session -s "${session_name}" -c "${target_dir}" -n 'editor' -d
+    # Enter nix dev shell
+    tmux send-keys -t "${session_name}:0" "{ [[ -s ./flake.nix ]] && nix develop; } || { [[ -s ./shell.nix ]] && nix-shell; }" Enter
+
+    # Activate python virtual environment
     local venv_activate='./.venv/bin/activate'
     tmux send-keys -t "${session_name}:0" "[[ -s $venv_activate ]] && . ${venv_activate}" Enter
+
+    # Enter neovim
     tmux send-keys -t "${session_name}:0" 'nvim' Enter
   fi
 
