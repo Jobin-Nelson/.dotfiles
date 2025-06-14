@@ -125,7 +125,7 @@ import_file() {
   tar -xzf "{$import_file}" -C "${import_to}"
 }
 
-import_from() {
+import_others() {
   local backup_dir=$1
 
   [[ -d $target_dir ]] || bail "ERROR: ${backup_dir} not a directory"
@@ -133,6 +133,26 @@ import_from() {
   import_file "${backup_dir}" "second_brain.tar.gz" "$HOME/playground"
   import_file "${backup_dir}" "org_files.tar.gz" "$HOME/playground"
   import_file "${backup_dir}" ".password.tar.gz" "$HOME"
+}
+
+import_lab() {
+  local backup_dir=$1
+
+  local lab_script="${HOME}/playground/lab/lab.sh"
+  [[ ! -x $lab_script ]] \
+    && echo "Lab not found in path ${lab_script%/*}" \
+    && return 0
+
+
+  echo $'\nImporting Lab...\n'
+  "${lab_script}" -i "${backup_dir}"
+}
+
+import_from() {
+  local backup_dir=$1
+
+  import_lab "${backup_dir}"
+  import_others "${backup_dir}"
 }
 
 
