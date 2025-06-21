@@ -103,7 +103,7 @@ install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y || return 0
   # shellcheck disable=SC1091
   . "$HOME/.cargo/env"
-  rustup component add rust-analyzer
+  rustup install --locked bacon bacon-ls
 }
 
 setup_aur() {
