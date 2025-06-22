@@ -156,7 +156,7 @@ attach_worktree() {
   local worktree
   worktree=$(git -C "${current_pane_path}" worktree list |
     sed '/(bare)/d' |
-    fzf --style=full --tmux --border=none --border=none --no-multi --prompt 'Worktree: ' |
+    fzf --style=full --tmux --border=none --no-multi --prompt 'Worktree: ' |
     awk '{ print $1 }')
 
   local branch
@@ -181,6 +181,13 @@ kill_session() {
   done
 }
 
+ide() {
+  [[ -n ${TMUX-} ]] || die "ERROR: script must be ran inside a tmux session"
+
+  tmux split-window -v -l 30%
+  # tmux select-pane -t 0
+}
+
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
@@ -198,6 +205,7 @@ parse_params() {
     -w | --worktree) attach_worktree ;;
     -k | --kill) kill_session;;
     -r | --run) run_cmd "${2-}"; shift;;
+    -i | --ide) ide ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac

@@ -26,7 +26,7 @@
   verbose = true
 [alias]
   # log
-  hist = log --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
+  hist = log --decorate --graph --parents --all --pretty=format:'%C(green)%h %C(red)%p%Creset -%C(yellow)%d%Creset %s %Cgreen[%cr]%Creset %Cblue[%cn]%Creset' --abbrev-commit --date=relative
   standup = !git log --all --author=\"$(git config user.name)\" --since='9am today' --format='- %s'
 
   # branch
