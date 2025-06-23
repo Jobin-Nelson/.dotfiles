@@ -1,6 +1,6 @@
 [Appearance]
 ColorScheme=Breeze
-Font=SauceCodePro NF,13,-1,5,600,0,0,0,0,0,0,0,0,0,0,1,Regular
+Font=SauceCodePro Nerd Font,11,-1,5,500,0,0,0,0,0,0,0,0,0,0,1,Medium
 UseFontLineChararacters=false
 
 [General]
