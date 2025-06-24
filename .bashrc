@@ -133,14 +133,14 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do \
   sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
 
 # FZF
-alias todo='${EDITOR:-vim} -c ":cd $HOME/playground/projects/org_files" \
-  $HOME/playground/projects/org_files/refile.org +$'
+alias todo='${EDITOR:-vim} -c ":cd $HOME/playground/org_files" \
+  $HOME/playground/org_files/inbox.org +$'
 alias ftodo='rg --line-number --no-heading --with-filename \
-  "\*+ TODO" $HOME/playground/projects/org_files \
+  --type org "\*+ (TODO|NEXT)" $HOME/playground/org_files \
   | fzf -d ":" --prompt "Find Todo: " --with-nth "3.." \
   --layout=reverse --height=50% --ansi \
   | sed -E "s/(.*):([0-9]+):.*/\1 +\2/" \
-  | xargs -r ${EDITOR:-vim} -c ":cd $HOME/playground/projects/org_files"'
+  | xargs -r ${EDITOR:-vim} -c ":cd $HOME/playground/org_files"'
 alias note='${EDITOR:-vim} -c ":cd $HOME/playground/projects/second_brain \
   | set wrap linebreak" $HOME/playground/projects/second_brain/Notes/inbox.md +$'
 alias fnote='find $HOME/playground/projects/second_brain/ \
