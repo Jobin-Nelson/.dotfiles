@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 case "$1" in
-"C-x")      xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
-"p")      
-  while read file; do
+"C-x") xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
+"p")
+  while read -r file; do
     if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
       echo "${file}" | wl-copy
     elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
@@ -11,42 +11,42 @@ case "$1" in
     fi
   done
   ;;
-"r")      
-  while read file; do
+"r")
+  while read -r file; do
     cp "${file}" "$HOME/Pictures/jaison_jasmine_wedding/jaison_jasmine_selected_by_mom/"
   done
   ;;
-"y")      
-  while read file; do
+"y")
+  while read -r file; do
     if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
-      echo "${file##*/}" | wl-copy
+      echo "${file}" | wl-copy
     elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
-      echo "${file##*/}" | xclip -selection clipboard
+      echo "${file}" | xclip -selection clipboard
     fi
   done
   ;;
-"Y")      
-  while read file; do
+"Y")
+  while read -r file; do
     if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
-      echo "${file##*/}" | wl-copy
-    elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
-      xclip -selection clipboard -t image/png -i "${file}"
-    fi
-  done
-  ;;
-"C-c")      
-  while read file; do
-    if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
-      wl-copy < "$file"
+      echo "${file}" | wl-copy
     elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
       xclip -selection clipboard -t image/png -i "${file}"
     fi
   done
   ;;
-"w")      
-  while read file; do 
+"C-c")
+  while read -r file; do
+    if [[ $XDG_SESSION_TYPE == 'wayland' ]]; then
+      wl-copy <"$file"
+    elif [[ $XDG_SESSION_TYPE == 'x11' ]]; then
+      xclip -selection clipboard -t image/png -i "${file}"
+    fi
+  done
+  ;;
+"w")
+  while read -r file; do
     ~/.local/bin/reload.sh -w "$file"
   done
   ;;
-"d")      while read file; do rm "$file"; done ;;
+"d") while read -r file; do rm "$file"; done ;;
 esac
