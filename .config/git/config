@@ -70,7 +70,7 @@
   autoupdate = true
 [rebase]
   autoSquash = true
-  autoStash = true
+  ; autoStash = true
   updateRefs = true
   missingCommitsCheck = warn
 [pull]
