@@ -1,12 +1,12 @@
 #
 # ███╗   ██╗███████╗██╗    ██╗███████╗██████╗  ██████╗  █████╗ ████████╗
 # ████╗  ██║██╔════╝██║    ██║██╔════╝██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝
-# ██╔██╗ ██║█████╗  ██║ █╗ ██║███████╗██████╔╝██║   ██║███████║   ██║   
-# ██║╚██╗██║██╔══╝  ██║███╗██║╚════██║██╔══██╗██║   ██║██╔══██║   ██║   
-# ██║ ╚████║███████╗╚███╔███╔╝███████║██████╔╝╚██████╔╝██║  ██║   ██║   
-# ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
+# ██╔██╗ ██║█████╗  ██║ █╗ ██║███████╗██████╔╝██║   ██║███████║   ██║
+# ██║╚██╗██║██╔══╝  ██║███╗██║╚════██║██╔══██╗██║   ██║██╔══██║   ██║
+# ██║ ╚████║███████╗╚███╔███╔╝███████║██████╔╝╚██████╔╝██║  ██║   ██║
+# ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝
 #
-                                                                      
+
 # Keybinds
 bind-key j down
 bind-key k up
@@ -27,7 +27,7 @@ bind-key D pb-download
 bind-key U show-urls
 
 # Browser
-browser "com.google.Chrome %u"
+browser "xdg-open %u"
 
 # Gruvbox colorscheme
 color background          color223   color0
@@ -51,5 +51,5 @@ bookmark-cmd "~/.config/newsboat/bookmark.sh"
 bookmark-autopilot yes
 
 # Macros
-macro a set browser "setsid -f mpv"; open-in-browser; set browser com.google.Chrome
-macro w set browser "lynx"; open-in-browser; set browser com.google.Chrome
+macro a set browser "setsid -f mpv"; open-in-browser; set browser "xdg-open"
+macro w set browser "lynx"; open-in-browser; set browser "xdg-open"

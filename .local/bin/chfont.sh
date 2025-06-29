@@ -32,6 +32,7 @@ function get_font() {
     'Iosevka Nerd Font'
     'Maple Mono NF'
     'ZedMono Nerd Font'
+    'Terminess Nerd Font'
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" \
