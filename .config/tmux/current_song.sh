@@ -11,4 +11,4 @@ elif [[ $song == 'null' ]]; then
   song='Unknown Title'
 fi
 
-[[ -n $song ]] && echo "${song}"
+echo "${song}"
