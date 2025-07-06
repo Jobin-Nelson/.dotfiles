@@ -305,6 +305,14 @@ EOF
   --bind='alt-e:execute(${EDITOR:-vim} {+})'
 }
 
+function sshs() {
+  ssh "${@}" -t -- screen -R jobin
+}
+
+function ssht() {
+  ssh "${@}" -t -- sh -c 'tmux has-session jobin && exec tmux attach jobin || exec tmux new -s jobin'
+}
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    General Utilities                     ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
