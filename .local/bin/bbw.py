@@ -19,6 +19,7 @@ import itertools
 import shutil
 from dataclasses import dataclass, field
 from functools import partial
+from itertools import pairwise
 from pathlib import Path
 from typing import Callable
 
@@ -165,11 +166,11 @@ def hook_cleanup_handler(tasks: list, end_queue: asyncio.Queue):
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 
-async def _controller() -> int:
+def get_repos() -> list[Git]:
     home = Path.home()
     dotfiles = home / '.dotfiles'
     project_path = home / 'playground' / 'projects'
-    extra_paths = [
+    extra_repos = [
         home / '.config' / 'nvim',
         home / '.password-store',
         home / '.config' / 'nixos-config',
@@ -177,37 +178,44 @@ async def _controller() -> int:
     ]
 
     projects = [p for p in project_path.iterdir() if p.is_dir()]
-    extra_repos = [p for p in extra_paths if p.is_dir()]
+    extra_repos = [p for p in extra_repos if p.is_dir()]
 
-    batch = [Git(p) for p in itertools.chain(projects, extra_repos)] + [
+    return [Git(p) for p in itertools.chain(projects, extra_repos)] + [
         Git(home, dotfiles, home)
     ]
 
+
+async def _controller() -> int:
+    batch = get_repos()
+
     tasks = []
-    add_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
-    commit_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
-    push_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
-    status_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
-    result_queue = asyncio.Queue(maxsize=QUEUE_MAX_SIZE)
+    queues = [
+        asyncio.Queue(maxsize=QUEUE_MAX_SIZE),  # add queue
+        asyncio.Queue(maxsize=QUEUE_MAX_SIZE),  # commit queue
+        asyncio.Queue(maxsize=QUEUE_MAX_SIZE),  # push queue
+        asyncio.Queue(maxsize=QUEUE_MAX_SIZE),  # status queue
+        asyncio.Queue(maxsize=QUEUE_MAX_SIZE),  # result queue
+    ]
+    callbacks = [add_callback, commit_callback, push_callback, status_callback]
 
     producer_completed = asyncio.Event()
     producer_completed.clear()
 
-    await _producer(batch, add_queue, producer_completed)
+    # load all repos to first queue
+    await _producer(batch, queues[0], producer_completed)
 
     hook_workers = partial(hook_workers_handler, tasks)
-    hook_workers(add_queue, commit_queue, add_callback)
-    hook_workers(commit_queue, push_queue, commit_callback)
-    hook_workers(push_queue, status_queue, push_callback)
-    hook_workers(status_queue, result_queue, status_callback)
-    hook_cleanup_handler(tasks, result_queue)
+    for (in_queue, out_queue), callback in zip(
+        pairwise(queues), callbacks, strict=True
+    ):
+        hook_workers(in_queue, out_queue, callback)
+
+    # cleanup last queue
+    hook_cleanup_handler(tasks, queues[-1])
 
     await producer_completed.wait()
-    await add_queue.join()
-    await commit_queue.join()
-    await push_queue.join()
-    await status_queue.join()
-    await result_queue.join()
+    for queue in queues:
+        await queue.join()
 
     for task in tasks:
         task.cancel()

@@ -4,7 +4,7 @@
 (
     address: "127.0.0.1:6600",
     password: None,
-    theme: None,
+    theme: "custom",
     cache_dir: None,
     on_song_change: None,
     volume_step: 5,
@@ -14,13 +14,6 @@
     enable_mouse: true,
     status_update_interval_ms: 1000,
     select_current_song_on_change: false,
-    symbols: (song: "", dir: "", marker: "", ellipsis: ""),
-    progress_bar: (
-        symbols: ["", "⭘", " "],
-        track_style: (bg: "#1e2030"),
-        elapsed_style: (fg: "#c6a0f6", bg: "#1e2030"),
-        thumb_style: (fg: "#c6a0f6", bg: "#1e2030"),
-    ),
     album_art: (
         method: Auto,
         max_size_px: (width: 1200, height: 1200),
@@ -53,7 +46,7 @@
             "c":       ToggleConsume,
             "v":       ToggleSingle,
             "b":       SeekBack,
-            "~":       ShowHelp,
+            "?":       ShowHelp,
             "I":       ShowCurrentSongInfo,
             "O":       ShowOutputs,
             "P":       ShowDecoders,
