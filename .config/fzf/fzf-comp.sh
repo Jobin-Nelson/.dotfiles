@@ -13,7 +13,7 @@
 
 # password store
 _fzf_complete_pass() {
-  _fzf_complete -- "$@" < <(pass git ls-files | sed \
+  _fzf_complete --style=full -- "$@" < <(pass git ls-files | sed \
     -e '/.gitattributes/d' \
     -e '/.gpg-id/d' \
     -e 's/.gpg$//' \

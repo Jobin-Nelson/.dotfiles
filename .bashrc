@@ -138,7 +138,7 @@ alias todo='${EDITOR:-vim} -c ":cd $HOME/playground/org_files" \
   $HOME/playground/org_files/inbox.org +$'
 alias ftodo='rg --line-number --no-heading --with-filename \
   --type org "\*+ (TODO|NEXT)" $HOME/playground/org_files \
-  | fzf -d ":" --prompt "Find Todo: " --with-nth "3.." \
+  | fzf --style=full -d ":" --prompt "Find Todo: " --with-nth "3.." \
   --layout=reverse --height=50% --ansi \
   | sed -E "s/(.*):([0-9]+):.*/\1 +\2/" \
   | xargs -r ${EDITOR:-vim} -c ":cd $HOME/playground/org_files"'
@@ -148,21 +148,25 @@ alias fnote='find $HOME/playground/projects/second_brain/ \
   -type f -not -path "*.git*" -a -not -path "*/attachments/*" \
   -a -not -path "*/.obsidian/*" -a -not -path "*/.stfolder/*" \
   -a -not -path "*/.trash/*" \
-  | fzf --prompt "Find Note: " --layout=reverse --height=50% --ansi \
+  | fzf --style=full --prompt "Find Note: " --layout=reverse --height=50% --ansi \
   | xargs -r ${EDITOR:-vim} -c ":cd $HOME/playground/projects/second_brain \
   | set wrap linebreak"'
-alias dc='docker ps -a | fzf --multi --nth 2 --header-lines 1 --bind "enter:become(echo -n {+1})"'
-alias pi="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
-alias ai="paru -Slq | fzf --multi --preview 'paru -Si {1}' | xargs -ro paru -S"
-alias pr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
-alias ar="paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro paru -Rns"
-alias ap='$(compgen -c | sort -u | fzf)'
-alias fmoji='curl -sSL "https://git.io/JXXO7" | fzf'
-alias lg="fzf --disabled --ansi --multi \
+alias dc='docker ps -a | fzf --style=full --multi --nth 2 --header-lines 1 --bind "enter:become(echo -n {+1})"'
+alias pi="pacman -Slq | fzf --style=full --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias ai="paru -Slq | fzf --style=full --multi --preview 'paru -Si {1}' | xargs -ro paru -S"
+alias pr="pacman -Qq | fzf --style=full --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias ar="paru -Qq | fzf --style=full --multi --preview 'paru -Qi {1}' | xargs -ro paru -Rns"
+alias ap='$(compgen -c | sort -u | fzf --style=full)'
+alias fmoji='curl -sSL "https://git.io/JXXO7" | fzf --style=full'
+alias lg="fzf \
+  --style=full \
+  --disabled \
+  --ansi \
+  --multi \
   --prompt='ripgrep> ' \
   --height 90% \
   --delimiter : \
-  --header='CTRL-G: Toggle between ripgrep/fzf' \
+  --header='CTRL-G: Toggle between ripgrep/fzf, CTRL-O: edit, Enter: open' \
   --preview 'bat --style=full --color=always --highlight-line {2} {1}' \
   --preview-window '~4,nohidden,+{2}+4/3,<80(up)' \
   --bind='start:reload:rg --column --line-number --no-heading --color=always --smart-case {q} || :' \
@@ -176,6 +180,7 @@ alias lg="fzf --disabled --ansi --multi \
           > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"' \
   --query "
 alias fpods="fzf \
+    --style=full \
     --header-lines=1 \
     --prompt '\$(kubectl config current-context | sed \"s/-context$//\")> ' \
     --header $'╱ Enter (kubectl exec) ╱ CTRL-O (open log in editor) ╱ CTRL-R (reload) ╱\n\n' \
@@ -281,6 +286,7 @@ EOF
 
   # shellcheck disable=SC2016
   eval "$git_unstaged_files" | fzf \
+    --style=full \
     --height=60% \
     --multi \
     --no-sort \
@@ -331,7 +337,7 @@ function ssht() {
 
 # FZF completion
 export FZF_DEFAULT_OPTS="\
-  --style=full \
+  --style=default \
   --info=inline-right \
   --multi \
   --layout=reverse \

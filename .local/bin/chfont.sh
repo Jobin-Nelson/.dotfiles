@@ -36,7 +36,7 @@ function get_font() {
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" \
-    | fzf --prompt 'Edit font: ' --layout=reverse --height='50%')
+    | fzf --style=full --prompt 'Edit font: ' --height='50%')
 }
 
 function set_alacritty_font() {
