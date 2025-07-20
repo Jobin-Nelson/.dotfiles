@@ -14,11 +14,13 @@
 - Setup ssh key with github
 
 ```bash
-mkdir -p $HOME/playground/backup && mv $HOME/.{bash_profile,bashrc} $_
+mkdir -pv $HOME/playground/backup && mv -v $HOME/.{bash_profile,bashrc} $_
 git clone --depth 5 --bare git@github.com:Jobin-Nelson/.dotfiles.git $HOME/.dotfiles
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 dot config --local status.showUntrackedFiles no
-dot checkout
+dot config --local core.worktree $HOME
+dot config --local --unset core.bare
+dot checkout -f
 dot submodule update --init --depth 5
 ```
 

@@ -134,7 +134,7 @@ configure_package_manager() {
 }
 
 setup_dotfiles() {
-  local backup_dir="$HOME/playground/backup" 
+  local backup_dir="$HOME/playground/backup"
   local dotfiles="$HOME/.dotfiles"
 
   [[ -d $dotfiles ]] && return 0
@@ -142,9 +142,20 @@ setup_dotfiles() {
   git clone --bare --depth 5 git@github.com:Jobin-Nelson/.dotfiles.git "${dotfiles}"
 
   mkdir -pv "${backup_dir}" && mv -v "$HOME"/.{bash_profile,bashrc} "${backup_dir}"
-  git --git-dir="${dotfiles}" --work-tree="$HOME" config --local status.showUntrackedFiles no
-  git --git-dir="${dotfiles}" --work-tree="$HOME" checkout -f
-  git --git-dir="${dotfiles}" --work-tree="$HOME" submodule update --init --depth 5
+
+  dot_git() {
+    git --git-dir="${dotfiles}" --work-tree="$HOME" "${@}"
+  }
+
+  dot_git config --local status.showUntrackedFiles no
+
+  # for vim-fugitive support
+  dot_git config --local core.worktree "$HOME"
+  dot_git config --local --unset core.bare
+
+  # checkout and initialize submodules
+  dot_git checkout -f
+  dot_git submodule update --init --depth 5
 }
 
 install_packages() {

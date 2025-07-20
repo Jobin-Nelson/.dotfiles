@@ -28,6 +28,11 @@ DESCRIPTION
 OPTIONS
     -h   Print this [h]elp and exit
     -v   Print [v]erbose info
+    -a   Update all to save power
+    -A   Update all to previous state
+    -t   Toggle state
+    -s   Stop services
+    -S   Start services
 
 EXAMPLES
     ${script}
@@ -67,18 +72,64 @@ start_services() {
   manage_services start
 }
 
+update_powerprofile() {
+  local profile=$1
+  powerprofilesctl set "${profile}"
+
+  echo "INFO: Updated power profile to ${profile}"
+}
+
+power_saver_mode() {
+  update_powerprofile "power-saver"
+}
+
+balanced_mode() {
+  update_powerprofile "balanced"
+}
+
+is_unplugged() {
+  local current_state
+  current_state=$(powerprofilesctl get)
+  if [[ ${current_state} == 'power-saver' ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+main() {
+    stop_services
+    power_saver_mode
+}
+
+reverse_main() {
+    start_services
+    balanced_mode
+}
+
+toggle_state() {
+  if is_unplugged; then
+    reverse_main
+  else
+    main
+  fi
+}
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 [[ $# == 0 ]] && usage
 
-while getopts ":hvsS" option; do
+while getopts ":hvsStaA" option; do
   case $option in
   h) usage ;;
   v) set -x ;;
   s) stop_services ;;
   S) start_services ;;
+  a) main ;;
+  A) reverse_main ;;
+  t) toggle_state ;;
   *) bail "Error: Invalid option" ;;
   esac
 done

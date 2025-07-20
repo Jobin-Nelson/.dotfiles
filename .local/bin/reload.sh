@@ -13,9 +13,9 @@ function help() {
   echo
 }
 
-function waybar() {
+function reload_waybar() {
   killall waybar
-  /usr/bin/waybar &
+  waybar &
 }
 
 function hyprpaper() {
@@ -83,7 +83,7 @@ while getopts 'hw:gb' option; do
   case $option in
     h) help ;;
     w) set_wallpaper "${OPTARG}" ;;
-    b) [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]] && waybar ;;
+    b) [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]] && reload_waybar ;;
     g) command -v gpg &>/dev/null && gpg_agent ;;
     *) echo "Invalid flag" && help ;;
   esac

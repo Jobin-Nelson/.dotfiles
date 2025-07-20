@@ -8,16 +8,13 @@
 # ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
 #
 
-
 # shellcheck disable=SC1091 # Disable errors when sourcing files
 # If not running interactively, exit early
 [[ $- == *i* ]] || return
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Global Variables                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 # XDG
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -27,7 +24,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 # Environment variables
 HISTCONTROL=ignoreboth
-HISTTIMEFORMAT='[%Y/%m/%d %T] '
+HISTTIMEFORMAT='[%F %T] '
 HISTSIZE=10000
 HISTFILESIZE=10000
 PROMPT_DIRTRIM=2
@@ -39,7 +36,7 @@ PS1='\n[\[\033[01;32m\]\u@\[\033[35m\]\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00
 export EDITOR='nvim'
 export VISUAL='nvim'
 export COLORTERM="truecolor"
-export MANPAGER='less -R --use-color -Dd+r -Du+b'
+export MANPAGER='less -s -M +Gg'
 # export MANPAGER='nvim +Man!'
 export SCREENRC="${XDG_CONFIG_HOME}/screen/screenrc"
 
@@ -54,11 +51,19 @@ GPG_TTY=$(tty)
 # Python old repl
 export PYTHON_BASIC_REPL=1
 
+# Less color for manpages
+export LESS_TERMCAP_mb=$'\e[01;31m'    # begin bold
+export LESS_TERMCAP_md=$'\e[01;31m'    # begin blink
+export LESS_TERMCAP_so=$'\e[01;44;37m' # begin reverse video
+export LESS_TERMCAP_us=$'\e[01;32m'    # begin underline
+export LESS_TERMCAP_me=$'\e[0m'        # reset bold/blink
+export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
+export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
+export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                         Options                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 stty -ixon # avoid freezing terminal when pressing <c-s>
 set -o vi
@@ -68,11 +73,9 @@ shopt -s globstar
 shopt -s extglob
 shopt -s cdspell
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                        Keybinds                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 # General
 bind "set colored-stats On"
@@ -81,17 +84,15 @@ bind "set completion-ignore-case On"
 
 # Change mode
 bind -m emacs-standard '"\C-z": vi-editing-mode'
-bind -m vi-command     '"\C-z": emacs-editing-mode'
-bind -m vi-insert      '"\C-z": emacs-editing-mode'
+bind -m vi-command '"\C-z": emacs-editing-mode'
+bind -m vi-insert '"\C-z": emacs-editing-mode'
 
 # Expand subshell
 bind -m vi-insert '"\C-e": "\C-z\e\C-e\er\C-z"'
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                         Aliases                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 # General
 alias ls='ls --color=auto'
@@ -185,7 +186,6 @@ alias fpods="fzf \
     --preview-window up:follow \
     --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "
 
-
 # Obselete aliases
 # alias emacs='emacsclient -nc -a ""'
 # alias n='NVIM_APPNAME=my_nvim nvim'
@@ -197,11 +197,9 @@ alias fpods="fzf \
 # service cron status &> /dev/null || sudo service cron start
 # alias wpwd='pwsh.exe -Command "Get-Location"'
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                        Functions                         ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 function memtop() {
   local i
@@ -209,27 +207,31 @@ function memtop() {
     echo "PID Name Memory"
     for i in /proc/[0-9]*; do
       echo -e "${i##*/}\t$(<"${i}/comm")\t$(grep -oP 'VmRSS:\s*\K\d+ kB' "${i}/status")"
-    done \
-      | sort -nrk3 \
-      | head "-$(( ${LINES:-24} - 4 ))"
+    done |
+      sort -nrk3 |
+      head "-$((${LINES:-24} - 4))"
   } | column -t
 } 2>/dev/null
 
 function rwl() {
   local wallpaper
   wallpaper=$(find "$HOME/Pictures/wallpapers" -type f \
-    -name '*.png' -or -name '*.jpg' \
-    | shuf -n 1)
+    -name '*.png' -or -name '*.jpg' |
+    shuf -n 1)
 
   case "${XDG_CURRENT_DESKTOP}" in
-    "GNOME")
-      gsettings set org.gnome.desktop.background picture-uri-dark "file://${wallpaper}" ;;
-    "Hyprland")
-      reload.sh -p "${wallpaper}" ;;
-    "KDE")
-      reload.sh -k "${wallpaper}" ;;
-    *)
-      echo "Not implemented for ${XDG_CURRENT_DESKTOP}" >&2 ;;
+  "GNOME")
+    gsettings set org.gnome.desktop.background picture-uri-dark "file://${wallpaper}"
+    ;;
+  "Hyprland")
+    reload.sh -p "${wallpaper}"
+    ;;
+  "KDE")
+    reload.sh -k "${wallpaper}"
+    ;;
+  *)
+    echo "Not implemented for ${XDG_CURRENT_DESKTOP}" >&2
+    ;;
   esac
 }
 
@@ -249,7 +251,8 @@ function fgf() {
   local -r preview_status_label=" Status "
   local -r preview_status="git status --short"
 
-  local -r header=$(cat <<EOF
+  local -r header=$(
+    cat <<EOF
 > CTRL-G to switch between Add Mode and Reset mode
 > CTRL-T for status preview | CTRL-F for diff preview | CTRL-B for blame preview
 > ALT-E to open files in your editor
@@ -257,14 +260,16 @@ function fgf() {
 EOF
   )
 
-  local -r add_header=$(cat <<EOF
+  local -r add_header=$(
+    cat <<EOF
 $header
 > ENTER to add files
 > ALT-P to add patch
 EOF
   )
 
-  local -r reset_header=$(cat <<EOF
+  local -r reset_header=$(
+    cat <<EOF
 $header
 > ENTER to reset files
 > ALT-D to reset and checkout files
@@ -276,33 +281,33 @@ EOF
 
   # shellcheck disable=SC2016
   eval "$git_unstaged_files" | fzf \
-  --height=60% \
-  --multi \
-  --no-sort \
-  --prompt="Add > " \
-  --preview-label="$preview_status_label" \
-  --preview="$preview_status" \
-  --preview-window='nohidden' \
-  --header "$add_header" \
-  --header-first \
-  --bind='start:unbind(alt-d)' \
-  --bind="ctrl-t:change-preview-label($preview_status_label)" \
-  --bind="ctrl-t:+change-preview($preview_status)" \
-  --bind='ctrl-f:change-preview-label( Diff )' \
-  --bind='ctrl-f:+change-preview(git diff --color=always {} | sed "1,4d")' \
-  --bind='ctrl-b:change-preview-label( Blame )' \
-  --bind='ctrl-b:+change-preview(git blame --color-by-age {})' \
-  --bind="ctrl-g:transform:[[ \$FZF_PROMPT =~ '$prompt_add' ]] && echo '$mode_reset' || echo '$mode_add'" \
-  --bind="enter:execute($enter_cmd)" \
-  --bind="enter:+reload([[ \$FZF_PROMPT =~ '$prompt_add' ]] && $git_unstaged_files || $git_staged_files)" \
-  --bind="enter:+refresh-preview" \
-  --bind='alt-p:execute(git add --patch {+})' \
-  --bind="alt-p:+reload($git_unstaged_files)" \
-  --bind="alt-d:execute($git_reset && git checkout {+})" \
-  --bind="alt-d:+reload($git_staged_files)" \
-  --bind='alt-c:execute(git commit)+abort' \
-  --bind='alt-a:execute(git commit --amend)+abort' \
-  --bind='alt-e:execute(${EDITOR:-vim} {+})'
+    --height=60% \
+    --multi \
+    --no-sort \
+    --prompt="Add > " \
+    --preview-label="$preview_status_label" \
+    --preview="$preview_status" \
+    --preview-window='nohidden' \
+    --header "$add_header" \
+    --header-first \
+    --bind='start:unbind(alt-d)' \
+    --bind="ctrl-t:change-preview-label($preview_status_label)" \
+    --bind="ctrl-t:+change-preview($preview_status)" \
+    --bind='ctrl-f:change-preview-label( Diff )' \
+    --bind='ctrl-f:+change-preview(git diff --color=always {} | sed "1,4d")' \
+    --bind='ctrl-b:change-preview-label( Blame )' \
+    --bind='ctrl-b:+change-preview(git blame --color-by-age {})' \
+    --bind="ctrl-g:transform:[[ \$FZF_PROMPT =~ '$prompt_add' ]] && echo '$mode_reset' || echo '$mode_add'" \
+    --bind="enter:execute($enter_cmd)" \
+    --bind="enter:+reload([[ \$FZF_PROMPT =~ '$prompt_add' ]] && $git_unstaged_files || $git_staged_files)" \
+    --bind="enter:+refresh-preview" \
+    --bind='alt-p:execute(git add --patch {+})' \
+    --bind="alt-p:+reload($git_unstaged_files)" \
+    --bind="alt-d:execute($git_reset && git checkout {+})" \
+    --bind="alt-d:+reload($git_staged_files)" \
+    --bind='alt-c:execute(git commit)+abort' \
+    --bind='alt-a:execute(git commit --amend)+abort' \
+    --bind='alt-e:execute(${EDITOR:-vim} {+})'
 }
 
 function sshs() {
@@ -316,7 +321,6 @@ function ssht() {
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    General Utilities                     ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 # Nice to have
 [[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -351,7 +355,6 @@ eval "$(fzf --bash)"
 [[ -s ${XDG_CONFIG_HOME}/fzf/fzf-git.sh ]] && \. "${XDG_CONFIG_HOME}/fzf/fzf-git.sh"
 [[ -s ${XDG_CONFIG_HOME}/fzf/fzf-comp.sh ]] && \. "${XDG_CONFIG_HOME}/fzf/fzf-comp.sh"
 
-
 # Directory jumper
 eval "$(zoxide init bash)"
 
@@ -361,11 +364,9 @@ eval "$(starship init bash)"
 # Greeting
 fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Language Configs                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 # NVM [Node version manager]
 export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
