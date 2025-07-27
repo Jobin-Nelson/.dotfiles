@@ -1,0 +1,36 @@
+{
+  "$schema": "http://opencode.ai/config.json",
+  "theme": "opencode",
+  "model": "deepseek/deepseek-r1-0528",
+  "autoshare": false,
+  "autoupdate": true,
+  "instructions": [
+    "CONTRIBUTING.md",
+    "docs/guidelines.md",
+    ".cursor/rules/*.md"
+  ],
+  "provider": {
+    "openrouter": {
+      "npm": "@openrouter/ai-sdk-provider",
+      "name": "OpenRouter",
+      "options": {
+        "apiKey": "{env:OPENROUTER_API_KEY}"
+      },
+      "models": {
+        "deepseek/deepseek-r1-0528": {
+          "name": "Deepseek: R1 0528"
+        }
+      }
+    },
+    "google": {
+      "options": {
+        "apiKey": "{env:GEMINI_API_KEY}"
+      },
+      "models": {
+        "gemini-2.5-flash": {
+          "name": "Gemini: 2.5 Flash"
+        }
+      }
+    }
+  }
+}

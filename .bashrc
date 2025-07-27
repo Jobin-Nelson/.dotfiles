@@ -324,6 +324,15 @@ function ssht() {
   ssh "${@}" -t -- sh -c 'tmux has-session jobin && exec tmux attach jobin || exec tmux new -s jobin'
 }
 
+function export_api_keys() {
+  set +o history
+  OPENROUTER_API_KEY=$(pass show apikey/openrouter)
+  GEMINI_API_KEY=$(pass show apikey/gemini)
+  export OPENROUTER_API_KEY
+  export GEMINI_API_KEY
+  set -o history
+}
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    General Utilities                     ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛

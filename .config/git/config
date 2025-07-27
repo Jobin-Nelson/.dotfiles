@@ -79,3 +79,5 @@
   path = ~/playground/dev/illumina/.gitconfig
 [url "git@github.com:/Jobin-Nelson/"]
   insteadOf = "jn:"
+[grep]
+  lineNumber = true

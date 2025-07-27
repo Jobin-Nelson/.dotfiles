@@ -8,23 +8,18 @@
 # ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═════╝
 #
 
-
 set -Eeuo pipefail
-
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Global Variables                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-
 # shellcheck disable=SC2034
 SCRIPT_DIR="${0%/*}"
-
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Utility Functions                     ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 usage() {
   local script="${0%%*/}"
@@ -55,19 +50,16 @@ bail() {
   exit "${2-1}"
 }
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                   Core Implementation                    ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-
 backup_lab() {
   local backup_dir=$1
   local lab_script="${HOME}/playground/lab/lab.sh"
-  [[ ! -x $lab_script ]] \
-    && echo "Lab not found in path ${lab_script%/*}" \
-    && return 0
-
+  [[ ! -x $lab_script ]] &&
+    echo "Lab not found in path ${lab_script%/*}" &&
+    return 0
 
   echo $'\nBacking up Lab...\n'
   "${lab_script}" -b "${backup_dir}"
@@ -79,9 +71,9 @@ backup_from_to() {
 
   local name="${backup_dir##*/}"
 
-  [[ ! -d $backup_dir ]] \
-    && echo "ERROR: ${name} not found in path ${backup_dir}" \
-    && return 0
+  [[ ! -d $backup_dir ]] &&
+    echo "ERROR: ${name} not found in path ${backup_dir}" &&
+    return 0
 
   echo -e "\nBacking up ${name}...\n"
   tar -czf "${target_dir}/${name}.tar.gz" -C "${backup_dir%/*}" "${name}"
@@ -100,7 +92,6 @@ backup_others() {
     backup_from_to "${backup_dir}" "${target_dir}"
   done
 }
-
 
 backup_to() {
   local target_dir=$1
@@ -139,10 +130,9 @@ import_lab() {
   local backup_dir=$1
 
   local lab_script="${HOME}/playground/lab/lab.sh"
-  [[ ! -x $lab_script ]] \
-    && echo "Lab not found in path ${lab_script%/*}" \
-    && return 0
-
+  [[ ! -x $lab_script ]] &&
+    echo "Lab not found in path ${lab_script%/*}" &&
+    return 0
 
   echo $'\nImporting Lab...\n'
   "${lab_script}" -i "${backup_dir}"
@@ -155,11 +145,9 @@ import_from() {
   import_others "${backup_dir}"
 }
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 [[ $# == 0 ]] && usage
 
@@ -172,5 +160,3 @@ while getopts ":hvb:i:" option; do
   *) bail "Error: Invalid option" ;;
   esac
 done
-
-
