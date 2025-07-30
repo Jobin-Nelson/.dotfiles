@@ -97,9 +97,14 @@ is_unplugged() {
   fi
 }
 
+stop_kde_connect() {
+  qdbus org.kde.kdeconnect.daemon /MainApplication exit
+}
+
 main() {
     stop_services
     power_saver_mode
+    stop_kde_connect
 }
 
 reverse_main() {
