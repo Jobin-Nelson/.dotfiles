@@ -38,12 +38,13 @@ DESCRIPTION
 OPTIONS
     -h, --help          Print this help and exit
     -v, --verbose       Print script debug info
+    -a, --all           Setup all
     -d, --dotfiles      Setup dotfiles
     -p, --packages      Install all packages
     -n, --nvm           Install node version manager
     -g, --gnome         Configure gnome
     -w, --wallpapers    Download wallpapers
-    -a, --all           Setup all
+    --nvidia            Install nvidia drivers
 
 EXAMPLES
     ${script} -d
@@ -164,6 +165,7 @@ install_packages() {
     git man-db man-pages curl unzip tmux zoxide fzf ripgrep fd bat nsxiv \
     jq neovim vim alacritty zathura zathura-pdf-mupdf mpv \
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
+    chromium firefox obsidian wf-recorder \
     ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
     mpd rmpc ffmpeg yt-dlp \
     syncthing net-tools bash-completion ufw pandoc \
@@ -174,10 +176,10 @@ install_packages() {
     vscode-json-languageserver yaml-language-server \
     github-cli
 
-  flatpak install \
-    com.visualstudio.code \
-    com.google.Chrome \
-    com.github.tchx84.Flatseal \
+  # flatpak install \
+  #   com.visualstudio.code \
+  #   com.google.Chrome \
+  #   com.github.tchx84.Flatseal \
   #   org.gnome.Boxes
 
   # To setup man pages
@@ -187,8 +189,8 @@ install_packages() {
   systemctl enable --now cronie.service
   systemctl enable --now "syncthing@${USER}"
 
-  # paru -S --noconfirm \
-  #   visual-studio-code-bin google-chrome
+  paru -S --noconfirm \
+    localsend-bin
 }
 
 install_astronvim() {
@@ -334,6 +336,8 @@ configure_gnome() {
   gsettings set org.gnome.desktop.interface show-battery-percentage true
   gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,maximize,close"
   gsettings set org.gnome.TextEditor keybindings 'vim'
+  gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+  gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
   for i in {1..9}; do
     gsettings set org.gnome.shell.keybindings "switch-to-application-${i}" "['<Super>${i}']"
@@ -355,8 +359,11 @@ install_hyprland() {
   banner 'Installing Hyprland window manager'
 
   sudo pacman -S --noconfirm --needed \
-    hyprland dunst polkit-kde-agent waybar wl-clipboard \
-    hyprpaper grim slurp brightnessctl wlr-randr hyprlock wofi
+    hyprland hyprpaper hyprshot hypridle hyprpicker hyprland-qtutils \
+    xdg-desktop-portal-hyprland \
+    mako polkit-kde-agent waybar wl-clipboard \
+    satty slurp brightnessctl hyprlock wofi \
+    swaybg swayosd blueberry
 }
 
 install_awesome() {
@@ -380,6 +387,11 @@ setup_firewall() {
   sudo ufw allow http
   sudo ufw allow https
   sudo ufw allow syncthing
+
+  # allow for localsend
+  sudo ufw allow 53317/udp
+  sudo ufw allow 53317/tcp
+
   sudo ufw enable
 
   systemctl enable --now ufw
@@ -389,6 +401,71 @@ setup_done() {
   banner 'Setup Done!!!'
 
   echo $'\nRestart System for changes to take effect\n'
+}
+
+install_nvidia() {
+  lspci | grep -iq nvidia && return 0
+  banner 'Installing Nvidia'
+
+  # Turing (16xx, 20xx), Ampere (30xx), Ada (40xx), and newer recommend the open-source kernel modules
+  local nvidia_driver_package
+  if lspci | grep -iq nvidia | grep -qE "RTX [2-9][0-9]|GTX 16"; then
+    nvidia_driver_package='nvidia-open-dkms'
+  else
+    nvidia_driver_package='nvidia-dkms'
+  fi
+
+  # Check which kernel is installed and set appropriate headers package
+  local kernel_headers='linux-headers'
+  kernel_headers="linux-headers" # Default
+  if pacman -Q linux-zen &>/dev/null; then
+    kernel_headers="linux-zen-headers"
+  elif pacman -Q linux-lts &>/dev/null; then
+    kernel_headers="linux-lts-headers"
+  elif pacman -Q linux-hardened &>/dev/null; then
+    kernel_headers="linux-hardened-headers"
+  fi
+
+  # Enable multilib repository for 32-bit libraries
+  if ! grep -q "^\[multilib\]" /etc/pacman.conf; then
+    sudo sed -i '/^#\[multilib\]/,/^#Include/ s/^#//' /etc/pacman.conf
+  fi
+
+  sudo pacman -Syy
+
+  local -a packages_to_install=(
+    "${nvidia_driver_package}"
+    "${kernel_headers}"
+    "nvidia-utils"
+    "lib32-nvidia-utils"
+    "egl-wayland"
+    "libva-nvidia-driver" # for VA-API hardware acceleration
+    "qt5-wayland"
+    "qt6-wayland"
+  )
+
+  paru -S --needed --noconfirm "${packages_to_install[@]}"
+
+  # Configure modprobe for early KMS
+  echo "options nvidia_drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf >/dev/null
+
+  # Configure mkinitcpio for early loading
+  local mkinitcpio_conf="/etc/mkinitcpio.conf"
+
+  # Define modules
+  local nvidia_modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm"
+
+  # Create backup
+  sudo cp -b "$mkinitcpio_conf" "${mkinitcpio_conf}.backup"
+
+  # Remove any old nvidia modules to prevent duplicates
+  sudo sed -i -E 's/ nvidia_drm//g; s/ nvidia_uvm//g; s/ nvidia_modeset//g; s/ nvidia//g;' "$mkinitcpio_conf"
+  # Add the new modules at the start of the MODULES array
+  sudo sed -i -E "s/^(MODULES=\\()/\\1${nvidia_modules} /" "$mkinitcpio_conf"
+  # Clean up potential double spaces
+  sudo sed -i -E 's/  +/ /g' "$mkinitcpio_conf"
+
+  sudo mkinitcpio -P
 }
 
 main() {
@@ -412,6 +489,7 @@ main() {
   # switch_to_X11
   # install_hyprland
   # setup_done
+  install_nvidia
 }
 
 
@@ -434,6 +512,7 @@ parse_params() {
     -w | --wallpapers) download_wallpapers ;;
     -a | --all) main ;;
     -f | --firewall) setup_firewall ;;
+    --nvidia) install_nvidia ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac
