@@ -14,7 +14,7 @@ function help() {
 }
 
 function reload_waybar() {
-  killall waybar
+  pkill waybar
   waybar &
 }
 

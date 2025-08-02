@@ -13,8 +13,8 @@ force_keyboard_focus = false
 [keys]
 accept_typeahead = ["tab"]
 trigger_labels = "lalt"
-next = ["down"]
-prev = ["up"]
+next = ["ctrl n"]
+prev = ["ctrl p"]
 close = ["esc"]
 remove_from_history = ["shift backspace"]
 resume_query = ["ctrl r"]

@@ -1,26 +1,14 @@
-// __        __          _                 
-// \ \      / /_ _ _   _| |__   __ _ _ __  
-//  \ \ /\ / / _` | | | | '_ \ / _` | '__| 
-//   \ V  V / (_| | |_| | |_) | (_| | |    
-//    \_/\_/ \__,_|\__, |_.__/ \__,_|_|    
-//                 |___/                   
-//
+// █░█░█ ▄▀█ █▄█ █▄▄ ▄▀█ █▀█
+// ▀▄▀▄▀ █▀█ ░█░ █▄█ █▀█ █▀▄
 {
-    // General Settings
-
-    // Position TOP
+    "reload_style_on_change": true,
     "layer": "top",
-    "margin-bottom": 0,
-
-    // Position BOTTOM
-    // "position": "bottom",
-    // "margin-top": 0,
-    // "margin-bottom": 14,
-    
-    "layer": "top",
-    "margin-left": 0,
-    "margin-right": 0,    
+    "position": "top",
     "spacing": 0,
+    "height": 26,
+    "margin-bottom": 0,
+    "margin-left": 0,
+    "margin-right": 0,
 
     // Load Modules
     "include": ["~/.config/waybar/modules.json"],
@@ -28,34 +16,21 @@
     // Modules Left
     "modules-left": [
         "hyprland/workspaces"
-        // "custom/appmenu",
-        // "custom/settings",
-        // "custom/waybarthemes",
-        // "custom/wallpaper",
-        // "wlr/taskbar",
-        // "group/quicklinks",
-        // "custom/starter"
     ],
 
     // Modules Center
     "modules-center": [
-        "hyprland/window",
+        "clock",
     ],
 
-    // Modules Right    
+    // Modules Right
     "modules-right": [
         // "custom/updates",
-        "idle_inhibitor",
-        "backlight",
-        "pulseaudio",
-        "battery", 
-        "network",
+        "group/tray-expander",
         "bluetooth",
-        "group/hardware",
-        // "custom/cliphist",
-        "custom/exit",
-        // "custom/ml4w-welcome",
-        "clock",
-        "tray"
+        "network",
+        "pulseaudio", 
+        "cpu",
+        "battery"
     ]
 }
