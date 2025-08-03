@@ -1,5 +1,4 @@
 {
-    // Workspaces
     "hyprland/workspaces" : {
         "on-click": "activate",
         "active-only": true,

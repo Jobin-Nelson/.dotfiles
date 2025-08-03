@@ -15,7 +15,7 @@ function help() {
 
 function reload_waybar() {
   pkill waybar
-  waybar &
+  setsid uwsm app -- waybar &>/dev/null &
 }
 
 function hyprpaper() {
@@ -40,10 +40,17 @@ function gpg_agent() {
   gpg-connect-agent reloadagent /bye
 }
 
+function hyprland_wallpaper() {
+  local wallpaper=$1
+
+  pkill -x swaybg
+  setsid uwsm app -- swaybg -i "${wallpaper}" -m fill &>/dev/null &
+}
+
 function set_wallpaper() {
   local wallpaper=$1
   case "${XDG_CURRENT_DESKTOP}" in
-    'Hyprland') hyprpaper "${wallpaper}" ;;
+    'Hyprland') hyprland_wallpaper "${wallpaper}" ;;
     'KDE') kde_wallpaper "${wallpaper}" ;;
     'GNOME') gnome_wallpaper "${wallpaper}" ;;
     *) bail 'Could not detect current desktop'

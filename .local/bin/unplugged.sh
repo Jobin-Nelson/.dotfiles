@@ -101,15 +101,37 @@ stop_kde_connect() {
   qdbus org.kde.kdeconnect.daemon /MainApplication exit
 }
 
+hyprland_disable_animation() {
+  local hyprgamemode
+  hyprgamemode=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
+  if (( hyprgamemode == 1 )); then
+      hyprctl --batch "\
+          keyword animations:enabled 0;\
+          keyword decoration:shadow:enabled 0;\
+          keyword decoration:blur:enabled 0;\
+          keyword general:gaps_in 0;\
+          keyword general:gaps_out 0;\
+          keyword general:border_size 1;\
+          keyword decoration:rounding 0"
+      hyprctl reload
+  fi
+}
+
+hyprland_enable_animation() {
+  hyprctl reload
+}
+
 main() {
     stop_services
     power_saver_mode
     stop_kde_connect
+    hyprland_disable_animation
 }
 
 reverse_main() {
     start_services
     balanced_mode
+    hyprland_enable_animation
 }
 
 toggle_state() {

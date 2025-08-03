@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+show_power_menu() {
+  # The first characters are invisible sort keys.
+  local menu_options=" Lock
+󰤄 Suspend
+ Relaunch
+󰜉 Restart
+󰐥 Shutdown"
+  local selection
+  selection=$(echo -e "$menu_options" | walker --dmenu --theme dmenu_150)
+
+  case "$selection" in
+  *Lock*) hyprlock ;;
+  *Suspend*) systemctl suspend ;;
+  *Relaunch*) uwsm stop ;;
+  *Restart*) systemctl reboot ;;
+  *Shutdown*) systemctl poweroff ;;
+  esac
+}
+
+show_power_menu
