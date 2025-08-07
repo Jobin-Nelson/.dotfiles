@@ -119,7 +119,7 @@ alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 # Custom
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup='${EDITOR:-vim} \
-  $HOME/playground/dev/illumina/daily_updates/$(date -d \
+  $HOME/playground/dev/infosys/daily_updates/$(date -d \
   "$([[ $(date -d "+2 hours" +%u) -gt 5 ]] \
   && echo "next Monday" || echo "+2 hours")" +%Y-%m-%d).md'
 alias fkill='flatpak ps --columns=instance | xargs -rn1 flatpak kill'

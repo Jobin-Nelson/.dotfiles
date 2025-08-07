@@ -75,8 +75,8 @@
   missingCommitsCheck = warn
 [pull]
   rebase = true
-[includeIf "gitdir:~/playground/dev/illumina/"]
-  path = ~/playground/dev/illumina/.gitconfig
+[includeIf "gitdir:~/playground/dev/infosys/"]
+  path = ~/playground/dev/infosys/.gitconfig
 [url "git@github.com:/Jobin-Nelson/"]
   insteadOf = "jn:"
 [grep]
