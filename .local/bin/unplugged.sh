@@ -124,7 +124,7 @@ hyprland_enable_animation() {
 main() {
     stop_services
     power_saver_mode
-    stop_kde_connect
+    # stop_kde_connect
     hyprland_disable_animation
 }
 
