@@ -6,9 +6,13 @@ set -Eeuo pipefail
 # ┃                    Global Variables                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-declare -a SERVICES=(
+declare -a USER_SERVICES=(
   syncthing-pod
   mpd
+)
+
+declare -a SERVICES=(
+  bluetooth
 )
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -54,8 +58,15 @@ bail() {
 manage_services() {
   local action=$1
   local service
-  for service in "${SERVICES[@]}"; do
+  for service in "${USER_SERVICES[@]}"; do
     systemctl --user "${action}" "${service}" || {
+      echo "WARN: Failed to ${action} ${service}"
+      continue
+    }
+  done
+
+  for service in "${SERVICES[@]}"; do
+    systemctl "${action}" "${service}" || {
       echo "WARN: Failed to ${action} ${service}"
       continue
     }
