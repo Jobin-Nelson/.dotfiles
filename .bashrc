@@ -371,6 +371,7 @@ eval "$(fzf --bash)"
 [[ -s ${XDG_CONFIG_HOME}/fzf/fzf-comp.sh ]] && \. "${XDG_CONFIG_HOME}/fzf/fzf-comp.sh"
 
 # Directory jumper
+export _ZO_DOCTOR=0
 eval "$(zoxide init bash)"
 
 # Starship prompt
