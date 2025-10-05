@@ -48,6 +48,7 @@ nnoremap <C-Down> <cmd>resize -2<CR>
 nnoremap <C-Right> <cmd>vertical resize +2<CR>
 nnoremap <C-Left> <cmd>vertical resize -2<CR>
 nnoremap - <cmd>Ex<CR>
+nnoremap Y y$
 vnoremap < <gv
 vnoremap > <gv
 vnoremap P "_dP
@@ -87,6 +88,7 @@ nnoremap <leader>jyf <cmd>let @+=@% <bar> echo "Filepath " . expand("%") . " cop
 nnoremap <leader>jp <cmd>set relativenumber! number! showmode! showcmd! hidden! ruler!<cr>
 vnoremap <leader>jT :!tr -s ' ' \| column -t -s '\|' -o '\|'<cr>
 nnoremap <leader>jo :<Up><Home>put=execute('<End>')<cr>
+vnoremap <leader>jt :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>
 
 " Autocommands
 augroup JobinGroup
