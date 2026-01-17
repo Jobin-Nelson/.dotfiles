@@ -31,6 +31,14 @@
           "name": "Gemini: 2.5 Flash"
         }
       }
+    },
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {}
     }
   }
 }
