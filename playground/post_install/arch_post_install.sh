@@ -104,14 +104,14 @@ install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y || return 0
   # shellcheck disable=SC1091
   . "$HOME/.cargo/env"
-  rustup install --locked bacon bacon-ls
+  cargo install --locked bacon bacon-ls
 }
 
 setup_aur() {
   banner 'Setting up AUR'
   local paru_dir="$HOME/playground/open_source/paru"
 
-  install_rust
+  #install_rust
 
   [[ -d $paru_dir ]] && return 0
 
@@ -161,15 +161,17 @@ setup_dotfiles() {
 
 install_packages() {
   banner 'Installing packages'
-  sudo pacman -Sy --noconfirm \
+  sudo pacman -Sy --noconfirm --needed \
     git man-db man-pages curl unzip tmux zoxide fzf ripgrep fd bat nsxiv \
-    jq neovim vim alacritty zathura zathura-pdf-mupdf mpv \
+    jq vim alacritty zathura zathura-pdf-mupdf mpv \
+    neovim wl-clipboard tree-sitter-cli \
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
+    docker docker-buildx docker-compose \
     chromium firefox obsidian wf-recorder \
-    ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd \
-    mpd rmpc ffmpeg yt-dlp \
+    ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd ttf-cascadia-code-nerd \
+    mpd rmpc ffmpeg yt-dlp imagemagick \
     syncthing net-tools bash-completion ufw pandoc \
-    marksman\
+    marksman \
     bash-language-server shfmt shellcheck \
     pyright \
     lua-language-server \
@@ -190,7 +192,7 @@ install_packages() {
   systemctl enable --now "syncthing@${USER}"
 
   paru -S --noconfirm \
-    localsend-bin
+    localsend-bin ufw-docker
 }
 
 install_astronvim() {
@@ -359,11 +361,16 @@ install_hyprland() {
   banner 'Installing Hyprland window manager'
 
   sudo pacman -S --noconfirm --needed \
-    hyprland hyprpaper hyprshot hypridle hyprpicker hyprland-qtutils \
-    xdg-desktop-portal-hyprland \
+    hyprland hyprpaper hyprshot hypridle hyprpicker \
+    hyprland-guiutils hyprland-preview-share-picker hyprpicker hyprsunset \
+    xdg-desktop-portal-hyprland gnome-keyring \
+    fcitx5 fcitx5-gtk fcitx5-qt \
     mako polkit-kde-agent waybar wl-clipboard \
-    satty slurp brightnessctl hyprlock wofi \
-    swaybg swayosd blueberry
+    satty grim slurp brightnessctl hyprlock wofi \
+    swaybg swayosd bluetui btop \
+    gvfs-mtp gvfs-nfs gvfs-smb \
+    libreoffice-fresh nautilus uwsm \
+
 }
 
 install_awesome() {
@@ -392,9 +399,15 @@ setup_firewall() {
   sudo ufw allow 53317/udp
   sudo ufw allow 53317/tcp
 
-  sudo ufw enable
+  # Allow Docker containers to use DNS on host
+  sudo ufw allow in proto udp from 172.16.0.0/12 to 172.17.0.1 port 53 comment 'allow-docker-dns'
 
-  systemctl enable --now ufw
+  sudo ufw --force enable
+
+  systemctl enable ufw
+
+  sudo ufw-docker install
+  sudo ufw reload
 }
 
 setup_done() {
@@ -482,13 +495,12 @@ main() {
   install_nvm
   # setup_repos
   # install_fonts
-  configure_gnome
+  # configure_gnome
   download_wallpapers
   setup_firewall
   # switch_to_integrated_graphics
   # switch_to_X11
-  # install_hyprland
-  # setup_done
+  install_hyprland
   install_nvidia
 }
 
@@ -526,6 +538,8 @@ parse_params() {
   return 0
 }
 
+install_packages
+install_hyprland
 [[ $# == 0 ]] && usage
 setup_colors
 parse_params "$@"
