@@ -111,9 +111,9 @@ setup_aur() {
   banner 'Setting up AUR'
   local paru_dir="$HOME/playground/open_source/paru"
 
-  # install_rust
+  install_rust
 
-  [[ -d $paru_dir ]] && return 0
+  command -v paru &>/dev/null && return 0
 
   mkdir -pv "${paru_dir%/*}"
 
@@ -247,7 +247,7 @@ install_python() {
 install_nvm() {
   banner 'Installing Node Version Manager'
   command -v nvm &>/dev/null && return 0
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | NVM_DIR="$HOME/.config/nvm" PROFILE=/dev/null bash
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | NVM_DIR="$HOME/.config/nvm" PROFILE=/dev/null bash
   # shellcheck disable=SC1091
   . "$HOME/.config/nvm/nvm.sh" && nvm install node && nvm install-latest-npm
 }
@@ -362,7 +362,7 @@ install_hyprland() {
 
   sudo pacman -S --noconfirm --needed \
     hyprland hyprpaper hyprshot hypridle hyprpicker \
-    hyprland-guiutils hyprland-preview-share-picker hyprpicker hyprsunset \
+    hyprland-guiutils hyprpicker hyprsunset \
     xdg-desktop-portal-hyprland gnome-keyring \
     fcitx5 fcitx5-gtk fcitx5-qt \
     mako polkit-kde-agent waybar wl-clipboard \
@@ -371,7 +371,7 @@ install_hyprland() {
     gvfs-mtp gvfs-nfs gvfs-smb \
     libreoffice-fresh nautilus uwsm
 
-  sudo paru -S walker-bin elephant-bin
+  paru -S walker-bin elephant-bin
 
 }
 
@@ -419,7 +419,7 @@ setup_done() {
 }
 
 install_nvidia() {
-  lspci | grep -iq nvidia && return 0
+  # lspci | grep -iq nvidia && return 0
   banner 'Installing Nvidia'
 
   # Turing (16xx, 20xx), Ampere (30xx), Ada (40xx), and newer recommend the open-source kernel modules
@@ -569,8 +569,6 @@ parse_params() {
   return 0
 }
 
-install_packages
-install_hyprland
 [[ $# == 0 ]] && usage
 setup_colors
 parse_params "$@"
