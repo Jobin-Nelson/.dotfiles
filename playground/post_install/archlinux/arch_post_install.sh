@@ -111,7 +111,7 @@ setup_aur() {
   banner 'Setting up AUR'
   local paru_dir="$HOME/playground/open_source/paru"
 
-  #install_rust
+  # install_rust
 
   [[ -d $paru_dir ]] && return 0
 
@@ -366,10 +366,12 @@ install_hyprland() {
     xdg-desktop-portal-hyprland gnome-keyring \
     fcitx5 fcitx5-gtk fcitx5-qt \
     mako polkit-kde-agent waybar wl-clipboard \
-    satty grim slurp brightnessctl hyprlock wofi \
+    satty grim slurp brightnessctl hyprlock \
     swaybg swayosd bluetui btop \
     gvfs-mtp gvfs-nfs gvfs-smb \
-    libreoffice-fresh nautilus uwsm \
+    libreoffice-fresh nautilus uwsm
+
+  sudo paru -S walker-bin elephant-bin
 
 }
 
@@ -481,6 +483,34 @@ install_nvidia() {
   sudo mkinitcpio -P
 }
 
+setup_omarchy() {
+  update_packages
+  install_packages
+  omarchy_cleanup_configs
+  # setup_dotfiles
+}
+
+omarchy_remove_configs() {
+  local -r nvim_config="$HOME/.config/nvim"
+  # Do nothing if neovim config is already cloned
+  if [[ -d ${nvim_config}/.git ]] then
+    echo $'\nSkipping neovim setup...\n'
+    return 0
+  fi
+
+  rm -rf \
+    "${nvim_config}" \
+    ~/.local/share/nvim \
+    ~/.local/state/nvim \
+    ~/.cache/nvim
+
+  setup_neovim
+}
+
+setup_neovim() {
+  /
+}
+
 main() {
   update_packages
   setup_aur
@@ -525,6 +555,7 @@ parse_params() {
     -a | --all) main ;;
     -f | --firewall) setup_firewall ;;
     --nvidia) install_nvidia ;;
+    -o | --omarchy) setup_omarchy ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac
