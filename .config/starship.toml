@@ -1,3 +1,15 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[╭─](bold green_bright) \
+$all\
+$fill\
+$line_break\
+[╰─](bold green_bright)\
+$character\
+$status\
+$sudo"""
+
 [aws]
 symbol = "  "
 

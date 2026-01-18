@@ -163,7 +163,7 @@ install_packages() {
   banner 'Installing packages'
   sudo pacman -Sy --noconfirm --needed \
     git man-db man-pages curl unzip tmux zoxide fzf ripgrep fd bat nsxiv \
-    jq vim alacritty zathura zathura-pdf-mupdf mpv \
+    jq vim alacritty zathura zathura-pdf-mupdf mpv tree pass \
     neovim wl-clipboard tree-sitter-cli \
     starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
     docker docker-buildx docker-compose \
@@ -176,7 +176,7 @@ install_packages() {
     pyright \
     lua-language-server \
     vscode-json-languageserver yaml-language-server \
-    github-cli
+    github-cli opencode
 
   # flatpak install \
   #   com.visualstudio.code \
@@ -192,7 +192,7 @@ install_packages() {
   systemctl enable --now "syncthing@${USER}"
 
   paru -S --noconfirm \
-    localsend-bin ufw-docker
+    localsend-bin ufw-docker google-chrome
 }
 
 install_astronvim() {
@@ -367,12 +367,15 @@ install_hyprland() {
     fcitx5 fcitx5-gtk fcitx5-qt \
     mako polkit-kde-agent waybar wl-clipboard \
     satty grim slurp brightnessctl hyprlock \
-    swaybg swayosd bluetui btop \
+    swaybg swayosd bluetui wiremix btop \
     gvfs-mtp gvfs-nfs gvfs-smb \
-    libreoffice-fresh nautilus uwsm
+    libreoffice-fresh uwsm \
+    nautilus chromium
 
-  paru -S walker-bin elephant-bin
-
+  # walker
+  paru -S walker elephant elephant-desktopapplications
+  elephant service enable
+  systemctl --user start elephant.service
 }
 
 install_awesome() {

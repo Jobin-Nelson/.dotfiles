@@ -44,7 +44,7 @@
         "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
         "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
         "tooltip-format-disconnected": "Disconnected",
-        "interval": 3,
+        "interval": 5,
         "nospacing": 1,
         "on-click": "kitty --class=Impala -e nmtui"
     },
@@ -76,7 +76,7 @@
         "format-disabled": "󰂲",
         "format-connected": "",
         "tooltip-format": "Devices connected: {num_connections}",
-        "on-click": "blueberry"
+        "on-click": "bluetui"
     },
     "pulseaudio": {
         "format": "{icon}",
