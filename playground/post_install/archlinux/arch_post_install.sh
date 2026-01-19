@@ -173,7 +173,6 @@ install_packages() {
     syncthing net-tools bash-completion ufw pandoc \
     marksman \
     bash-language-server shfmt shellcheck \
-    pyright \
     lua-language-server \
     vscode-json-languageserver yaml-language-server \
     github-cli opencode
@@ -242,6 +241,8 @@ install_python() {
   banner 'Installing python'
   command -v uv &>/dev/null && return 0
   curl -LsSf https://astral.sh/uv/install.sh | sh
+
+  sudo pacman -S pyright ruff
 }
 
 install_nvm() {
@@ -375,7 +376,7 @@ install_hyprland() {
   # walker
   paru -S walker elephant elephant-desktopapplications
   elephant service enable
-  systemctl --user start elephant.service
+  systemctl enable --now --user elephant.service
 }
 
 install_awesome() {
