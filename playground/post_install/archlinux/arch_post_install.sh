@@ -159,39 +159,81 @@ setup_dotfiles() {
   dot_git submodule update --init --depth 5
 }
 
-install_packages() {
-  banner 'Installing packages'
+install_language_server_packages() {
   sudo pacman -Sy --noconfirm --needed \
-    git man-db man-pages curl unzip tmux zoxide fzf ripgrep fd bat nsxiv \
-    jq vim alacritty zathura zathura-pdf-mupdf mpv tree pass \
-    neovim wl-clipboard tree-sitter-cli \
-    starship cronie podman aria2 rsync pacman-contrib netcat fastfetch \
-    docker docker-buildx docker-compose \
-    chromium firefox obsidian wf-recorder \
-    ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-meslo-nerd ttf-sourcecodepro-nerd ttf-cascadia-code-nerd \
-    mpd rmpc ffmpeg yt-dlp imagemagick \
-    syncthing net-tools bash-completion ufw pandoc \
     marksman \
     bash-language-server shfmt shellcheck \
     lua-language-server \
-    vscode-json-languageserver yaml-language-server \
-    github-cli opencode
+    vscode-json-languageserver yaml-language-server
 
-  # flatpak install \
-  #   com.visualstudio.code \
-  #   com.google.Chrome \
-  #   com.github.tchx84.Flatseal \
-  #   org.gnome.Boxes
+  paru -S --noconfirm \
+    emmet-language-server
+}
+
+install_dev_packages() {
+  sudo pacman -Sy --noconfirm --needed \
+    git tmux vim neovim zoxide fzf ripgrep fd bat jq \
+    github-cli opencode lazydocker lazysql just \
+    tree-sitter-cli bash-completion
+}
+
+install_base_packages() {
+  sudo pacman -Sy --noconfirm --needed \
+    man-db man-pages curl unzip \
+    kitty nsxiv zathura zathura-pdf-mupdf tree pass \
+    starship cronie aria2 rsync pacman-contrib netcat fastfetch \
+    wf-recorder wl-clipboard \
+    proton-vpn-gtk-app net-tools ufw
 
   # To setup man pages
   mandb
 
   # Enable services
   systemctl enable --now cronie.service
-  systemctl enable --now "syncthing@${USER}"
+}
 
+install_container_packages() {
+  sudo pacman -Sy --noconfirm --needed \
+    podman docker docker-buildx docker-compose
+}
+
+install_font_packages() {
+  sudo pacman -Sy --noconfirm --needed \
+    ttf-jetbrains-mono-nerd \
+    ttf-hack-nerd \
+    ttf-meslo-nerd \
+    ttf-sourcecodepro-nerd \
+    ttf-cascadia-code-nerd
+}
+
+install_browser_packages() {
+  sudo pacman -Sy --noconfirm --needed \
+    chromium firefox
+}
+
+install_media_packages() {
+  sudo pacman -Sy --noconfirm --needed \
+    mpv mpd rmpc ffmpeg yt-dlp imagemagick
+}
+
+install_aur_packages() {
   paru -S --noconfirm \
-    localsend-bin ufw-docker google-chrome
+    localsend-bin ufw-docker google-chrome visual-studio-code-bin \
+    bibata-cursor-theme
+}
+
+install_packages() {
+  banner 'Installing packages'
+
+  install_dev_packages
+  install_base_packages
+  install_container_packages
+  install_font_packages
+  install_browser_packages
+  install_media_packages
+  install_language_server_packages
+
+  install_aur_packages
 }
 
 install_astronvim() {
@@ -408,6 +450,9 @@ setup_firewall() {
   # Allow Docker containers to use DNS on host
   sudo ufw allow in proto udp from 172.16.0.0/12 to 172.17.0.1 port 53 comment 'allow-docker-dns'
 
+  # Allow tailscale
+  sudo ufw allow in on tailscale0
+
   sudo ufw --force enable
 
   systemctl enable ufw
@@ -497,7 +542,7 @@ setup_omarchy() {
 omarchy_remove_configs() {
   local -r nvim_config="$HOME/.config/nvim"
   # Do nothing if neovim config is already cloned
-  if [[ -d ${nvim_config}/.git ]] then
+  if [[ -d ${nvim_config}/.git ]]; then
     echo $'\nSkipping neovim setup...\n'
     return 0
   fi
@@ -512,7 +557,13 @@ omarchy_remove_configs() {
 }
 
 setup_neovim() {
-  /
+  echo
+}
+
+setup_ssh() {
+  banner 'Setting up ssh'
+
+  curl -sSfL https://github.com/jobin-nelson.keys > ~/.ssh/authorized_keys
 }
 
 main() {

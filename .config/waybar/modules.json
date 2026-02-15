@@ -76,7 +76,7 @@
         "format-disabled": "󰂲",
         "format-connected": "",
         "tooltip-format": "Devices connected: {num_connections}",
-        "on-click": "bluetui"
+        "on-click": "kitty --class=Bluetui -e bluetui"
     },
     "pulseaudio": {
         "format": "{icon}",

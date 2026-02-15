@@ -110,7 +110,7 @@ alias bt="upower -i \$(upower -e | grep 'BAT') \
 alias vl="pactl list sinks | grep 'Volume'"
 alias pomo='sleep 1h && notify-send "Focus Session Over" \
   && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
-alias docker='podman'
+# alias docker='podman'
 
 # Wallpaper
 alias wl='nsxiv $HOME/Pictures/wallpapers/**/*'
@@ -191,7 +191,7 @@ alias fpods="fzf \
     --preview-window up:follow \
     --preview 'kubectl logs --follow --all-containers --tail=10000 --namespace {1} {2}' "
 
-# Obselete aliases
+# Obsolete aliases
 # alias emacs='emacsclient -nc -a ""'
 # alias n='NVIM_APPNAME=my_nvim nvim'
 

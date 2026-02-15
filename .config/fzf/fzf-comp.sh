@@ -39,3 +39,10 @@ _fzf_complete_podman() {
 }
 
 [[ -n "$BASH" ]] && complete -F _fzf_complete_podman -o default -o bashdefault podman
+
+# just
+_fzf_complete_just() {
+  _fzf_complete --no-multi --ansi -- "$@" < <(just --list --list-heading='' --list-prefix='')
+}
+
+[[ -n "$BASH" ]] && complete -F _fzf_complete_just -o default -o bashdefault just
