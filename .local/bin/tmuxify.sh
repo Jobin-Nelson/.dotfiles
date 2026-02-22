@@ -24,7 +24,7 @@ usage() {
 
   cat <<EOF
 SYNOPSIS
-    ${script} [-h] [-s] [-r <cmd>] [-k] [-w]
+    ${script} [-h] [-s] [-r <cmd>] [-k] [-w] [-a <directory>]
 
 DESCRIPTION
     This script sets up tmux sessions and windows
@@ -34,6 +34,7 @@ OPTIONS
     -v, --verbose     Print script debug info
     -s, --session     Start or switch sessions
     -w, --worktree    Start or switch worktrees
+    -a, --attach      Start or Attach session from a directory
     -k, --kill        Kill a session
     -r, --run         Run command in window
 
@@ -76,6 +77,7 @@ die() {
 
 get_session_name() {
   local session_name=$1
+  session_name="${session_name%/}"
   session_name="${session_name##*/}"
   session_name="${session_name//./_}"
   session_name="${session_name//:/_}"
@@ -84,7 +86,7 @@ get_session_name() {
   echo -n "${session_name}"
 }
 
-attach_session() {
+attach_session_with_name() {
   local session_name=$1
   local target_dir=$2
 
@@ -106,6 +108,15 @@ attach_session() {
   tmux "${change}" -t "${session_name}"
 }
 
+attach_session() {
+  local target_dir=$1
+
+  local session_name
+  session_name=$(get_session_name "${target_dir}")
+
+  attach_session_with_name "${session_name}" "${target_dir}"
+}
+
 sessionizer() {
   local -a zoxide_dirs tmux_sessions projects
   readarray -t zoxide_dirs < <(zoxide query -l) || true
@@ -119,10 +130,7 @@ sessionizer() {
 
   [[ -z ${selected_dir-} ]] && exit 1
 
-  local session_name
-  session_name=$(get_session_name "${selected_dir}")
-
-  attach_session "${session_name}" "${selected_dir}"
+  attach_session "${selected_dir}"
 }
 
 run_cmd() {
@@ -166,7 +174,7 @@ attach_worktree() {
   repo_name=$(get_session_name "$(git -C "${current_pane_path}" config remote.origin.url)")
 
   local target_session="${repo_name}--${branch}"
-  attach_session "${target_session}" "${worktree}"
+  attach_session_with_name "${target_session}" "${worktree}"
 }
 
 kill_session() {
@@ -184,7 +192,7 @@ kill_session() {
 ide() {
   [[ -n ${TMUX-} ]] || die "ERROR: script must be ran inside a tmux session"
 
-  tmux split-window -v -l 30%
+  tmux split-window -v -l 30% -c "#{pane_current_path}"
   # tmux select-pane -t 0
 }
 
@@ -203,6 +211,7 @@ parse_params() {
     -v | --verbose) set -x ;;
     -s | --session) sessionizer ;;
     -w | --worktree) attach_worktree ;;
+    -a | --attach) attach_session "${2}"; shift ;;
     -k | --kill) kill_session;;
     -r | --run) run_cmd "${2-}"; shift;;
     -i | --ide) ide ;;

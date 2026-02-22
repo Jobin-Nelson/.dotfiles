@@ -75,9 +75,13 @@
   missingCommitsCheck = warn
 [pull]
   rebase = true
-[includeIf "gitdir:~/playground/dev/infosys/"]
-  path = ~/playground/dev/infosys/.gitconfig
 [url "git@github.com:/Jobin-Nelson/"]
   insteadOf = "jn:"
 [grep]
   lineNumber = true
+
+[includeIf "gitdir:~/playground/dev/infosys/"]
+  path = ~/playground/dev/infosys/.gitconfig
+
+[include]
+  path = ~/.config/delta/delta.gitconfig

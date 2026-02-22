@@ -166,15 +166,18 @@ install_language_server_packages() {
     lua-language-server \
     vscode-json-languageserver yaml-language-server
 
-  paru -S --noconfirm \
+  paru -S --noconfirm --needed \
     emmet-language-server
 }
 
 install_dev_packages() {
   sudo pacman -Sy --noconfirm --needed \
     git tmux vim neovim zoxide fzf ripgrep fd bat jq \
-    github-cli opencode lazydocker lazysql just \
+    github-cli delta opencode lazydocker just \
     tree-sitter-cli bash-completion
+
+  paru -S --noconfirm --needed \
+    lazysql-bin resterm-bin
 }
 
 install_base_packages() {
@@ -217,7 +220,7 @@ install_media_packages() {
 }
 
 install_aur_packages() {
-  paru -S --noconfirm \
+  paru -S --noconfirm --needed \
     localsend-bin ufw-docker google-chrome visual-studio-code-bin \
     bibata-cursor-theme
 }
@@ -416,7 +419,7 @@ install_hyprland() {
     nautilus chromium
 
   # walker
-  paru -S walker elephant elephant-desktopapplications
+  paru -S --noconfirm --needed walker elephant elephant-desktopapplications
   elephant service enable
   systemctl enable --now --user elephant.service
 }
