@@ -11,11 +11,9 @@
 set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Utility Functions                     ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 usage() {
   local script
@@ -70,7 +68,6 @@ die() {
   exit "$code"
 }
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                   Core Implementation                    ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
@@ -90,17 +87,14 @@ attach_session_with_name() {
   local session_name=$1
   local target_dir=$2
 
-  if ! tmux has-session -t="${session_name}" &> /dev/null; then
+  if ! tmux has-session -t="${session_name}" &>/dev/null; then
     tmux new-session -s "${session_name}" -c "${target_dir}" -n 'editor' -d
-    # Enter nix dev shell
-    tmux send-keys -t "${session_name}:0" "{ [[ -s ./flake.nix ]] && nix develop; } || { [[ -s ./shell.nix ]] && nix-shell; }" Enter
-
-    # Activate python virtual environment
     local venv_activate='./.venv/bin/activate'
-    tmux send-keys -t "${session_name}:0" "[[ -s $venv_activate ]] && . ${venv_activate}" Enter
-
-    # Enter neovim
-    tmux send-keys -t "${session_name}:0" 'nvim' Enter
+    # respect: nix, python venv
+    tmux \
+      send-keys -t "${session_name}:0" "{ [[ -s ./flake.nix ]] && nix develop; } || { [[ -s ./shell.nix ]] && nix-shell; }" Enter \; \
+      send-keys -t "${session_name}:0" "[[ -s $venv_activate ]] && . ${venv_activate}" Enter \; \
+      send-keys -t "${session_name}:0" 'nvim' Enter
   fi
 
   local change
@@ -179,9 +173,9 @@ attach_worktree() {
 
 kill_session() {
   local -a sessions
-  sessions=$(tmux list-sessions -F '#{?session_attached,yes,no} #{session_name}' \
-    | awk '$1 == "no" { print $2 }' \
-    | fzf --style=full --tmux --border=none --border=none --multi --ansi) || return $?
+  sessions=$(tmux list-sessions -F '#{?session_attached,yes,no} #{session_name}' |
+    awk '$1 == "no" { print $2 }' |
+    fzf --style=full --tmux --border=none --border=none --multi --ansi) || return $?
 
   local session
   for session in "${sessions[@]}"; do
@@ -192,15 +186,27 @@ kill_session() {
 ide() {
   [[ -n ${TMUX-} ]] || die "ERROR: script must be ran inside a tmux session"
 
-  tmux split-window -v -l 30% -c "#{pane_current_path}"
-  # tmux select-pane -t 0
-}
+  local -a panes
+  readarray panes < <(tmux list-pane -F "#{pane_index}") || true
 
+  if [[ "${#panes[@]}" == 1 ]]; then
+    tmux split-window -v -l 30% -c "#{pane_current_path}"
+    return
+  fi
+
+  local editor_pane='0'
+  local current_pane
+  current_pane=$(tmux display-message -p -F '#{pane_index}' )
+  if [[ $current_pane == "${editor_pane}" ]]; then
+    tmux last-pane
+  else
+    tmux select-pane -t ":.${editor_pane}" \; resize-pane -Z
+  fi
+}
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 parse_params() {
   # default values of variables set from params
@@ -211,9 +217,15 @@ parse_params() {
     -v | --verbose) set -x ;;
     -s | --session) sessionizer ;;
     -w | --worktree) attach_worktree ;;
-    -a | --attach) attach_session "${2}"; shift ;;
-    -k | --kill) kill_session;;
-    -r | --run) run_cmd "${2-}"; shift;;
+    -a | --attach)
+      attach_session "${2}"
+      shift
+      ;;
+    -k | --kill) kill_session ;;
+    -r | --run)
+      run_cmd "${2-}"
+      shift
+      ;;
     -i | --ide) ide ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
@@ -224,7 +236,7 @@ parse_params() {
   args=("$@")
 
   # check required params and arguments
-  (( ${#args[@]} != 0 )) && die "ERROR: Unknown positional arguments ${args[*]}"
+  ((${#args[@]} != 0)) && die "ERROR: Unknown positional arguments ${args[*]}"
 
   return 0
 }
@@ -232,4 +244,3 @@ parse_params() {
 [[ $# == 0 ]] && usage
 setup_colors
 parse_params "$@"
-
