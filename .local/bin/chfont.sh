@@ -122,26 +122,25 @@ function set_kitty_font() {
 }
 
 function set_wofi_font() {
-  local wofi_file
-
-  wofi_file="$HOME/.config/wofi/style.css"
+  local wofi_file="$HOME/.config/wofi/style.css"
   sed -i 's/font-family: ".*"/font-family: "'"${FONT}"'"/' "${wofi_file}"
 }
 
 function set_waybar_font() {
-  local waybar_file
-
-  waybar_file="$HOME/.config/waybar/style.css"
+  local waybar_file="$HOME/.config/waybar/style.css"
   sed -i "s/font-family: .*;/font-family: ${FONT};/" "${waybar_file}"
 
   [[ $XDG_CURRENT_DESKTOP == 'Hyprland' ]] && reload.sh -w &>/dev/null
 }
 
 function set_hyprlock_font() {
-  local hyprlock_file
-
-  hyprlock_file="$HOME/.config/hypr/hyprlock.conf"
+  local hyprlock_file="$HOME/.config/hypr/hyprlock.conf"
   sed -i "s/font_family = .*/font_family = ${FONT}/" "${hyprlock_file}"
+}
+
+function set_hyprland_font() {
+  local looknfeel_file="${HOME}/.config/hypr/modules/looknfeel.conf"
+  sed -i "s/font_family = .*/font_family = ${FONT}/" "${looknfeel_file}"
 }
 
 function main() {
@@ -154,7 +153,7 @@ function main() {
   set_wofi_font
   set_waybar_font
   set_hyprlock_font
-
+  set_hyprland_font
   echo "Font changed to $FONT"
 }
 

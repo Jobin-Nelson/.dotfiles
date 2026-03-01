@@ -186,7 +186,8 @@ install_base_packages() {
     kitty nsxiv zathura zathura-pdf-mupdf tree pass \
     starship cronie aria2 rsync pacman-contrib netcat fastfetch \
     wf-recorder wl-clipboard \
-    proton-vpn-gtk-app net-tools ufw
+    proton-vpn-gtk-app net-tools ufw \
+    newsboat
 
   # To setup man pages
   mandb
@@ -471,8 +472,13 @@ setup_done() {
 }
 
 install_nvidia() {
-  # lspci | grep -iq nvidia && return 0
   banner 'Installing Nvidia'
+  install_nvidia_drivers
+  configure_nvidia_container
+}
+
+install_nvidia_drivers() {
+  lspci | grep -iq nvidia && return 0
 
   # Turing (16xx, 20xx), Ampere (30xx), Ada (40xx), and newer recommend the open-source kernel modules
   local nvidia_driver_package
@@ -533,6 +539,14 @@ install_nvidia() {
   sudo sed -i -E 's/  +/ /g' "$mkinitcpio_conf"
 
   sudo mkinitcpio -P
+}
+
+configure_nvidia_container() {
+  sudo pacman -Sy --noconfirm --needed \
+    nvidia-container-toolkit
+
+  sudo nvidia-ctk runtime configure --runtime=docker
+  sudo systemctl restart docker
 }
 
 setup_omarchy() {
