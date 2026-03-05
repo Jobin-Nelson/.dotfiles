@@ -474,7 +474,7 @@ setup_done() {
 install_nvidia() {
   banner 'Installing Nvidia'
   install_nvidia_drivers
-  configure_nvidia_container
+  # configure_nvidia_container
 }
 
 install_nvidia_drivers() {
