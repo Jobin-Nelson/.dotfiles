@@ -8,7 +8,7 @@
 # ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
 #
 
-# shellcheck disable=SC1091 # Disable errors when sourcing files
+# shellcheck disable=SC1091,SC2155 # Disable errors when sourcing files
 # If not running interactively, exit early
 [[ $- == *i* ]] || return
 
@@ -326,11 +326,10 @@ function ssht() {
 
 function export_api_keys() {
   set +o history
-  OPENROUTER_API_KEY=$(pass show apikey/openrouter)
-  GEMINI_API_KEY=$(pass show apikey/gemini)
-  export OPENROUTER_API_KEY
-  export GEMINI_API_KEY
+  export API_KEY_OPENROUTER=$(pass show apikey/openrouter)
+  export API_KEY_GEMINI=$(pass show apikey/gemini)
   set -o history
+  echo $'API keys successfully exported:\n' "${!API_KEY@}."
 }
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓

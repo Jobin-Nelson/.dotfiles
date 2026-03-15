@@ -160,6 +160,7 @@ setup_dotfiles() {
 }
 
 install_language_server_packages() {
+  banner 'Installing LSPs'
   sudo pacman -Sy --noconfirm --needed \
     marksman \
     bash-language-server shfmt shellcheck \
@@ -171,13 +172,23 @@ install_language_server_packages() {
 }
 
 install_dev_packages() {
+  banner 'Installing Dev packages'
   sudo pacman -Sy --noconfirm --needed \
     git tmux vim neovim zoxide fzf ripgrep fd bat jq \
-    github-cli delta opencode lazydocker just \
+    github-cli delta lazydocker just \
     tree-sitter-cli bash-completion
 
   paru -S --noconfirm --needed \
     lazysql-bin resterm-bin
+}
+
+install_ai_packages() {
+  banner 'Installing AI packages'
+  sudo pacman -Sy --noconfirm --needed \
+    opencode
+
+  # install claude code
+  curl -fsSL https://claude.ai/install.sh | bash
 }
 
 install_base_packages() {
@@ -197,11 +208,13 @@ install_base_packages() {
 }
 
 install_container_packages() {
+  banner 'Installing container packages'
   sudo pacman -Sy --noconfirm --needed \
     podman docker docker-buildx docker-compose
 }
 
 install_font_packages() {
+  banner 'Installing fonts'
   sudo pacman -Sy --noconfirm --needed \
     ttf-jetbrains-mono-nerd \
     ttf-hack-nerd \
@@ -211,11 +224,13 @@ install_font_packages() {
 }
 
 install_browser_packages() {
+  banner 'Installing browsers'
   sudo pacman -Sy --noconfirm --needed \
     chromium firefox
 }
 
 install_media_packages() {
+  banner 'Installing media packages'
   sudo pacman -Sy --noconfirm --needed \
     mpv mpd rmpc ffmpeg yt-dlp imagemagick
 }
@@ -236,6 +251,7 @@ install_packages() {
   install_browser_packages
   install_media_packages
   install_language_server_packages
+  install_ai_packages
 
   install_aur_packages
 }
