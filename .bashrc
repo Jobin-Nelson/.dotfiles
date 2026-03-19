@@ -324,13 +324,14 @@ function ssht() {
   ssh "${@}" -t -- sh -c 'tmux has-session jobin && exec tmux attach jobin || exec tmux new -s jobin'
 }
 
-function export_api_keys() {
+function export_api_keys() (
   set +o history
   export API_KEY_OPENROUTER=$(pass show apikey/openrouter)
   export API_KEY_GEMINI=$(pass show apikey/gemini)
   set -o history
   echo $'API keys successfully exported:\n' "${!API_KEY@}."
-}
+  "${SHELL:-bash}"
+)
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    General Utilities                     ┃

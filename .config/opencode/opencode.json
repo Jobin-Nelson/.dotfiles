@@ -3,7 +3,6 @@
   "plugin": [
     "opencode-antigravity-auth@latest"
   ],
-  "theme": "opencode",
   "autoshare": false,
   "autoupdate": true,
   "instructions": [
@@ -16,9 +15,12 @@
       "npm": "@openrouter/ai-sdk-provider",
       "name": "OpenRouter",
       "options": {
-        "apiKey": "{env:OPENROUTER_API_KEY}"
+        "apiKey": "{env:API_KEY_OPENROUTER}"
       },
       "models": {
+        "openrouter/free": {
+          "name": "Openrouter Free"
+        },
         "deepseek/deepseek-r1-0528": {
           "name": "Deepseek: R1 0528"
         }
@@ -29,7 +31,7 @@
       //   "apiKey": "{env:GEMINI_API_KEY}"
       // },
       "models": {
-        "antigravity-gemini-3-pro": {
+        "antigravity-gemini-3.1-pro": {
           "name": "Gemini 3 Pro (Antigravity)",
           "limit": {
             "context": 1048576,

@@ -227,6 +227,9 @@ install_browser_packages() {
   banner 'Installing browsers'
   sudo pacman -Sy --noconfirm --needed \
     chromium firefox
+
+  paru -S --noconfirm --needed \
+    google-chrome
 }
 
 install_media_packages() {
@@ -237,7 +240,7 @@ install_media_packages() {
 
 install_aur_packages() {
   paru -S --noconfirm --needed \
-    localsend-bin ufw-docker google-chrome visual-studio-code-bin \
+    localsend-bin ufw-docker visual-studio-code-bin \
     bibata-cursor-theme
 }
 
