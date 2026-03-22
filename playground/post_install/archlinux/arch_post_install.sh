@@ -187,8 +187,12 @@ install_ai_packages() {
   sudo pacman -Sy --noconfirm --needed \
     opencode
 
-  # install claude code
+  # claude code
   curl -fsSL https://claude.ai/install.sh | bash
+
+  # openspec
+  install_nvm
+  npm install -g @fission-ai/openspec@latest
 }
 
 install_base_packages() {
