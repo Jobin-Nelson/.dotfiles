@@ -385,9 +385,7 @@ fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 # NVM [Node version manager]
-export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
-[[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"
-[[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"
+source /usr/share/nvm/init-nvm.sh
 
 # Cargo [Rust]
 [[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"

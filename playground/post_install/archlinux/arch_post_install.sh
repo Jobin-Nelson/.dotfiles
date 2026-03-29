@@ -42,6 +42,7 @@ OPTIONS
     -d, --dotfiles      Setup dotfiles
     -p, --packages      Install all packages
     -n, --nvm           Install node version manager
+    -r, --rust          Install rust
     -g, --gnome         Configure gnome
     -w, --wallpapers    Download wallpapers
     --nvidia            Install nvidia drivers
@@ -101,9 +102,10 @@ update_packages() {
 
 install_rust() {
   banner 'Installing rust'
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y || return 0
-  # shellcheck disable=SC1091
-  . "$HOME/.cargo/env"
+  pacman -Sy --needed --noconfirm \
+    rustup
+
+  rustup default stable
   cargo install --locked bacon bacon-ls
 }
 
@@ -308,18 +310,19 @@ install_doom_emacs() {
 
 install_python() {
   banner 'Installing python'
-  command -v uv &>/dev/null && return 0
-  curl -LsSf https://astral.sh/uv/install.sh | sh
 
-  sudo pacman -S pyright ruff
+  sudo pacman -Sy --needed --noconfirm \
+    python-uv ruff pyright
 }
 
 install_nvm() {
   banner 'Installing Node Version Manager'
   command -v nvm &>/dev/null && return 0
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | NVM_DIR="$HOME/.config/nvm" PROFILE=/dev/null bash
+  sudo pacman -S --noconfirm --needed \
+    nvm
   # shellcheck disable=SC1091
-  . "$HOME/.config/nvm/nvm.sh" && nvm install node && nvm install-latest-npm
+  source /usr/share/nvm/init-nvm.sh
+  nvm install node --latest-npm
 }
 
 setup_repos() {
@@ -440,7 +443,7 @@ install_hyprland() {
     swaybg swayosd bluetui wiremix btop \
     gvfs-mtp gvfs-nfs gvfs-smb \
     libreoffice-fresh uwsm \
-    nautilus chromium
+    nautilus
 
   # walker
   paru -S --noconfirm --needed walker elephant elephant-desktopapplications
@@ -645,6 +648,7 @@ parse_params() {
     -d | --dotfiles) setup_dotfiles ;;
     -p | --packages) setup_aur; install_packages ;;
     -n | --nvm) install_nvm ;;
+    -r | --rust) install_rust ;;
     -g | --gnome) configure_gnome ;;
     -w | --wallpapers) download_wallpapers ;;
     -a | --all) main ;;
