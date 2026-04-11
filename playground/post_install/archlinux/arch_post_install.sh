@@ -204,7 +204,7 @@ install_base_packages() {
     starship cronie aria2 rsync pacman-contrib netcat fastfetch \
     wf-recorder wl-clipboard \
     proton-vpn-gtk-app net-tools ufw \
-    newsboat
+    newsboat googleworkspace-cli
 
   # To setup man pages
   mandb
@@ -226,7 +226,8 @@ install_font_packages() {
     ttf-hack-nerd \
     ttf-meslo-nerd \
     ttf-sourcecodepro-nerd \
-    ttf-cascadia-code-nerd
+    ttf-cascadia-code-nerd \
+    ttf-firacode-nerd
 }
 
 install_browser_packages() {
