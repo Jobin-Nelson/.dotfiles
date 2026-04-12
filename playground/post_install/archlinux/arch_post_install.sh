@@ -195,6 +195,11 @@ install_ai_packages() {
   # openspec
   install_nvm
   npm install -g @fission-ai/openspec@latest
+
+  # pi
+  npm install -g @mariozechner/pi-coding-agent
+  pi install npm:pi-plan-mode
+  pi install npm:@aliou/pi-guardrails
 }
 
 install_base_packages() {

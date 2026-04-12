@@ -61,6 +61,9 @@ export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
 export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
+# AI
+export PI_CODING_AGENT_DIR="${XDG_CONFIG_HOME}/pi/agent"
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                         Options                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
@@ -152,10 +155,10 @@ alias fnote='find $HOME/playground/projects/second_brain/ \
   | xargs -r ${EDITOR:-vim} -c ":cd $HOME/playground/projects/second_brain \
   | set wrap linebreak"'
 alias dc='docker ps -a | fzf --style=full --multi --nth 2 --header-lines 1 --bind "enter:become(echo -n {+1})"'
-alias pi="pacman -Slq | fzf --style=full --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
-alias ai="paru -Slq | fzf --style=full --multi --preview 'paru -Si {1}' | xargs -ro paru -S"
-alias pr="pacman -Qq | fzf --style=full --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
-alias ar="paru -Qq | fzf --style=full --multi --preview 'paru -Qi {1}' | xargs -ro paru -Rns"
+alias paci="pacman -Slq | fzf --style=full --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias auri="paru -Slq | fzf --style=full --multi --preview 'paru -Si {1}' | xargs -ro paru -S"
+alias pacr="pacman -Qq | fzf --style=full --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias aurr="paru -Qq | fzf --style=full --multi --preview 'paru -Qi {1}' | xargs -ro paru -Rns"
 alias ap='$(compgen -c | sort -u | fzf --style=full)'
 alias fmoji='curl -sSL "https://git.io/JXXO7" | fzf --style=full'
 alias lg="fzf \
