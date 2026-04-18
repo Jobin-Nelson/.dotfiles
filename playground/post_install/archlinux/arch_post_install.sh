@@ -17,11 +17,9 @@
 
 set -euo pipefail
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Utility Functions                     ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 usage() {
   local script
@@ -89,11 +87,9 @@ die() {
   exit "$code"
 }
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                   Core Implementation                    ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 update_packages() {
   banner 'Updating Packages'
@@ -132,8 +128,8 @@ configure_package_manager() {
         s/^#Color/Color/
         s/^#ParallelDownloads.*/ParallelDownloads = 5/
     " /etc/pacman.conf
-  grep -q '^ILoveCandy' /etc/pacman.conf \
-    || sudo sed -i '/# Misc options/a ILoveCandy' /etc/pacman.conf
+  grep -q '^ILoveCandy' /etc/pacman.conf ||
+    sudo sed -i '/# Misc options/a ILoveCandy' /etc/pacman.conf
 }
 
 setup_dotfiles() {
@@ -167,7 +163,8 @@ install_language_server_packages() {
     marksman \
     bash-language-server shfmt shellcheck \
     lua-language-server \
-    vscode-json-languageserver yaml-language-server
+    vscode-json-languageserver yaml-language-server \
+    prettier tailwindcss-language-server
 
   paru -S --noconfirm --needed \
     emmet-language-server
@@ -216,6 +213,9 @@ install_base_packages() {
 
   # Enable services
   systemctl enable --now cronie.service
+
+  # Setup desktop ui for kitty
+  kitten desktop-ui enable-portal
 }
 
 install_container_packages() {
@@ -612,7 +612,7 @@ setup_neovim() {
 setup_ssh() {
   banner 'Setting up ssh'
 
-  curl -sSfL https://github.com/jobin-nelson.keys > ~/.ssh/authorized_keys
+  curl -sSfL https://github.com/jobin-nelson.keys >~/.ssh/authorized_keys
 }
 
 main() {
@@ -638,11 +638,9 @@ main() {
   install_nvidia
 }
 
-
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
 
 parse_params() {
   # default values of variables set from params
@@ -652,7 +650,10 @@ parse_params() {
     -h | --help) usage ;;
     -v | --verbose) set -x ;;
     -d | --dotfiles) setup_dotfiles ;;
-    -p | --packages) setup_aur; install_packages ;;
+    -p | --packages)
+      setup_aur
+      install_packages
+      ;;
     -n | --nvm) install_nvm ;;
     -r | --rust) install_rust ;;
     -g | --gnome) configure_gnome ;;
@@ -677,4 +678,3 @@ parse_params() {
 [[ $# == 0 ]] && usage
 setup_colors
 parse_params "$@"
-

@@ -98,8 +98,8 @@ bind -m vi-insert '"\C-e": "\C-z\e\C-e\er\C-z"'
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 # General
-alias ls='ls --color=auto'
-alias ll='ls -alFh --group-directories-first --color=auto'
+alias ls='ls --color=auto --hyperlink=auto'
+alias ll='ls -alFh --group-directories-first --color=auto --hyperlink=auto'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias less='less -i -R'
@@ -331,8 +331,8 @@ function export_api_keys() (
   set +o history
   export API_KEY_OPENROUTER=$(pass show apikey/openrouter)
   export API_KEY_GEMINI=$(pass show apikey/gemini)
-  export GOOGLE_WORKSPACE_CLI_CLIENT_ID=$(pass show oauth/google-from-terminal  | jq -r '.installed.client_id')
-  export GOOGLE_WORKSPACE_CLI_CLIENT_SECRET=$(pass show oauth/google-from-terminal  | jq -r '.installed.client_secret')
+  export GOOGLE_WORKSPACE_CLI_CLIENT_ID=$(pass show oauth/google-from-terminal | jq -r '.installed.client_id')
+  export GOOGLE_WORKSPACE_CLI_CLIENT_SECRET=$(pass show oauth/google-from-terminal | jq -r '.installed.client_secret')
   set -o history
   echo $'API keys successfully exported:\n' "${!API_KEY@}" "${!GOOGLE_WORKSPACE@}"
   "${SHELL:-bash}"
