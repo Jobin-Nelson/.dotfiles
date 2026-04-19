@@ -32,7 +32,11 @@
   # branch
   which = !git branch -a | grep -i
   lucky = !sh -c 'git checkout $(git which $1 -m1)' -
-  activity = !git for-each-ref --count=10 --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)'
+  activity = for-each-ref --count=10 --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)'
+  recent = for-each-ref --count=25 --sort=committerdate refs/heads/ --format='%(refname:short)'
+
+  # checkout
+  fco = !git recent | fzf --style=full --print0 --preview='git log HEAD...{} --oneline --color=always' | xargs -0 -r git checkout
 
   # pull
   spull = pull --rebase --autostash

@@ -43,7 +43,9 @@ OPTIONS
     -r, --rust          Install rust
     -g, --gnome         Configure gnome
     -w, --wallpapers    Download wallpapers
+    -f, --firewall      Setup firewall
     --nvidia            Install nvidia drivers
+    --hyprland          Install hyprland
 
 EXAMPLES
     ${script} -d
@@ -98,7 +100,7 @@ update_packages() {
 
 install_rust() {
   banner 'Installing rust'
-  pacman -Sy --needed --noconfirm \
+  sudo pacman -Sy --needed --noconfirm \
     rustup
 
   rustup default stable
@@ -455,6 +457,86 @@ install_hyprland() {
   paru -S --noconfirm --needed walker elephant elephant-desktopapplications
   elephant service enable
   systemctl enable --now --user elephant.service
+
+  # Create pacman hook to restart walker after updates
+  sudo mkdir -p /etc/pacman.d/hooks
+  sudo tee /etc/pacman.d/hooks/walker-restart.hook >/dev/null <<EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = walker
+Target = walker-debug
+Target = elephant*
+
+[Action]
+Description = Restarting Walker services after system update
+When = PostTransaction
+Exec = $HOME/.config/hypr/bin/hypr-restart-walker.sh
+EOF
+
+  setup_mimetypes
+}
+
+setup_mimetypes() {
+  update-desktop-database ~/.local/share/applications
+
+  # Open directories in file manager
+  # xdg-mime default org.gnome.Nautilus.desktop inode/directory
+
+  # Open all images with imv
+  xdg-mime default nsxiv.desktop image/png
+  xdg-mime default nsxiv.desktop image/jpeg
+  xdg-mime default nsxiv.desktop image/gif
+  xdg-mime default nsxiv.desktop image/webp
+  xdg-mime default nsxiv.desktop image/bmp
+  xdg-mime default nsxiv.desktop image/tiff
+
+  # Open PDFs with the Document Viewer
+  xdg-mime default google-chrome.desktop application/pdf
+
+  # Use Chromium as the default browser
+  xdg-settings set default-web-browser google-chrome.desktop
+  xdg-mime default google-chrome.desktop x-scheme-handler/http
+  xdg-mime default google-chrome.desktop x-scheme-handler/https
+
+  # Open video files with mpv
+  xdg-mime default mpv.desktop video/mp4
+  xdg-mime default mpv.desktop video/x-msvideo
+  xdg-mime default mpv.desktop video/x-matroska
+  xdg-mime default mpv.desktop video/x-flv
+  xdg-mime default mpv.desktop video/x-ms-wmv
+  xdg-mime default mpv.desktop video/mpeg
+  xdg-mime default mpv.desktop video/ogg
+  xdg-mime default mpv.desktop video/webm
+  xdg-mime default mpv.desktop video/quicktime
+  xdg-mime default mpv.desktop video/3gpp
+  xdg-mime default mpv.desktop video/3gpp2
+  xdg-mime default mpv.desktop video/x-ms-asf
+  xdg-mime default mpv.desktop video/x-ogm+ogg
+  xdg-mime default mpv.desktop video/x-theora+ogg
+  xdg-mime default mpv.desktop application/ogg
+
+  # Use Hey for mailto: links
+  # xdg-mime default HEY.desktop x-scheme-handler/mailto
+
+  # Open text files with nvim
+  xdg-mime default nvim.desktop text/plain
+  xdg-mime default nvim.desktop text/english
+  xdg-mime default nvim.desktop text/x-makefile
+  xdg-mime default nvim.desktop text/x-c++hdr
+  xdg-mime default nvim.desktop text/x-c++src
+  xdg-mime default nvim.desktop text/x-chdr
+  xdg-mime default nvim.desktop text/x-csrc
+  xdg-mime default nvim.desktop text/x-java
+  xdg-mime default nvim.desktop text/x-moc
+  xdg-mime default nvim.desktop text/x-pascal
+  xdg-mime default nvim.desktop text/x-tcl
+  xdg-mime default nvim.desktop text/x-tex
+  xdg-mime default nvim.desktop application/x-shellscript
+  xdg-mime default nvim.desktop text/x-c
+  xdg-mime default nvim.desktop text/x-c++
+  xdg-mime default nvim.desktop application/xml
+  xdg-mime default nvim.desktop text/xml
 }
 
 install_awesome() {
@@ -507,6 +589,31 @@ install_nvidia() {
   banner 'Installing Nvidia'
   install_nvidia_drivers
   # configure_nvidia_container
+  install_vulkan
+}
+
+install_vulkan() {
+  # Install Vulkan drivers matching detected GPU hardware
+  # (NVIDIA Vulkan is handled by nvidia.sh via nvidia-utils)
+
+  local -A vulkan_drivers=(
+    [Intel]=vulkan-intel
+    [AMD]=vulkan-radeon
+    [Apple]=vulkan-asahi
+  )
+
+  local -a packages=()
+
+  local vendor
+  for vendor in "${!vulkan_drivers[@]}"; do
+    if lspci | grep -iE "(VGA|Display).*$vendor" >/dev/null; then
+      packages+=("${vulkan_drivers[$vendor]}")
+    fi
+  done
+
+  if ((${#packages[@]} > 0)); then
+    sudo pacman -S --noconfirm --needed "${packages[@]}"
+  fi
 }
 
 install_nvidia_drivers() {
@@ -581,37 +688,10 @@ configure_nvidia_container() {
   sudo systemctl restart docker
 }
 
-setup_omarchy() {
-  update_packages
-  install_packages
-  omarchy_cleanup_configs
-  # setup_dotfiles
-}
-
-omarchy_remove_configs() {
-  local -r nvim_config="$HOME/.config/nvim"
-  # Do nothing if neovim config is already cloned
-  if [[ -d ${nvim_config}/.git ]]; then
-    echo $'\nSkipping neovim setup...\n'
-    return 0
-  fi
-
-  rm -rf \
-    "${nvim_config}" \
-    ~/.local/share/nvim \
-    ~/.local/state/nvim \
-    ~/.cache/nvim
-
-  setup_neovim
-}
-
-setup_neovim() {
-  echo
-}
-
 setup_ssh() {
   banner 'Setting up ssh'
 
+  mkdir -m 700 ~/.ssh
   curl -sSfL https://github.com/jobin-nelson.keys >~/.ssh/authorized_keys
 }
 
@@ -636,6 +716,7 @@ main() {
   # switch_to_X11
   install_hyprland
   install_nvidia
+  setup_ssh
 }
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -661,7 +742,7 @@ parse_params() {
     -a | --all) main ;;
     -f | --firewall) setup_firewall ;;
     --nvidia) install_nvidia ;;
-    -o | --omarchy) setup_omarchy ;;
+    --hyprland) install_hyprland ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac
