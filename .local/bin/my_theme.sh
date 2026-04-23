@@ -75,6 +75,7 @@ set_theme() {
   prepare_theme "${1}"
   set_theme_config
   restart_apps
+  set_background
 }
 
 set_theme_config() {
@@ -148,6 +149,13 @@ restart_apps() {
 
 set_background() {
   local bg
+  bg=$(find "${MY_THEME_DIR}" -type f -path '*current/backgrounds/0-*' -print -quit)
+  [[ -z $bg ]] && return 0
+  reload.sh -w "${bg}"
+}
+
+choose_background() {
+  local bg
   bg=$(find "${MY_THEME_DIR}" -type f -path '*backgrounds/*' -print0 |
     fzf --read0 --no-multi --style=full --height=90% --preview-window='60%,nohidden')
   [[ -z $bg ]] && return 0
@@ -179,7 +187,7 @@ while getopts ":hvs:dDrbc" option; do
   d) set_default ;;
   D) unset_default ;;
   r) restart_apps ;;
-  b) set_background ;;
+  b) choose_background ;;
   c) choose_theme ;;
   *) bail "Error: Invalid option" ;;
   esac
