@@ -376,6 +376,7 @@ export FZF_DEFAULT_OPTS="\
   --bind='ctrl-q:select-all+accept' \
   --bind='ctrl-x:jump' \
   --bind='ctrl-e:execute($EDITOR {})' \
+  --bind='ctrl-o:become($EDITOR {})' \
   --bind='ctrl-y:execute-silent(echo {+} | wl-copy)'"
 eval "$(fzf --bash)"
 

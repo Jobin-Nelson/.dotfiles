@@ -23,6 +23,7 @@ declare -A MY_THEME_CONFIGS=(
   [opencode.json]=$HOME/.config/opencode/themes/current.json
   [pi.json]=$HOME/.config/pi/agent/themes/current.json
   [nvim.vim]=$HOME/.config/nvim/colors/current.vim
+  [aerc.ini]=$HOME/.config/aerc/stylesets/current
 )
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -111,6 +112,7 @@ set_default() {
   sed -i 's/^\(include\).*/\1 current-theme.conf/' ~/.config/kitty/kitty.conf
   sed -i 's/\("theme"\).*/\1: "opencode",/' ~/.config/opencode/tui.json
   sed -i 's/\("theme"\).*/\1: "dark",/' ~/.config/pi/agent/settings.json
+  sed -i 's/^\(styleset-name\).*/\1=default/' ~/.config/aerc/aerc.conf
 
   local config
   for config in "${MY_THEME_CONFIGS[@]}"; do
@@ -129,6 +131,7 @@ unset_default() {
   sed -i 's!^\(include\).*!\1 ~/.config/my_theme/current/kitty.conf!' ~/.config/kitty/kitty.conf
   sed -i 's/\("theme"\).*/\1: "current",/' ~/.config/opencode/tui.json
   sed -i 's/\("theme"\).*/\1: "current",/' ~/.config/pi/agent/settings.json
+  sed -i 's/^\(styleset-name\).*/\1=current/' ~/.config/aerc/aerc.conf
 
   rm -f "${DEFAULT_MARKER_FILE}"
 }
@@ -139,7 +142,7 @@ restart_apps() {
 
   local server
   for server in $(find "${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}" -maxdepth 1 -name "nvim.*.0" -type s 2>/dev/null); do
-    nvim --server "$server" --remote-send "<C-\><C-n>:colorscheme current<CR>"
+    nvim --server "$server" --remote-send "<C-\><C-n>:colorscheme current<CR>" || true
   done
 }
 

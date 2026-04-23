@@ -156,7 +156,8 @@ install_base_packages() {
     starship cronie aria2 rsync pacman-contrib netcat fastfetch \
     wf-recorder wl-clipboard \
     proton-vpn-gtk-app net-tools ufw \
-    newsboat googleworkspace-cli zip
+    newsboat googleworkspace-cli zip \
+    aerc pandoc
 
   # To setup man pages
   mandb
