@@ -47,6 +47,8 @@ OPTIONS
     -d   Set [d]efault theme
     -D   Unset [d]efault theme
     -r   [R]estart apps
+    -b   Set [b]ackground
+    -c   [C]hoose theme
 
 EXAMPLES
     ${script} -h
@@ -134,6 +136,11 @@ unset_default() {
 restart_apps() {
   pkill -SIGUSR2 btop || true
   pkill -SIGUSR1 kitty || true
+
+  local server
+  for server in $(find "${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}" -maxdepth 1 -name "nvim.*.0" -type s 2>/dev/null); do
+    nvim --server "$server" --remote-send "<C-\><C-n>:colorscheme current<CR>"
+  done
 }
 
 set_background() {
@@ -145,6 +152,14 @@ set_background() {
   reload.sh -w "${bg}"
 }
 
+choose_theme() {
+  local theme
+  theme=$(find "${MY_THEME_DIR}" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' |
+    fzf --no-multi --style=full)
+
+  [[ -n $theme ]] && set_theme "${theme}"
+}
+
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
@@ -153,7 +168,7 @@ set_background() {
 
 [[ $# == 0 ]] && usage
 
-while getopts ":hvs:dDrb" option; do
+while getopts ":hvs:dDrbc" option; do
   case $option in
   h) usage ;;
   v) set -x ;;
@@ -162,6 +177,7 @@ while getopts ":hvs:dDrb" option; do
   D) unset_default ;;
   r) restart_apps ;;
   b) set_background ;;
+  c) choose_theme ;;
   *) bail "Error: Invalid option" ;;
   esac
 done
