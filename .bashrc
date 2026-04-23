@@ -121,6 +121,7 @@ alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 
 # Custom
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias lazydot='lazygit --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup='${EDITOR:-vim} \
   $HOME/playground/dev/infosys/daily_updates/$(date -d \
   "$([[ $(date -d "+2 hours" +%u) -gt 5 ]] \
@@ -137,6 +138,7 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do \
   sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
 
 # FZF
+alias fdot='dot -C $HOME ls-files --format "$HOME/%(path)" | fzf --style=full'
 alias todo='${EDITOR:-vim} -c ":cd $HOME/playground/org_files" \
   $HOME/playground/org_files/inbox.org +$'
 alias ftodo='rg --line-number --no-heading --with-filename \
@@ -167,7 +169,7 @@ alias lg="fzf \
   --ansi \
   --multi \
   --prompt='ripgrep> ' \
-  --height 90% \
+  --height 100% \
   --delimiter : \
   --header='CTRL-G: Toggle between ripgrep/fzf, CTRL-O: edit, Enter: open' \
   --preview 'bat --style=full --color=always --highlight-line {2} {1}' \
@@ -330,7 +332,7 @@ function ssht() {
 function export_api_keys() (
   set +o history
   export API_KEY_OPENROUTER=$(pass show apikey/openrouter)
-  export API_KEY_GEMINI=$(pass show apikey/gemini)
+  export API_KEY_GEMINI=$(pass show -c9 apikey/gemini)
   export GOOGLE_WORKSPACE_CLI_CLIENT_ID=$(pass show oauth/google-from-terminal | jq -r '.installed.client_id')
   export GOOGLE_WORKSPACE_CLI_CLIENT_SECRET=$(pass show oauth/google-from-terminal | jq -r '.installed.client_secret')
   set -o history
@@ -350,16 +352,19 @@ function export_api_keys() (
 # Scripts
 [[ $PATH =~ ~/.local/bin ]] || export PATH="$HOME/.local/bin:$PATH"
 
-# FZF completion
+# FZF configuration
 export FZF_DEFAULT_OPTS="\
   --style=default \
   --info=inline-right \
+  --highlight-line \
   --multi \
   --layout=reverse \
   --height=40% \
   --cycle \
+  --preview='$HOME/.config/fzf/fzf-preview.sh {}' \
+  --preview-window='hidden' \
   --bind='f1:toggle-header' \
-  --bind='f2:execute(bat --style=numbers {} || less -f {})' \
+  --bind='f2:change-preview-window(right,90%|right,60%)+refresh-preview' \
   --bind='f3:toggle-preview-wrap' \
   --bind='f4:toggle-preview' \
   --bind='f5:change-preview-window(up,40%|left,60%|down,40%|right,60%)' \
@@ -370,7 +375,8 @@ export FZF_DEFAULT_OPTS="\
   --bind='ctrl-f:half-page-down,ctrl-b:half-page-up' \
   --bind='ctrl-q:select-all+accept' \
   --bind='ctrl-x:jump' \
-  --bind='ctrl-y:execute-silent(echo {+} | xclip -sel clip -r)'"
+  --bind='ctrl-e:execute($EDITOR {})' \
+  --bind='ctrl-y:execute-silent(echo {+} | wl-copy)'"
 eval "$(fzf --bash)"
 
 [[ -s ${XDG_CONFIG_HOME}/fzf/fzf-git.sh ]] && \. "${XDG_CONFIG_HOME}/fzf/fzf-git.sh"
@@ -386,12 +392,15 @@ eval "$(starship init bash)"
 # Greeting
 fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 
+# MY THEME
+[[ -f ~/.config/my_theme/current/fzf.sh ]] && source ~/.config/my_theme/current/fzf.sh
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Language Configs                      ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 # NVM [Node version manager]
-source /usr/share/nvm/init-nvm.sh
+[[ -s /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
 
 # Cargo [Rust]
 [[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
@@ -405,3 +414,10 @@ source /usr/share/nvm/init-nvm.sh
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Android Studio
+if [[ -d $HOME/Android/Sdk ]]; then
+  export ANDROID_HOME="${HOME}/Android/Sdk"
+  export PATH="$PATH:$ANDROID_HOME/emulator"
+  export PATH="$PATH:$ANDROID_HOME/platform-tools"
+fi

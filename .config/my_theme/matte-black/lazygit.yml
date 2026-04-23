@@ -1,0 +1,22 @@
+gui:
+  theme:
+    activeBorderColor:
+      - '#c5c8c6'   # Soft white for the active panel border
+      - 'bold'
+    inactiveBorderColor:
+      - '#4d4d4d'   # Dark grey for inactive panels to blend into the matte background
+    optionsTextColor:
+      - '#81a2be'   # Muted blue for the options hints at the bottom
+    selectedLineBgColor:
+      - '#282828'   # Subtle dark grey highlight for the selected item
+    cherryPickedCommitBgColor:
+      - '#8abeb7'   # Muted cyan
+    cherryPickedCommitFgColor:
+      - '#181818'   # Matte black text on top of the cherry-pick highlight
+    unstagedChangesColor:
+      - '#cc6666'   # Soft red for unstaged files
+    defaultFgColor:
+      - '#c5c8c6'   # Main text color
+    searchingActiveBorderColor:
+      - '#f0c674'   # Muted yellow when searching
+      - 'bold'

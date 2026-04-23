@@ -90,7 +90,7 @@ die() {
 }
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-# ┃                   Core Implementation                    ┃
+# ┃                        Installs                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 update_packages() {
@@ -107,58 +107,6 @@ install_rust() {
   cargo install --locked bacon bacon-ls
 }
 
-setup_aur() {
-  banner 'Setting up AUR'
-  local paru_dir="$HOME/playground/open_source/paru"
-
-  install_rust
-
-  command -v paru &>/dev/null && return 0
-
-  mkdir -pv "${paru_dir%/*}"
-
-  sudo pacman -Sy --needed --noconfirm base-devel git
-
-  git clone --depth 1 'https://aur.archlinux.org/paru.git' "${paru_dir}"
-  cd "${paru_dir}" && makepkg -si
-}
-
-configure_package_manager() {
-  banner 'Configuring package managers'
-  sudo sed -i 's/^#MAKEFLAGS=.*/MAKEFLAGS="-j8"/' /etc/makepkg.conf
-  sudo sed -i "
-        s/^#Color/Color/
-        s/^#ParallelDownloads.*/ParallelDownloads = 5/
-    " /etc/pacman.conf
-  grep -q '^ILoveCandy' /etc/pacman.conf ||
-    sudo sed -i '/# Misc options/a ILoveCandy' /etc/pacman.conf
-}
-
-setup_dotfiles() {
-  local backup_dir="$HOME/playground/backup"
-  local dotfiles="$HOME/.dotfiles"
-
-  [[ -d $dotfiles ]] && return 0
-
-  git clone --bare --depth 5 git@github.com:Jobin-Nelson/.dotfiles.git "${dotfiles}"
-
-  mkdir -pv "${backup_dir}" && mv -v "$HOME"/.{bash_profile,bashrc} "${backup_dir}"
-
-  dot_git() {
-    git --git-dir="${dotfiles}" --work-tree="$HOME" "${@}"
-  }
-
-  dot_git config --local status.showUntrackedFiles no
-
-  # for vim-fugitive support
-  dot_git config --local core.worktree "$HOME"
-  dot_git config --local --unset core.bare
-
-  # checkout and initialize submodules
-  dot_git checkout -f
-  dot_git submodule update --init --depth 5
-}
-
 install_language_server_packages() {
   banner 'Installing LSPs'
   sudo pacman -Sy --noconfirm --needed \
@@ -169,14 +117,14 @@ install_language_server_packages() {
     prettier tailwindcss-language-server
 
   paru -S --noconfirm --needed \
-    emmet-language-server
+    emmet-language-server vtsls
 }
 
 install_dev_packages() {
   banner 'Installing Dev packages'
   sudo pacman -Sy --noconfirm --needed \
     git tmux vim neovim zoxide fzf ripgrep fd bat jq \
-    github-cli delta lazydocker just \
+    github-cli delta lazydocker lazygit just \
     tree-sitter-cli bash-completion
 
   paru -S --noconfirm --needed \
@@ -208,7 +156,7 @@ install_base_packages() {
     starship cronie aria2 rsync pacman-contrib netcat fastfetch \
     wf-recorder wl-clipboard \
     proton-vpn-gtk-app net-tools ufw \
-    newsboat googleworkspace-cli
+    newsboat googleworkspace-cli zip
 
   # To setup man pages
   mandb
@@ -333,54 +281,6 @@ install_nvm() {
   nvm install node --latest-npm
 }
 
-setup_repos() {
-  banner 'Setting Up Repositories'
-  local REPOS PROJECT_DIR RUST_BINARIES
-  REPOS=(
-    'learn'
-    'leet_daily'
-    'email_updater'
-    'aoclib'
-    'exercism_rust_track'
-    'todo'
-    'waldl'
-    'org_files'
-  )
-
-  RUST_BINARIES=(
-    'todo'
-    'waldl'
-    'leet_daily'
-  )
-
-  PROJECT_DIR="$HOME/playground/projects"
-
-  mkdir -pv "${PROJECT_DIR}"
-
-  for repo in "${REPOS[@]}"; do
-    git clone --depth 1 "git@github.com:Jobin-Nelson/${repo}" "${PROJECT_DIR}/${repo}"
-  done
-
-  for binary in "${RUST_BINARIES[@]}"; do
-    cargo install --path "${PROJECT_DIR}/${binary}"
-  done
-}
-
-download_wallpapers() {
-  banner 'Downloading Wallpapers'
-  local -a wallpapers=(
-    'https://w.wallhaven.cc/full/m9/wallhaven-m96d8m.jpg'
-    'https://w.wallhaven.cc/full/49/wallhaven-49m5d1.jpg'
-  )
-  local wallpaper_dir="$HOME/Pictures/wallpapers"
-  mkdir -pv "${wallpaper_dir}"
-
-  local wallpaper
-  for wallpaper in "${wallpapers[@]}"; do
-    curl "${wallpaper}" -o "${wallpaper_dir}/${wallpaper##*/}"
-  done
-}
-
 install_fonts() {
   banner 'Installing Fonts'
   local base_url download_dir font_dir
@@ -412,133 +312,6 @@ install_fonts() {
   fc-cache
 }
 
-configure_gnome() {
-  banner 'Configuring Gnome'
-  # echo 1 | sudo tee '/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode'
-  gsettings set org.gnome.shell.app-switcher current-workspace-only true
-  gsettings set org.gnome.desktop.interface show-battery-percentage true
-  gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,maximize,close"
-  gsettings set org.gnome.TextEditor keybindings 'vim'
-  gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-  gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-
-  for i in {1..9}; do
-    gsettings set org.gnome.shell.keybindings "switch-to-application-${i}" "['<Super>${i}']"
-  done
-}
-
-switch_to_integrated_graphics() {
-  banner 'Switching to integrated graphics'
-  paru -S --noconfirm envycontrol
-  envycontrol -s integrated
-}
-
-switch_to_X11() {
-  banner 'Switching to X11'
-  sudo sed -Ei 's/#(WaylandEnable=false)/\1/' /etc/gdm/custom.conf
-}
-
-install_hyprland() {
-  banner 'Installing Hyprland window manager'
-
-  sudo pacman -S --noconfirm --needed \
-    hyprland hyprpaper hyprshot hypridle hyprpicker \
-    hyprland-guiutils hyprpicker hyprsunset \
-    xdg-desktop-portal-hyprland gnome-keyring \
-    fcitx5 fcitx5-gtk fcitx5-qt \
-    mako polkit-kde-agent waybar wl-clipboard \
-    satty grim slurp brightnessctl hyprlock \
-    swaybg swayosd bluetui wiremix btop \
-    gvfs-mtp gvfs-nfs gvfs-smb \
-    libreoffice-fresh uwsm \
-    nautilus
-
-  # walker
-  paru -S --noconfirm --needed walker elephant elephant-desktopapplications
-  elephant service enable
-  systemctl enable --now --user elephant.service
-
-  # Create pacman hook to restart walker after updates
-  sudo mkdir -p /etc/pacman.d/hooks
-  sudo tee /etc/pacman.d/hooks/walker-restart.hook >/dev/null <<EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = walker
-Target = walker-debug
-Target = elephant*
-
-[Action]
-Description = Restarting Walker services after system update
-When = PostTransaction
-Exec = $HOME/.config/hypr/bin/hypr-restart-walker.sh
-EOF
-
-  setup_mimetypes
-}
-
-setup_mimetypes() {
-  update-desktop-database ~/.local/share/applications
-
-  # Open directories in file manager
-  # xdg-mime default org.gnome.Nautilus.desktop inode/directory
-
-  # Open all images with imv
-  xdg-mime default nsxiv.desktop image/png
-  xdg-mime default nsxiv.desktop image/jpeg
-  xdg-mime default nsxiv.desktop image/gif
-  xdg-mime default nsxiv.desktop image/webp
-  xdg-mime default nsxiv.desktop image/bmp
-  xdg-mime default nsxiv.desktop image/tiff
-
-  # Open PDFs with the Document Viewer
-  xdg-mime default google-chrome.desktop application/pdf
-
-  # Use Chromium as the default browser
-  xdg-settings set default-web-browser google-chrome.desktop
-  xdg-mime default google-chrome.desktop x-scheme-handler/http
-  xdg-mime default google-chrome.desktop x-scheme-handler/https
-
-  # Open video files with mpv
-  xdg-mime default mpv.desktop video/mp4
-  xdg-mime default mpv.desktop video/x-msvideo
-  xdg-mime default mpv.desktop video/x-matroska
-  xdg-mime default mpv.desktop video/x-flv
-  xdg-mime default mpv.desktop video/x-ms-wmv
-  xdg-mime default mpv.desktop video/mpeg
-  xdg-mime default mpv.desktop video/ogg
-  xdg-mime default mpv.desktop video/webm
-  xdg-mime default mpv.desktop video/quicktime
-  xdg-mime default mpv.desktop video/3gpp
-  xdg-mime default mpv.desktop video/3gpp2
-  xdg-mime default mpv.desktop video/x-ms-asf
-  xdg-mime default mpv.desktop video/x-ogm+ogg
-  xdg-mime default mpv.desktop video/x-theora+ogg
-  xdg-mime default mpv.desktop application/ogg
-
-  # Use Hey for mailto: links
-  # xdg-mime default HEY.desktop x-scheme-handler/mailto
-
-  # Open text files with nvim
-  xdg-mime default nvim.desktop text/plain
-  xdg-mime default nvim.desktop text/english
-  xdg-mime default nvim.desktop text/x-makefile
-  xdg-mime default nvim.desktop text/x-c++hdr
-  xdg-mime default nvim.desktop text/x-c++src
-  xdg-mime default nvim.desktop text/x-chdr
-  xdg-mime default nvim.desktop text/x-csrc
-  xdg-mime default nvim.desktop text/x-java
-  xdg-mime default nvim.desktop text/x-moc
-  xdg-mime default nvim.desktop text/x-pascal
-  xdg-mime default nvim.desktop text/x-tcl
-  xdg-mime default nvim.desktop text/x-tex
-  xdg-mime default nvim.desktop application/x-shellscript
-  xdg-mime default nvim.desktop text/x-c
-  xdg-mime default nvim.desktop text/x-c++
-  xdg-mime default nvim.desktop application/xml
-  xdg-mime default nvim.desktop text/xml
-}
-
 install_awesome() {
   banner 'Installing Awesome window manager'
 
@@ -548,47 +321,10 @@ install_awesome() {
     xclip
 }
 
-setup_firewall() {
-  systemctl disable --now ufw
-
-  sudo ufw disable
-  sudo ufw reset
-  sudo ufw default deny incoming
-  sudo ufw default allow outgoing
-  sudo ufw allow ssh
-  sudo ufw limit ssh
-  sudo ufw allow http
-  sudo ufw allow https
-  sudo ufw allow syncthing
-
-  # allow for localsend
-  sudo ufw allow 53317/udp
-  sudo ufw allow 53317/tcp
-
-  # Allow Docker containers to use DNS on host
-  sudo ufw allow in proto udp from 172.16.0.0/12 to 172.17.0.1 port 53 comment 'allow-docker-dns'
-
-  # Allow tailscale
-  sudo ufw allow in on tailscale0
-
-  sudo ufw --force enable
-
-  systemctl enable ufw
-
-  sudo ufw-docker install
-  sudo ufw reload
-}
-
-setup_done() {
-  banner 'Setup Done!!!'
-
-  echo $'\nRestart System for changes to take effect\n'
-}
-
 install_nvidia() {
   banner 'Installing Nvidia'
   install_nvidia_drivers
-  # configure_nvidia_container
+  # install_nvidia_container
   install_vulkan
 }
 
@@ -680,12 +416,250 @@ install_nvidia_drivers() {
   sudo mkinitcpio -P
 }
 
-configure_nvidia_container() {
+install_nvidia_container() {
   sudo pacman -Sy --noconfirm --needed \
     nvidia-container-toolkit
 
   sudo nvidia-ctk runtime configure --runtime=docker
   sudo systemctl restart docker
+}
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                         Setups                           ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+setup_repos() {
+  banner 'Setting Up Repositories'
+  local REPOS PROJECT_DIR RUST_BINARIES
+  REPOS=(
+    'learn'
+    'leet_daily'
+    'email_updater'
+    'aoclib'
+    'exercism_rust_track'
+    'todo'
+    'waldl'
+    'org_files'
+  )
+
+  RUST_BINARIES=(
+    'todo'
+    'waldl'
+    'leet_daily'
+  )
+
+  PROJECT_DIR="$HOME/playground/projects"
+
+  mkdir -pv "${PROJECT_DIR}"
+
+  for repo in "${REPOS[@]}"; do
+    git clone --depth 1 "git@github.com:Jobin-Nelson/${repo}" "${PROJECT_DIR}/${repo}"
+  done
+
+  for binary in "${RUST_BINARIES[@]}"; do
+    cargo install --path "${PROJECT_DIR}/${binary}"
+  done
+}
+
+setup_aur() {
+  banner 'Setting up AUR'
+  local paru_dir="$HOME/playground/open_source/paru"
+
+  install_rust
+
+  command -v paru &>/dev/null && return 0
+
+  mkdir -pv "${paru_dir%/*}"
+
+  sudo pacman -Sy --needed --noconfirm base-devel git
+
+  git clone --depth 1 'https://aur.archlinux.org/paru.git' "${paru_dir}"
+  cd "${paru_dir}" && makepkg -si
+}
+
+configure_package_manager() {
+  banner 'Configuring package managers'
+  sudo sed -i 's/^#MAKEFLAGS=.*/MAKEFLAGS="-j8"/' /etc/makepkg.conf
+  sudo sed -i "
+        s/^#Color/Color/
+        s/^#ParallelDownloads.*/ParallelDownloads = 5/
+    " /etc/pacman.conf
+  grep -q '^ILoveCandy' /etc/pacman.conf ||
+    sudo sed -i '/# Misc options/a ILoveCandy' /etc/pacman.conf
+}
+
+setup_dotfiles() {
+  local backup_dir="$HOME/playground/backup"
+  local dotfiles="$HOME/.dotfiles"
+
+  [[ -d $dotfiles ]] && return 0
+
+  git clone --bare --depth 5 git@github.com:Jobin-Nelson/.dotfiles.git "${dotfiles}"
+
+  mkdir -pv "${backup_dir}" && mv -v "$HOME"/.{bash_profile,bashrc} "${backup_dir}"
+
+  dot_git() {
+    git --git-dir="${dotfiles}" --work-tree="$HOME" "${@}"
+  }
+
+  dot_git config --local status.showUntrackedFiles no
+
+  # for vim-fugitive support
+  dot_git config --local core.worktree "$HOME"
+  dot_git config --local --unset core.bare
+
+  # checkout and initialize submodules
+  dot_git checkout -f
+  dot_git submodule update --init --depth 5
+}
+
+download_wallpapers() {
+  banner 'Downloading Wallpapers'
+  local -a wallpapers=(
+    'https://w.wallhaven.cc/full/m9/wallhaven-m96d8m.jpg'
+    'https://w.wallhaven.cc/full/49/wallhaven-49m5d1.jpg'
+  )
+  local wallpaper_dir="$HOME/Pictures/wallpapers"
+  mkdir -pv "${wallpaper_dir}"
+
+  local wallpaper
+  for wallpaper in "${wallpapers[@]}"; do
+    curl "${wallpaper}" -o "${wallpaper_dir}/${wallpaper##*/}"
+  done
+}
+
+configure_gnome() {
+  banner 'Configuring Gnome'
+  # echo 1 | sudo tee '/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode'
+  gsettings set org.gnome.shell.app-switcher current-workspace-only true
+  gsettings set org.gnome.desktop.interface show-battery-percentage true
+  gsettings set org.gnome.desktop.wm.preferences button-layout "appmenu:minimize,maximize,close"
+  gsettings set org.gnome.TextEditor keybindings 'vim'
+  gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+  gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+
+  for i in {1..9}; do
+    gsettings set org.gnome.shell.keybindings "switch-to-application-${i}" "['<Super>${i}']"
+  done
+}
+
+switch_to_integrated_graphics() {
+  banner 'Switching to integrated graphics'
+  paru -S --noconfirm envycontrol
+  envycontrol -s integrated
+}
+
+switch_to_X11() {
+  banner 'Switching to X11'
+  sudo sed -Ei 's/#(WaylandEnable=false)/\1/' /etc/gdm/custom.conf
+}
+
+setup_mimetypes() {
+  update-desktop-database ~/.local/share/applications
+
+  # Open directories in file manager
+  # xdg-mime default org.gnome.Nautilus.desktop inode/directory
+
+  # Open all images with imv
+  xdg-mime default nsxiv.desktop image/png
+  xdg-mime default nsxiv.desktop image/jpeg
+  xdg-mime default nsxiv.desktop image/gif
+  xdg-mime default nsxiv.desktop image/webp
+  xdg-mime default nsxiv.desktop image/bmp
+  xdg-mime default nsxiv.desktop image/tiff
+
+  # Open PDFs with the Document Viewer
+  xdg-mime default google-chrome.desktop application/pdf
+
+  # Use Chromium as the default browser
+  xdg-settings set default-web-browser google-chrome.desktop
+  xdg-mime default google-chrome.desktop x-scheme-handler/http
+  xdg-mime default google-chrome.desktop x-scheme-handler/https
+
+  # Open video files with mpv
+  xdg-mime default mpv.desktop video/mp4
+  xdg-mime default mpv.desktop video/x-msvideo
+  xdg-mime default mpv.desktop video/x-matroska
+  xdg-mime default mpv.desktop video/x-flv
+  xdg-mime default mpv.desktop video/x-ms-wmv
+  xdg-mime default mpv.desktop video/mpeg
+  xdg-mime default mpv.desktop video/ogg
+  xdg-mime default mpv.desktop video/webm
+  xdg-mime default mpv.desktop video/quicktime
+  xdg-mime default mpv.desktop video/3gpp
+  xdg-mime default mpv.desktop video/3gpp2
+  xdg-mime default mpv.desktop video/x-ms-asf
+  xdg-mime default mpv.desktop video/x-ogm+ogg
+  xdg-mime default mpv.desktop video/x-theora+ogg
+  xdg-mime default mpv.desktop application/ogg
+
+  # Use Hey for mailto: links
+  # xdg-mime default HEY.desktop x-scheme-handler/mailto
+
+  # Open text files with nvim
+  xdg-mime default nvim.desktop text/plain
+  xdg-mime default nvim.desktop text/english
+  xdg-mime default nvim.desktop text/x-makefile
+  xdg-mime default nvim.desktop text/x-c++hdr
+  xdg-mime default nvim.desktop text/x-c++src
+  xdg-mime default nvim.desktop text/x-chdr
+  xdg-mime default nvim.desktop text/x-csrc
+  xdg-mime default nvim.desktop text/x-java
+  xdg-mime default nvim.desktop text/x-moc
+  xdg-mime default nvim.desktop text/x-pascal
+  xdg-mime default nvim.desktop text/x-tcl
+  xdg-mime default nvim.desktop text/x-tex
+  xdg-mime default nvim.desktop application/x-shellscript
+  xdg-mime default nvim.desktop text/x-c
+  xdg-mime default nvim.desktop text/x-c++
+  xdg-mime default nvim.desktop application/xml
+  xdg-mime default nvim.desktop text/xml
+}
+
+increase_file_watchers() {
+  # Increase inotify file watchers for VS Code, webpack, and other dev tools (default 8192 is too low)
+  echo "fs.inotify.max_user_watches=524288" | sudo tee /etc/sysctl.d/90-omarchy-file-watchers.conf >/dev/null
+  sudo sysctl --system >/dev/null 2>&1
+}
+
+setup_firewall() {
+  systemctl disable --now ufw
+
+  sudo ufw disable
+  sudo ufw reset
+  sudo ufw default deny incoming
+  sudo ufw default allow outgoing
+  sudo ufw allow ssh
+  sudo ufw limit ssh
+  sudo ufw allow http
+  sudo ufw allow https
+  sudo ufw allow syncthing
+
+  # allow for localsend
+  sudo ufw allow 53317/udp
+  sudo ufw allow 53317/tcp
+
+  # Allow Docker containers to use DNS on host
+  sudo ufw allow in proto udp from 172.16.0.0/12 to 172.17.0.1 port 53 comment 'allow-docker-dns'
+
+  # Allow tailscale
+  sudo ufw allow in on tailscale0
+
+  sudo ufw --force enable
+
+  systemctl enable ufw
+
+  sudo ufw-docker install
+  sudo ufw reload
+}
+
+increase_sudo_tries() {
+  # Give the user 10 instead of 3 tries to fat finger their password before lockout
+  echo "Defaults passwd_tries=10" | sudo tee /etc/sudoers.d/passwd-tries
+  sudo chmod 440 /etc/sudoers.d/passwd-tries
+
+  # Set for hyprlock too
+  sudo sed -i 's/^# *deny = .*/deny = 10/' /etc/security/faillock.conf
 }
 
 setup_ssh() {
@@ -694,6 +668,114 @@ setup_ssh() {
   mkdir -m 700 ~/.ssh
   curl -sSfL https://github.com/jobin-nelson.keys >~/.ssh/authorized_keys
 }
+
+setup_done() {
+  banner 'Setup Done!!!'
+
+  echo $'\nRestart System for changes to take effect\n'
+}
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                        Hyprland                          ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+install_hyprland() {
+  banner 'Installing Hyprland window manager'
+
+  hypr_install_packages
+  hypr_setup_walker
+  hypr_setup_powerprofilesdaemon
+  # hypr_setup_wifi
+  setup_mimetypes
+  increase_sudo_tries
+  hypr_battery_optimize
+  increase_file_watchers
+}
+
+hypr_install_packages() {
+  sudo pacman -S --noconfirm --needed \
+    hyprland hyprpaper hyprshot hypridle hyprpicker \
+    hyprland-guiutils hyprpicker hyprsunset \
+    xdg-desktop-portal-hyprland gnome-keyring \
+    fcitx5 fcitx5-gtk fcitx5-qt \
+    mako polkit-kde-agent waybar wl-clipboard \
+    satty grim slurp brightnessctl hyprlock \
+    swaybg swayosd bluetui wiremix btop \
+    gvfs-mtp gvfs-nfs gvfs-smb \
+    libreoffice-fresh uwsm \
+    nautilus power-profiles-daemon
+}
+
+hypr_setup_walker() {
+  # walker
+  paru -S --noconfirm --needed walker elephant elephant-desktopapplications
+  elephant service enable
+  systemctl enable --now --user elephant.service
+
+  # Ensure Walker service is started automatically on boot
+  mkdir -p ~/.config/autostart/
+  cp $HOME/.config/hypr/applications/walker/walker.desktop ~/.config/autostart/
+
+  # And is restarted if it crashes or is killed
+  mkdir -p ~/.config/systemd/user/app-walker@autostart.service.d/
+  cp $HOME/.config/hypr/applications/walker/restart.conf ~/.config/systemd/user/app-walker@autostart.service.d/restart.conf
+
+  # Create pacman hook to restart walker after updates
+  sudo mkdir -p /etc/pacman.d/hooks
+  sudo tee /etc/pacman.d/hooks/walker-restart.hook >/dev/null <<EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = walker
+Target = walker-debug
+Target = elephant*
+
+[Action]
+Description = Restarting Walker services after system update
+When = PostTransaction
+Exec = $HOME/.config/hypr/bin/hypr-restart-walker.sh
+EOF
+
+}
+
+hypr_setup_powerprofilesdaemon() {
+  if $HOME/.config/hypr/bin/hypr-battery-present.sh; then
+    cat <<EOF | sudo tee "/etc/udev/rules.d/99-power-profile.rules"
+SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="/usr/bin/systemd-run --no-block --collect --unit=hypr-power-profile-battery --property=After=power-profiles-daemon.service $HOME/.config/hypr/bin/hypr-powerprofiles-set.sh battery"
+SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="/usr/bin/systemd-run --no-block --collect --unit=hypr-power-profile-ac --property=After=power-profiles-daemon.service $HOME/.config/hypr/bin/hypr-powerprofiles-set.sh ac"
+EOF
+
+    sudo udevadm control --reload 2>/dev/null
+    sudo udevadm trigger --subsystem-match=power_supply 2>/dev/null
+  fi
+}
+
+hypr_setup_wifi() {
+  if $HOME/.config/hypr/bin/hypr-battery-present.sh; then
+    cat <<EOF | sudo tee "/etc/udev/rules.d/99-wifi-powersave.rules"
+SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="/usr/bin/systemd-run --no-block --collect --unit=hypr-wifi-powersave-on $HOME/.config/hypr/bin/hypr-wifi-powersave.sh on"
+SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="/usr/bin/systemd-run --no-block --collect --unit=hypr-wifi-powersave-off $HOME/.config/hypr/bin/hypr-wifi-powersave.sh off"
+EOF
+
+    sudo udevadm control --reload
+    sudo udevadm trigger --subsystem-match=power_supply
+  fi
+}
+
+hypr_battery_optimize() {
+  if ls /sys/class/power_supply/BAT* &>/dev/null && [[ ! -f $HOME/.config/systemd/user/hypr-battery-monitor.service ]]; then
+    mkdir -p ~/.config/systemd/user
+
+    cp $HOME/.config/hypr/hypr-battery-monitor.* ~/.config/systemd/user/
+
+    systemctl --user daemon-reload
+    systemctl --user enable --now hypr-battery-monitor.timer || true
+  fi
+}
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                          MAIN                            ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 main() {
   update_packages
@@ -755,6 +837,9 @@ parse_params() {
 
   return 0
 }
+
+# Exit early when being sourced
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] || return 0
 
 [[ $# == 0 ]] && usage
 setup_colors

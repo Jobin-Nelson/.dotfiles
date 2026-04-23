@@ -8,15 +8,15 @@
 # ╚═╝     ╚══════╝╚═╝          ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝
 #
 
-
 [[ $0 = - ]] && return
 
 # password store
 _fzf_complete_pass() {
-  _fzf_complete --style=full -- "$@" < <(pass git ls-files | sed \
-    -e '/.gitattributes/d' \
-    -e '/.gpg-id/d' \
-    -e 's/.gpg$//' \
+  _fzf_complete --style=full -- "$@" < <(
+    pass git ls-files | sed \
+      -e '/.gitattributes/d' \
+      -e '/.gpg-id/d' \
+      -e 's/.gpg$//'
   )
 }
 
@@ -46,3 +46,10 @@ _fzf_complete_just() {
 }
 
 [[ -n "$BASH" ]] && complete -F _fzf_complete_just -o default -o bashdefault just
+
+# my_theme
+_fzf_complete_my_theme() {
+  _fzf_complete --no-multi --ansi -- "$@" < <(find ~/.config/my_theme -maxdepth 1 -mindepth 1 -type d -printf '%f\n')
+}
+
+[[ -n "$BASH" ]] && complete -F _fzf_complete_my_theme -o default -o bashdefault my_theme.sh
