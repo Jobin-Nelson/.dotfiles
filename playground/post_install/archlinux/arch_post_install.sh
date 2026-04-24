@@ -147,6 +147,7 @@ install_ai_packages() {
   npm install -g @mariozechner/pi-coding-agent
   pi install npm:pi-plan-mode
   pi install npm:@aliou/pi-guardrails
+  pi install npm:@juicesharp/rpiv-ask-user-question
 }
 
 install_base_packages() {
@@ -697,9 +698,9 @@ hypr_install_packages() {
   sudo pacman -S --noconfirm --needed \
     hyprland hyprpaper hyprshot hypridle hyprpicker \
     hyprland-guiutils hyprpicker hyprsunset \
-    xdg-desktop-portal-hyprland gnome-keyring \
-    fcitx5 fcitx5-gtk fcitx5-qt \
-    mako polkit-kde-agent waybar wl-clipboard \
+    xdg-desktop-portal-gtk xdg-desktop-portal-hyprland \
+    gnome-keyring fcitx5 fcitx5-gtk fcitx5-qt \
+    mako polkit-gnome waybar wl-clipboard \
     satty grim slurp brightnessctl hyprlock \
     swaybg swayosd bluetui wiremix btop \
     gvfs-mtp gvfs-nfs gvfs-smb \

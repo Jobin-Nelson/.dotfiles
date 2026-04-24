@@ -177,7 +177,7 @@ choose_theme() {
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 
-[[ $# == 0 ]] && usage
+[[ $# == 0 ]] && choose_theme
 
 while getopts ":hvs:dDrbc" option; do
   case $option in

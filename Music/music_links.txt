@@ -1,0 +1,52 @@
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                         Header                           ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+# Run below command to download all the music
+# yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --embed-thumbnail -o "%(title)s.%(ext)s" -a music_links.txt
+
+# To download just a single url
+# yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --embed-thumbnail -o "%(title)s.%(ext)s" '<URL>'
+
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                       Music Urls                         ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+# Zero Distractions - Coding Music for Deep Focus
+https://www.youtube.com/watch?v=0w80F8FffQ4
+
+# Hogwarts background music
+https://www.youtube.com/watch?v=BQrxsyGTztM
+
+# I took a pill in ibiza
+https://www.youtube.com/watch?v=foE1mO2yM04
+
+# The Neighbourhood - Sweater Weather (Official Video)
+https://www.youtube.com/watch?v=GCdwKhTtNNw
+
+# Post Malone, Swae Lee - Sunflower (Spider-Man： Into the Spider-Verse) (Official Video)
+https://www.youtube.com/watch?v=ApXoWvfEYVU
+
+# Eurythmics - Sweet Dreams (Lyrics) [bG9z-atG7gc].mp3
+https://www.youtube.com/watch?v=bG9z-atG7gc
+
+# Travis Scott - FE!N ft. Playboi Carti [B9synWjqBn8].mp3
+https://www.youtube.com/watch?v=B9synWjqBn8
+
+# The Weeknd - The Hills [yzTuBuRdAyA].mp3
+https://www.youtube.com/watch?v=yzTuBuRdAyA
+
+# The Weeknd - Starboy ft. Daft Punk (Official Video) [34Na4j8AVgA].mp3
+https://www.youtube.com/watch?v=34Na4j8AVgA
+
+# The Weeknd - Blinding Lights (Official Audio) [fHI8X4OXluQ].mp3
+https://www.youtube.com/watch?v=fHI8X4OXluQ
+
+# Blackway & Black Caviar - ＂What's Up Danger＂ (Spider-Man： Into the Spider-Verse) [Official Audio] [Y88LVU7MAe4].mp3
+https://www.youtube.com/watch?v=Y88LVU7MAe4
+
+# 5 Seconds of Summer - Teeth (Official Video) [JWeJHN5P-E8].mp3
+https://www.youtube.com/watch?v=JWeJHN5P-E8
+
+# Hans Zimmer - The Golden Path/War Chant (feat. Timothée Chalamet) Dune: Part Three OST
+https://www.youtube.com/watch?v=nLY5GFZumLE
