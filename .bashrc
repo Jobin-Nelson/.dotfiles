@@ -417,7 +417,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Android Studio
-if [[ -d $HOME/Android/Sdk ]]; then
+if [[ -d $HOME/Android/Sdk && ! $PATH =~ $HOME/Android/Sdk ]]; then
   export ANDROID_HOME="${HOME}/Android/Sdk"
   export PATH="$PATH:$ANDROID_HOME/emulator"
   export PATH="$PATH:$ANDROID_HOME/platform-tools"

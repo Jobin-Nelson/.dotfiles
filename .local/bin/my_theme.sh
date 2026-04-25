@@ -74,8 +74,8 @@ set_theme() {
   unset_default
   prepare_theme "${1}"
   set_theme_config
-  restart_apps
   set_background
+  restart_apps
 }
 
 set_theme_config() {
@@ -140,6 +140,7 @@ unset_default() {
 restart_apps() {
   pkill -SIGUSR2 btop || true
   pkill -SIGUSR1 kitty || true
+  makoctl reload || true
 
   local server
   for server in $(find "${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}" -maxdepth 1 -name "nvim.*.0" -type s 2>/dev/null); do
@@ -151,6 +152,7 @@ set_background() {
   local bg
   bg=$(find "${MY_THEME_DIR}" -type f -path '*current/backgrounds/0-*' -print -quit)
   [[ -z $bg ]] && return 0
+
   reload.sh -w "${bg}"
 }
 
