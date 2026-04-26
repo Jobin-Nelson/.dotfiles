@@ -111,8 +111,8 @@ alias alert='notify-send --urgency=low -i \
 alias bt="upower -i \$(upower -e | grep 'BAT') \
   | grep -E \"state|to full|percentage|time to empty\""
 alias vl="pactl list sinks | grep 'Volume'"
-alias pomo='sleep 1h && notify-send "Focus Session Over" \
-  && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
+# alias pomo='sleep 1h && notify-send "Focus Session Over" \
+#   && paplay /usr/share/sounds/freedesktop/stereo/complete.oga &'
 # alias docker='podman'
 
 # Wallpaper

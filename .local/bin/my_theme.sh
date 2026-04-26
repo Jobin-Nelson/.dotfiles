@@ -153,7 +153,7 @@ set_background() {
   bg=$(find "${MY_THEME_DIR}" -type f -path '*current/backgrounds/0-*' -print -quit)
   [[ -z $bg ]] && return 0
 
-  reload.sh -w "${bg}"
+  reload.sh -w "${bg}" || true
 }
 
 choose_background() {
@@ -162,7 +162,7 @@ choose_background() {
     fzf --read0 --no-multi --style=full --height=90% --preview-window='60%,nohidden')
   [[ -z $bg ]] && return 0
 
-  reload.sh -w "${bg}"
+  reload.sh -w "${bg}" || true
 }
 
 choose_theme() {
