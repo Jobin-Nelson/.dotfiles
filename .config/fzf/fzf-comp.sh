@@ -53,3 +53,10 @@ _fzf_complete_my_theme() {
 }
 
 [[ -n "$BASH" ]] && complete -F _fzf_complete_my_theme -o default -o bashdefault my_theme.sh
+
+# figlet
+_fzf_complete_figlet() {
+  _fzf_complete --no-multi --ansi -- "$@" < <(find ~/.config/figlet-fonts -maxdepth 1 -mindepth 1 -type f -printf "'%p'\n")
+}
+
+[[ -n "$BASH" ]] && complete -F _fzf_complete_figlet -o default -o bashdefault figlet

@@ -158,7 +158,7 @@ install_base_packages() {
     wf-recorder wl-clipboard \
     proton-vpn-gtk-app net-tools ufw \
     newsboat googleworkspace-cli zip \
-    aerc pandoc
+    aerc pandoc figlet
 
   # To setup man pages
   mandb

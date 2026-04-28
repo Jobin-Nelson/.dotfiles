@@ -260,6 +260,7 @@ function fgf() {
 
   local -r preview_status_label=" Status "
   local -r preview_status="git status --short"
+  local -r preview_diff="git diff --color=always {} | sed '1,4d'"
 
   local -r header=$(
     cat <<EOF
@@ -297,7 +298,7 @@ EOF
     --no-sort \
     --prompt="Add > " \
     --preview-label="$preview_status_label" \
-    --preview="$preview_status" \
+    --preview="$preview_diff" \
     --preview-window='nohidden' \
     --header "$add_header" \
     --header-first \
@@ -305,7 +306,7 @@ EOF
     --bind="ctrl-t:change-preview-label($preview_status_label)" \
     --bind="ctrl-t:+change-preview($preview_status)" \
     --bind='ctrl-f:change-preview-label( Diff )' \
-    --bind='ctrl-f:+change-preview(git diff --color=always {} | sed "1,4d")' \
+    --bind="ctrl-f:+change-preview($preview_diff)" \
     --bind='ctrl-b:change-preview-label( Blame )' \
     --bind='ctrl-b:+change-preview(git blame --color-by-age {})' \
     --bind="ctrl-g:transform:[[ \$FZF_PROMPT =~ '$prompt_add' ]] && echo '$mode_reset' || echo '$mode_add'" \
