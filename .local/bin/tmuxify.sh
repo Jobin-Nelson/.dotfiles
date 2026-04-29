@@ -149,19 +149,24 @@ run_cmd_ipython() {
   [[ -z ${TMUX-} ]] && die "${0##*/} -r must be ran inside a tmux session"
 
   local target=":0.1"
-  local temp_file='/tmp/tmuxify-run-cmd.txt'
-
   if ! tmux has-session -t "${target}" &>/dev/null; then
     ide
+  fi
+
+  # Check if the target pane is in copy-mode (or any other mode)
+  if [[ "$(tmux display-message -p -t "${target}" '#{pane_in_mode}')" == "1" ]]; then
+    # Send the 'cancel' command to return to the normal prompt
+    tmux send-keys -t "${target}" -X cancel
   fi
 
   if [[ -n $cmd ]]; then
     tmux send-keys -t "${target}" "${cmd}" Enter
   elif [[ ! -t 0 ]]; then
+    local temp_file='/tmp/tmuxify-run-cmd.txt'
     # This ensures that even if you select code from inside a nested block,
     # it arrives in the temp file starting at column 0.
     python3 -c "import sys, textwrap; sys.stdout.write(textwrap.dedent(sys.stdin.read()))" >"${temp_file}"
-    tmux send-keys -t "${target}" "%run -i ${temp_file}" Enter
+    tmux send-keys -t "${target}" "_tr('${temp_file}')" Enter
   fi
 }
 
