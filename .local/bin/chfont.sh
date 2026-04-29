@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
-#
-#  ██████╗██╗  ██╗███████╗ ██████╗ ███╗   ██╗████████╗
-# ██╔════╝██║  ██║██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝
-# ██║     ███████║█████╗  ██║   ██║██╔██╗ ██║   ██║
-# ██║     ██╔══██║██╔══╝  ██║   ██║██║╚██╗██║   ██║
-# ╚██████╗██║  ██║██║     ╚██████╔╝██║ ╚████║   ██║
-#  ╚═════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═══╝   ╚═╝
-#
 
+# █▀▀ █░█ █▀▀ █▀█ █▄░█ ▀█▀
+# █▄▄ █▀█ █▀░ █▄█ █░▀█ ░█░
 
 FONT="${FONT:-}"
 
@@ -35,8 +29,8 @@ function get_font() {
     'IoskeleyMono Nerd Font'
   )
 
-  FONT=$(printf '%s\n' "${FONTS[@]}" \
-    | fzf --style=full --prompt 'Edit font: ' --height='50%')
+  FONT=$(printf '%s\n' "${FONTS[@]}" |
+    fzf --style=full --prompt 'Edit font: ' --height='50%')
 }
 
 function set_alacritty_font() {
@@ -51,9 +45,9 @@ function set_alacritty_font() {
 }
 
 function set_alacritty_style() {
-  if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
-    || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
-    || [[ $FONT == 'FiraCode Nerd Font' ]]; then
+  if [[ $FONT == 'JetBrainsMono Nerd Font' ]] ||
+    [[ $FONT == 'SauceCodePro Nerd Font' ]] ||
+    [[ $FONT == 'FiraCode Nerd Font' ]]; then
     sed -zi '
     s/style = "[^"]*"/style = "Medium Italic"/3
     s/style = "[^"]*"/style = "Medium"/4
@@ -68,24 +62,24 @@ function set_alacritty_style() {
 
 function set_alacritty_size() {
   case "$FONT" in
-    'UbuntuMono Nerd Font')        sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
-    'JetBrainsMono Nerd Font')     sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
-    'SauceCodePro Nerd Font')      sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
-    'CaskaydiaCove Nerd Font')     sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
-    'RobotoMono Nerd Font')        sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
-    Rec*\ Nerd\ Font)              sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
-    *)                             sed -i 's/^size .*/size = 14/' "${alacritty_file}" ;;
+  'UbuntuMono Nerd Font') sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
+  'JetBrainsMono Nerd Font') sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
+  'SauceCodePro Nerd Font') sed -i 's/^size .*/size = 13/' "${alacritty_file}" ;;
+  'CaskaydiaCove Nerd Font') sed -i 's/^size .*/size = 13.5/' "${alacritty_file}" ;;
+  'RobotoMono Nerd Font') sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
+  Rec*\ Nerd\ Font) sed -i 's/^size .*/size = 12/' "${alacritty_file}" ;;
+  *) sed -i 's/^size .*/size = 14/' "${alacritty_file}" ;;
   esac
 }
 
 function set_kitty_style() {
   sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Regular"/' "${kitty_file}"
   sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Italic"/' "${kitty_file}"
-  if [[ $FONT == 'JetBrainsMono Nerd Font' ]] \
-    || [[ $FONT == 'SauceCodePro Nerd Font' ]] \
-    || [[ $FONT == 'IoskeleyMono Nerd Font' ]] \
-    || [[ $FONT == 'Hasklug Nerd Font' ]] \
-    || [[ $FONT == 'FiraCode Nerd Font' ]]; then
+  if [[ $FONT == 'JetBrainsMono Nerd Font' ]] ||
+    [[ $FONT == 'SauceCodePro Nerd Font' ]] ||
+    [[ $FONT == 'IoskeleyMono Nerd Font' ]] ||
+    [[ $FONT == 'Hasklug Nerd Font' ]] ||
+    [[ $FONT == 'FiraCode Nerd Font' ]]; then
     sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Medium"/' "${kitty_file}"
     sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/' "${kitty_file}"
   fi
@@ -93,13 +87,13 @@ function set_kitty_style() {
 
 function set_kitty_size() {
   case "$FONT" in
-    'SauceCodePro Nerd Font')      sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
-    'FiraCode Nerd Font')          sed -i 's/^\(font_size\) .*/\1 15.6/' "${kitty_file}" ;;
-    'CaskaydiaCove Nerd Font')     sed -i 's/^\(font_size\) .*/\1 12.3/' "${kitty_file}" ;;
-    'RobotoMono Nerd Font')        sed -i 's/^\(font_size\) .*/\1 12/'   "${kitty_file}" ;;
-    'IoskeleyMono Nerd Font')      sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
-    Rec*\ Nerd\ Font)              sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
-    *)                             sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
+  'SauceCodePro Nerd Font') sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
+  'FiraCode Nerd Font') sed -i 's/^\(font_size\) .*/\1 15.6/' "${kitty_file}" ;;
+  'CaskaydiaCove Nerd Font') sed -i 's/^\(font_size\) .*/\1 12.3/' "${kitty_file}" ;;
+  'RobotoMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
+  'IoskeleyMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
+  Rec*\ Nerd\ Font) sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
+  *) sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
   esac
 }
 
@@ -121,7 +115,7 @@ function set_kitty_font() {
   set_kitty_style
   set_kitty_size
 
-  [[ -n $KITTY_PID ]] && kill -SIGUSR1 "${KITTY_PID}"
+  pkill -SIGUSR1 kitty || true
 }
 
 function set_wofi_font() {
@@ -149,7 +143,10 @@ function set_hyprland_font() {
 function main() {
   [[ -z $FONT ]] && get_font
 
-  [[ -z $FONT ]] && { echo "None selected. Aborting!"; exit 1; }
+  [[ -z $FONT ]] && {
+    echo "None selected. Aborting!"
+    exit 1
+  }
 
   set_kitty_font
   set_alacritty_font
@@ -161,4 +158,3 @@ function main() {
 }
 
 main
-

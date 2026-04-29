@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
-#
-# ████████╗███╗   ███╗██╗   ██╗██╗  ██╗██╗███████╗██╗   ██╗
-# ╚══██╔══╝████╗ ████║██║   ██║╚██╗██╔╝██║██╔════╝╚██╗ ██╔╝
-#    ██║   ██╔████╔██║██║   ██║ ╚███╔╝ ██║█████╗   ╚████╔╝
-#    ██║   ██║╚██╔╝██║██║   ██║ ██╔██╗ ██║██╔══╝    ╚██╔╝
-#    ██║   ██║ ╚═╝ ██║╚██████╔╝██╔╝ ██╗██║██║        ██║
-#    ╚═╝   ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝        ╚═╝
-#
+
+# ▀█▀ █▀▄▀█ █░█ ▀▄▀ █ █▀▀ █▄█
+# ░█░ █░▀░█ █▄█ █░█ █ █▀░ ░█░
 
 set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
@@ -128,20 +123,24 @@ sessionizer() {
 }
 
 run_cmd() {
-  local cmd=$1
+  local cmd="${1-}"
 
-  [[ -z ${TMUX-} ]] && die "${0##*/} -w must be ran inside a tmux session"
-  [[ -z $cmd ]] && die "ERROR: cmd not provided"
-  local current_session
-  current_session=$(tmux list-sessions -F '#{session_name} #{session_attached}' | awk '$2==1 {print $1}')
-  current_window='run_me'
-  target="${current_session}:${current_window}"
+  [[ -z ${TMUX-} ]] && die "${0##*/} -r must be ran inside a tmux session"
+
+  local target=":0.1"
 
   if ! tmux has-session -t "${target}" &>/dev/null; then
-    tmux new-window -n "${current_window}" -d
+    ide
   fi
 
-  tmux send-keys -t "${target}" "${cmd}" Enter
+  if [[ -n $cmd ]]; then
+    tmux send-keys -t "${target}" "${cmd}" Enter
+  elif [[ ! -t 0 ]]; then
+    local line
+    while IFS= read -r line; do
+      tmux send-keys -t "${target}" "${line}" Enter
+    done
+  fi
 }
 
 attach_worktree() {
@@ -196,7 +195,7 @@ ide() {
 
   local editor_pane='0'
   local current_pane
-  current_pane=$(tmux display-message -p -F '#{pane_index}' )
+  current_pane=$(tmux display-message -p -F '#{pane_index}')
   if [[ $current_pane == "${editor_pane}" ]]; then
     tmux last-pane
   else

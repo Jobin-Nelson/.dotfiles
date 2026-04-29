@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# █▀▄▀█ █▄█   ▀█▀ █░█ █▀▀ █▀▄▀█ █▀▀
+# █░▀░█ ░█░   ░█░ █▀█ ██▄ █░▀░█ ██▄
+
 set -Eeuo pipefail
 
 
@@ -50,6 +53,7 @@ OPTIONS
     -r   [R]estart apps
     -b   Set [b]ackground
     -c   [C]hoose theme
+    -t   Curren[t] theme
 
 EXAMPLES
     ${script} -h
@@ -173,6 +177,10 @@ choose_theme() {
   [[ -n $theme ]] && set_theme "${theme}"
 }
 
+current_theme() {
+  cat "${CURRENT_THEME_DIR}/theme.name"
+}
+
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
@@ -181,7 +189,7 @@ choose_theme() {
 
 [[ $# == 0 ]] && choose_theme
 
-while getopts ":hvs:dDrbc" option; do
+while getopts ":hvs:dDrbct" option; do
   case $option in
   h) usage ;;
   v) set -x ;;
@@ -191,6 +199,7 @@ while getopts ":hvs:dDrbc" option; do
   r) restart_apps ;;
   b) choose_background ;;
   c) choose_theme ;;
+  t) current_theme ;;
   *) bail "Error: Invalid option" ;;
   esac
 done
