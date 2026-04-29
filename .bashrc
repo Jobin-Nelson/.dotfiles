@@ -93,7 +93,7 @@ bind -m vi-insert '"\C-e": "\C-z\e\C-e\er\C-z"'
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 # General
-alias ipython='uvx --with ipython-icat,scipy,pandas,matplotlib ipython --autoindent'
+alias ipython='uvx --with ipython-icat,scipy,pandas,matplotlib ipython --profile icat'
 alias ls='ls --color=auto --hyperlink=auto'
 alias ll='ls -alFh --group-directories-first --color=auto --hyperlink=auto'
 alias grep='grep --color=auto'

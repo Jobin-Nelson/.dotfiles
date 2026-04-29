@@ -30,6 +30,7 @@ OPTIONS
     -a, --attach      Start or Attach session from a directory
     -k, --kill        Kill a session
     -r, --run         Run command in window
+    -p, --run-python  Run command in ipython
 
 EXAMPLES
     ${script} -s
@@ -136,10 +137,31 @@ run_cmd() {
   if [[ -n $cmd ]]; then
     tmux send-keys -t "${target}" "${cmd}" Enter
   elif [[ ! -t 0 ]]; then
-    local line
-    while IFS= read -r line; do
-      tmux send-keys -t "${target}" "${line}" Enter
-    done
+    tmux load-buffer - \; \
+      paste-buffer -p -t "${target}" \; \
+      send-keys -t "${target}" Enter
+  fi
+}
+
+run_cmd_ipython() {
+  local cmd="${1-}"
+
+  [[ -z ${TMUX-} ]] && die "${0##*/} -r must be ran inside a tmux session"
+
+  local target=":0.1"
+  local temp_file='/tmp/tmuxify-run-cmd.txt'
+
+  if ! tmux has-session -t "${target}" &>/dev/null; then
+    ide
+  fi
+
+  if [[ -n $cmd ]]; then
+    tmux send-keys -t "${target}" "${cmd}" Enter
+  elif [[ ! -t 0 ]]; then
+    # This ensures that even if you select code from inside a nested block,
+    # it arrives in the temp file starting at column 0.
+    python3 -c "import sys, textwrap; sys.stdout.write(textwrap.dedent(sys.stdin.read()))" >"${temp_file}"
+    tmux send-keys -t "${target}" "%run -i ${temp_file}" Enter
   fi
 }
 
@@ -223,6 +245,10 @@ parse_params() {
     -k | --kill) kill_session ;;
     -r | --run)
       run_cmd "${2-}"
+      shift
+      ;;
+    -p | --ipython)
+      run_cmd_ipython "${2-}"
       shift
       ;;
     -i | --ide) ide ;;
