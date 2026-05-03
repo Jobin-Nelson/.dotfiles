@@ -4,6 +4,6 @@
 [submodule "lab"]
 	path = playground/lab
 	url = git@github.com:Jobin-Nelson/lab.git
-[submodule "nixos"]
+[submodule "nixos-config"]
 	path = .config/nixos-config
 	url = git@github.com:Jobin-Nelson/nixos-config.git
