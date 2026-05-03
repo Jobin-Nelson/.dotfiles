@@ -167,6 +167,7 @@ install_container_packages() {
 install_font_packages() {
   banner 'Installing fonts'
   sudo pacman -Sy --noconfirm --needed \
+    noto-fonts-cjk noto-fonts-emoji \
     ttf-jetbrains-mono-nerd \
     ttf-hack-nerd \
     ttf-meslo-nerd \
@@ -316,6 +317,7 @@ install_nvidia() {
   install_nvidia_drivers
   # install_nvidia_container
   install_vulkan
+  # https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Preserve_video_memory_after_suspend
 }
 
 install_vulkan() {

@@ -134,6 +134,7 @@ alias rr='until eval $(history -p '"'"'!!'"'"'); do \
   sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
 
 # FZF
+alias dgf='GIT_DIR=$HOME/.dotfiles GIT_WORK_TREE=$HOME fgf true'
 alias fdot='dot -C $HOME ls-files --format "$HOME/%(path)" | fzf --style=full'
 alias todo='${EDITOR:-vim} -c ":cd $HOME/playground/org_files" \
   $HOME/playground/org_files/inbox.org +$'
@@ -242,11 +243,13 @@ function rwl() {
 }
 
 function fgf() {
+  local -r is_dotfiles=$1
+  local -r show_untracked="${is_dotfiles:---other}"
   local -r prompt_add="Add > "
   local -r prompt_reset="Reset > "
 
   local -r git_root_dir=$(git rev-parse --show-toplevel)
-  local -r git_unstaged_files="git ls-files --modified --deleted --other --exclude-standard --deduplicate $git_root_dir"
+  local -r git_unstaged_files="git ls-files --modified --deleted ${show_untracked} --exclude-standard --deduplicate $git_root_dir"
 
   # shellcheck disable=SC2016
   local -r git_staged_files='git status --short | grep "^[A-Z]" | awk "{print \$NF}"'

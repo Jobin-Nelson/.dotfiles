@@ -216,7 +216,7 @@ hi SpellCap gui=undercurl guibg=NONE guisp=#f0c674
 hi SpellLocal gui=undercurl guibg=NONE guisp=#81a2be
 hi SpellRare gui=undercurl guibg=NONE guisp=#8abeb7
 hi Statement guibg=NONE guifg=#b294bb
-hi StatusLine guibg=#181818 guifg=#c5c8c6
+hi StatusLine guibg=None guifg=#c5c8c6
 hi StatusLineNC guibg=#181818 guifg=#4d4d4d
 hi String guibg=NONE guifg=#b5bd68
 hi Substitute guibg=#cc6666 guifg=#181818
