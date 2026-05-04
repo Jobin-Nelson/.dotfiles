@@ -503,6 +503,11 @@ setup_dotfiles() {
   # checkout and initialize submodules
   dot_git checkout -f
   dot_git submodule update --init --depth 5
+
+  # setup codeberg remote
+  local codeberg_remote_base='ssh://git@codeberg.org/jobin-nelson'
+  dot_git remote set-url --add --push origin "${codeberg_remote_base}/.dotfiles.git"
+  dot_git submodule foreach "git remote set-url --add --push origin ${codeberg_remote_base}/\${name}.git"
 }
 
 download_wallpapers() {
