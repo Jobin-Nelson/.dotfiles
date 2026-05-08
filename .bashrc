@@ -208,6 +208,17 @@ alias fpods="fzf \
 # ┃                        Functions                         ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
+function timer() {
+  local time_to_sleep="${1:-}"
+  if [[ -z $time_to_sleep ]]; then
+    echo $'Usage: `timer <time-to-sleep>`' >&2
+    return 1
+  fi
+  sleep "${time_to_sleep}" &&
+    paplay /usr/share/sounds/freedesktop/stereo/complete.oga &&
+    notify-send "Timer for ${time_to_sleep} completed." &
+}
+
 function memtop() {
   local i
   {

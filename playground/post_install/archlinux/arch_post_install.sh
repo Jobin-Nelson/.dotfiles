@@ -416,6 +416,11 @@ install_nvidia_container() {
   sudo systemctl restart docker
 }
 
+install_steam() {
+  sudo pacman -Sy --needed --noconfirm steam
+  paru -S --needed --noconfirm protonplus
+}
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                         Setups                           ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
@@ -780,10 +785,6 @@ main() {
   configure_package_manager
   install_packages
   setup_dotfiles
-  # install_astronvim
-  # install_lazyvim
-  # install_neovim
-  # install_doom_emacs
   install_python
   install_nvm
   # setup_repos
@@ -795,6 +796,7 @@ main() {
   # switch_to_X11
   install_hyprland
   install_nvidia
+  install_steam
   setup_ssh
 }
 
