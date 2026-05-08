@@ -50,13 +50,18 @@
   # commit
   discard = !git checkout -- . && git submodule foreach git checkout -- .
   recommit = !git commit --edit --file=\"$(git rev-parse --git-dir)/COMMIT_EDITMSG\" --cleanup=strip
-  capush = !git commit --amend --no-edit && git push --force-with-lease
   wip = !git add -A && git commit -m \"[WIP]!: $(date)\"
 
   # stash
   stsh = stash --keep-index
   staash = stash --include-untracked
   staaash = stash --all
+
+  # push
+  capush = !git commit --amend --no-edit && git push --force-with-lease
+  push-all = !git remote | xargs -I R git push R HEAD
+  push-all-sub = submodule foreach "git push-all"
+
 [init]
   defaultBranch = main
 [rebase]
