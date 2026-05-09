@@ -104,7 +104,7 @@ install_language_server_packages() {
     vscode-json-languageserver yaml-language-server \
     prettier tailwindcss-language-server
 
-  paru -S --noconfirm --needed \
+  paru -S --noconfirm --needed --sudoloop \
     emmet-language-server vtsls
 }
 
@@ -115,7 +115,7 @@ install_dev_packages() {
     github-cli delta lazydocker lazygit just \
     tree-sitter-cli bash-completion
 
-  paru -S --noconfirm --needed \
+  paru -S --noconfirm --needed --sudoloop \
     lazysql-bin resterm-bin
 }
 
@@ -181,7 +181,7 @@ install_browser_packages() {
   sudo pacman -Sy --noconfirm --needed \
     chromium firefox
 
-  paru -S --noconfirm --needed \
+  paru -S --noconfirm --needed --sudoloop \
     google-chrome
 }
 
@@ -192,7 +192,7 @@ install_media_packages() {
 }
 
 install_aur_packages() {
-  paru -S --noconfirm --needed \
+  paru -S --noconfirm --needed --sudoloop \
     localsend-bin ufw-docker visual-studio-code-bin \
     bibata-cursor-theme
 }
@@ -384,7 +384,7 @@ install_nvidia_drivers() {
     "qt6-wayland"
   )
 
-  paru -S --needed --noconfirm "${packages_to_install[@]}"
+  paru -S --needed --noconfirm --sudoloop "${packages_to_install[@]}"
 
   # Configure modprobe for early KMS
   echo "options nvidia_drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf >/dev/null
@@ -417,8 +417,10 @@ install_nvidia_container() {
 }
 
 install_steam() {
-  sudo pacman -Sy --needed --noconfirm steam
-  paru -S --needed --noconfirm protonplus
+  # Use steam to lauch games with gamescope if facing mouse going off windows
+  # gamescope --force-grab-cursor --expose-wayland -f -- %command%
+  sudo pacman -Sy --needed --noconfirm steam gamescope
+  paru -S --needed --noconfirm --sudoloop protonplus
 }
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -547,7 +549,7 @@ configure_gnome() {
 
 switch_to_integrated_graphics() {
   banner 'Switching to integrated graphics'
-  paru -S --noconfirm envycontrol
+  paru -S --noconfirm --sudoloop envycontrol
   envycontrol -s integrated
 }
 
@@ -710,7 +712,7 @@ hypr_install_packages() {
 
 hypr_setup_walker() {
   # walker
-  paru -S --noconfirm --needed walker elephant elephant-desktopapplications
+  paru -S --noconfirm --needed --sudoloop walker elephant elephant-desktopapplications
   elephant service enable
   systemctl enable --now --user elephant.service
 

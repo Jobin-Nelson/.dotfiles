@@ -303,7 +303,7 @@ EOF
   # shellcheck disable=SC2016
   eval "$git_unstaged_files" | fzf \
     --style=full \
-    --height=60% \
+    --height=80% \
     --multi \
     --no-sort \
     --prompt="Add > " \
