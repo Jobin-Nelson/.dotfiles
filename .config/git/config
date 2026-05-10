@@ -59,8 +59,8 @@
 
   # push
   capush = !git commit --amend --no-edit && git push --force-with-lease
-  push-all = !git remote | xargs -I R git push R HEAD
-  push-all-sub = submodule foreach "git push-all"
+  pushall = !git remote | xargs -I R git push R HEAD
+  pushallsub = submodule foreach "git pushall"
 
 [init]
   defaultBranch = main

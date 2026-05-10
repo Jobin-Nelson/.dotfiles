@@ -94,20 +94,22 @@
         "orientation": "inherit",
         "drawer": {
             "transition-duration": 600,
-            "children-class": "tray-group-item"
+            "children-class": "tray-group-item",
+            "click-to-reveal": true
         },
         "modules": [
             "custom/expand-icon",
-            "tray"
+            "custom/pomo"
         ]
     },
     "custom/expand-icon": {
         "format": " ",
         "tooltip": false
     },
-    "tray": {
-        "icon-size": 12,
-        "spacing": 12
+    "custom/pomo": {
+        "format": " {}",
+        "tooltip": false,
+        "interval": 15,
+        "exec": "[[ -f $HOME/.local/state/pomodoro/status.txt ]] && cat $HOME/.local/state/pomodoro/status.txt"
     }
-
 }
