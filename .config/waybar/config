@@ -15,7 +15,8 @@
 
     // Modules Left
     "modules-left": [
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "hyprland/submap"
     ],
 
     // Modules Center

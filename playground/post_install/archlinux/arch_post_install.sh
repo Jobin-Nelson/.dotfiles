@@ -167,7 +167,7 @@ install_container_packages() {
 install_font_packages() {
   banner 'Installing fonts'
   sudo pacman -Sy --noconfirm --needed \
-    noto-fonts-cjk noto-fonts-emoji \
+    noto-fonts noto-fonts-cjk noto-fonts-emoji \
     ttf-jetbrains-mono-nerd \
     ttf-hack-nerd \
     ttf-meslo-nerd \
@@ -380,8 +380,6 @@ install_nvidia_drivers() {
     "lib32-nvidia-utils"
     "egl-wayland"
     "libva-nvidia-driver" # for VA-API hardware acceleration
-    "qt5-wayland"
-    "qt6-wayland"
   )
 
   paru -S --needed --noconfirm --sudoloop "${packages_to_install[@]}"
@@ -699,13 +697,17 @@ install_hyprland() {
 hypr_install_packages() {
   sudo pacman -S --noconfirm --needed \
     hyprland hyprpaper hyprshot hypridle hyprpicker \
-    hyprland-guiutils hyprpicker hyprsunset \
+    hyprland-guiutils hyprpicker hyprsunset hyprlock \
+    pipewire wireplumber pipewire-audio \
+    pipewire-pulse pipewire-alsa pipewire-jack \
     xdg-desktop-portal-gtk xdg-desktop-portal-hyprland \
     gnome-keyring fcitx5 fcitx5-gtk fcitx5-qt \
     mako polkit-gnome waybar wl-clipboard \
-    satty grim slurp brightnessctl hyprlock \
+    satty grim slurp brightnessctl playerctl \
     swaybg swayosd bluetui wiremix btop \
     gvfs-mtp gvfs-nfs gvfs-smb \
+    qt5-wayland qt6-wayland \
+    nwg-look gnome-themes-extra qt6ct \
     libreoffice-fresh uwsm \
     nautilus power-profiles-daemon
 }

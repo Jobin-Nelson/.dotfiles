@@ -23,7 +23,7 @@ local envs = {
   __GLX_VENDOR_LIBRARY_NAME = 'nvidia',
 
   -- Kitty
-  QT_QPA_PLATFORMTHEME = 'xdgdesktopportal',
+  QT_QPA_PLATFORMTHEME = 'qt6ct',
   GTK_USE_PORTAAL = '1',
 }
 

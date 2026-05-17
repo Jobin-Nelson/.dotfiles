@@ -93,9 +93,11 @@ bind -m vi-insert '"\C-e": "\C-z\e\C-e\er\C-z"'
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 # General
+alias com='history | awk '"'"'{$1=$2=$3=""; print}'"'"' | sed '"'"'s/^[ \t]*//'"'"' | sort | uniq -c | sort -rn | head '
 alias ipython='uvx --with ipython-icat,scipy,pandas,matplotlib ipython --profile icat'
 alias ls='ls --color=auto --hyperlink=auto'
 alias ll='ls -alFh --group-directories-first --color=auto --hyperlink=auto'
+alias rm='rm -I --preserve-root'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias less='less -i -R'

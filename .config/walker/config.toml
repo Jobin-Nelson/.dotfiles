@@ -1,4 +1,4 @@
-app_launch_prefix = ""
+app_launch_prefix = "uwsm app -- "
 terminal_title_flag = ""
 locale = ""
 close_when_open = false

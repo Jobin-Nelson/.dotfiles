@@ -5,6 +5,10 @@
 local mainMod = 'SUPER'
 local secondMod = mainMod .. ' + SHIFT'
 
+-- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+-- ┃                          Basic                           ┃
+-- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
 -- Helper
 hl.bind(secondMod .. ' + code:61', hl.dsp.exec_cmd('~/.config/hypr/bin/menu-keybindings.sh')) -- Question mark
 hl.bind(secondMod .. ' + SPACE', hl.dsp.exec_cmd('pkill -SIGUSR1 waybar'))                    -- toggle waybar
@@ -43,3 +47,49 @@ hl.bind('switch:off:' .. lid_switch, hl.dsp.exec_cmd('hyprctl keyword monitor "e
 
 -- Waybar
 hl.bind(secondMod .. ' + B', hl.dsp.exec_cmd('~/.local/bin/reload.sh -b'))
+
+-- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+-- ┃                         Custom                           ┃
+-- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+-- Gamemode
+-- Keep track of the gamemode state locally
+local is_gamemode_active = false
+
+local function toggle_gamemode()
+  if not is_gamemode_active then
+    -- Gamemode ON: Strip away the eyecandy for pure performance
+    hl.config({
+      animations = {
+        enabled = false
+      },
+      decoration = {
+        shadow = { enabled = false },
+        blur = { enabled = false },
+        fullscreen_opacity = 1.0,
+        rounding = 0
+      },
+      general = {
+        gaps_in = 0,
+        gaps_out = 0,
+        border_size = 1
+      }
+    })
+
+    hl.notification.create({ text = 'Gamemode [ON]', duration = 5000, icon = 1, color = 'rgb(40a02b)', font_size = 20 })
+    is_gamemode_active = true
+  else
+    -- Gamemode OFF: Force a config reload to clear runtime overrides and restore your defaults
+    hl.dispatch(hl.dsp.exec_cmd("hyprctl reload"))
+    hl.notification.create({ text = 'Gamemode [OFF]', duration = 5000, icon = 1, color = 'rgb(40a02b)', font_size = 20 })
+    is_gamemode_active = false
+  end
+end
+
+hl.bind(mainMod .. ' + U', hl.dsp.submap('utilities'))
+hl.define_submap('utilities', 'reset', function()
+  hl.bind('G', toggle_gamemode)
+
+  hl.bind('escape', hl.dsp.submap('reset'))
+  hl.bind('catchall', hl.dsp.submap('reset'))
+end)
