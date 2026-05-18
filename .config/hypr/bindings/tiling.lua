@@ -20,8 +20,21 @@ hl.bind(mainMod .. ' + H', hl.dsp.focus({ direction = 'l' }))
 hl.bind(mainMod .. ' + L', hl.dsp.focus({ direction = 'r' }))
 hl.bind(mainMod .. ' + k', hl.dsp.focus({ direction = 'u' }))
 hl.bind(mainMod .. ' + j', hl.dsp.focus({ direction = 'd' }))
-hl.bind('ALT + Tab', hl.dsp.window.cycle_next())
--- hl.bind('ALT + SHIFT + Tab', hl.dsp.window.cycle_next({ window = -1 }))
+
+-- Cycle windows
+hl.bind('ALT + Tab', function()
+  local ws = hl.get_active_workspace()
+  if not ws then return end
+  local dispatch = ws.tiled_layout == 'monocle' and hl.dsp.layout('cyclenext') or hl.dsp.window.cycle_next()
+  hl.dispatch(dispatch)
+end)
+hl.bind('ALT + SHIFT + Tab', function()
+  local ws = hl.get_active_workspace()
+  if not ws then return end
+  local dispatch = ws.tiled_layout == 'monocle' and hl.dsp.layout('cycleprev') or
+      hl.dsp.window.cycle_next({ next = false })
+  hl.dispatch(dispatch)
+end)
 
 -- Swap window with mainMod + SHIFT + arrow keys
 hl.bind(mainMod .. ' + SHIFT + H', hl.dsp.window.move({ direction = 'l', group_aware = true }))
@@ -74,9 +87,44 @@ hl.bind(mainMod .. ' + mouse_up', hl.dsp.focus({ workspace = 'e+1' }))
 
 
 -- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
--- ┃                         Master                           ┃
+-- ┃                         Layout                           ┃
 -- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
+local available_layouts = { 'master', 'monocle', 'dwindle', 'scrolling' }
+
+---@return string?, integer?
+local function next_layout()
+  local ws = hl.get_active_workspace()
+  if not ws then return end
+  local current_layout = ws.tiled_layout
+  local next_index = 1
+  for i, layout in ipairs(available_layouts) do
+    if layout == current_layout then
+      next_index = (i % #available_layouts) + 1
+      break
+    end
+  end
+
+  return available_layouts[next_index], ws.id
+end
+
+-- Change layout
+hl.bind(mainMod .. ' + ALT + L', function()
+  local new_layout, id = next_layout()
+  if not new_layout then return end
+  hl.workspace_rule({ workspace = tostring(id), layout = new_layout })
+  hl.notification.create({ text = 'Layout changed to ' .. new_layout, duration = 5000, icon = 1, font_size = 25 })
+end, { desc = 'Cycle layouts per workspace' })
+
+-- Change global layout
+hl.bind(mainMod .. ' + SHIFT + ALT + L', function()
+  local new_layout = next_layout()
+  if not new_layout then return end
+  hl.notification.create({ text = 'Layout changed to ' .. new_layout, duration = 5000, icon = 1, font_size = 25 })
+  hl.config({ general = { layout = new_layout } })
+end, { desc = 'Cycle layouts' })
+
+-- Master
 hl.bind(mainMod .. ' + O', hl.dsp.layout('orientationcycle'))
 hl.bind(mainMod .. ' + CTRL + Tab', hl.dsp.layout('rollnext'))
 hl.bind(mainMod .. ' + CTRL + SHIFT + Tab', hl.dsp.layout('rollprev'))
@@ -103,7 +151,7 @@ hl.bind('CTRL + SHIFT + ALT + left', hl.dsp.workspace.swap_monitors({ monitor1 =
 
 -- Group
 hl.bind(mainMod .. ' + G', hl.dsp.submap('group'))
-hl.define_submap('group', function()
+hl.define_submap('group', 'reset', function()
   hl.bind('G', hl.dsp.group.toggle())
   hl.bind('l', hl.dsp.group.lock_active())
 

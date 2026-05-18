@@ -30,7 +30,7 @@ hl.bind(mainMod .. ' + space', hl.dsp.exec_cmd(menu))
 
 -- Switch to a submap called `webapps`.
 hl.bind(mainMod .. ' + A', hl.dsp.submap('webapps'))
-hl.define_submap('webapps', function()
+hl.define_submap('webapps', 'reset', function()
   hl.bind('A', hl.dsp.exec_cmd(webapp .. 'https://chatgpt.com'))
   hl.bind('G', hl.dsp.exec_cmd(webapp .. 'https://gemini.google.com/app'))
   hl.bind('W', hl.dsp.exec_cmd(webapp .. 'https://web.whatsapp.com'))
