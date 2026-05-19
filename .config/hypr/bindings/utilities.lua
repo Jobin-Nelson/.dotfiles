@@ -17,9 +17,9 @@ hl.bind(secondMod .. ' + F5', hl.dsp.exec_cmd('hyprctl reload'))
 -- Notifications
 hl.bind(mainMod .. ' + comma', hl.dsp.exec_cmd('makoctl dismiss'))
 hl.bind(secondMod .. ' + comma', hl.dsp.exec_cmd('makoctl dismiss --all'))
-hl.bind(mainMod .. ' + comma',
+hl.bind(mainMod .. ' + ALT + comma',
   hl.dsp.exec_cmd(
-    [[makoctl mode -t do-not-disturb && makoctl mode | grep -q 'do-not-disturb' && notify-send "Silenced notifications" || notify-send "Enabled notifications"]]))
+    [[makoctl mode -t do-not-disturb && makoctl mode | grep -q 'do-not-disturb' && notify-send -t 5000 "Silenced notifications" || notify-send -t 5000 "Enabled notifications"]]))
 
 -- Powermenu
 hl.bind(mainMod .. ' + escape', hl.dsp.exec_cmd('hyprlock'))

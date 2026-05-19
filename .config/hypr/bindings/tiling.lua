@@ -37,10 +37,10 @@ hl.bind('ALT + SHIFT + Tab', function()
 end)
 
 -- Swap window with mainMod + SHIFT + arrow keys
-hl.bind(mainMod .. ' + SHIFT + H', hl.dsp.window.move({ direction = 'l', group_aware = true }))
-hl.bind(mainMod .. ' + SHIFT + L', hl.dsp.window.move({ direction = 'r', group_aware = true }))
-hl.bind(mainMod .. ' + SHIFT + K', hl.dsp.window.move({ direction = 'u', group_aware = true }))
-hl.bind(mainMod .. ' + SHIFT + J', hl.dsp.window.move({ direction = 'd', group_aware = true }))
+hl.bind(secondMod .. ' + H', hl.dsp.window.move({ direction = 'l', group_aware = true }))
+hl.bind(secondMod .. ' + L', hl.dsp.window.move({ direction = 'r', group_aware = true }))
+hl.bind(secondMod .. ' + K', hl.dsp.window.move({ direction = 'u', group_aware = true }))
+hl.bind(secondMod .. ' + J', hl.dsp.window.move({ direction = 'd', group_aware = true }))
 
 -- Move window to another monitor
 hl.bind('CTRL + ALT + L', hl.dsp.focus({ monitor = '+1' }))
@@ -49,15 +49,15 @@ hl.bind('CTRL + ALT + left', hl.dsp.focus({ monitor = '+1' }))
 hl.bind('CTRL + ALT + right', hl.dsp.focus({ monitor = '-1' }))
 
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
-hl.bind(mainMod .. ' + SHIFT + N', hl.dsp.window.move({ workspace = 'emptynm', follow = true }))
-hl.bind(mainMod .. ' + ALT + SHIFT + N', hl.dsp.window.move({ workspace = 'emptynm' }))
-hl.bind(mainMod .. ' + SHIFT + P', hl.dsp.window.pin()) -- window has to be floating
+hl.bind(secondMod .. ' + N', hl.dsp.window.move({ workspace = 'emptynm', follow = true }))
+hl.bind(secondMod .. ' + ALT + N', hl.dsp.window.move({ workspace = 'emptynm' }))
+hl.bind(secondMod .. ' + P', hl.dsp.window.pin()) -- window has to be floating
 
 -- Groups
 hl.bind(mainMod .. ' + bracketright', hl.dsp.group.next())
 hl.bind(mainMod .. ' + bracketleft', hl.dsp.group.prev())
-hl.bind(mainMod .. ' + SHIFT + bracketleft', hl.dsp.group.move_window({ forward = false }))
-hl.bind(mainMod .. ' + SHIFT + bracketright', hl.dsp.group.move_window({ forward = true }))
+hl.bind(secondMod .. ' + bracketleft', hl.dsp.group.move_window({ forward = false }))
+hl.bind(secondMod .. ' + bracketright', hl.dsp.group.move_window({ forward = true }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. ' + mouse:272', hl.dsp.window.drag())
@@ -70,7 +70,7 @@ hl.bind(mainMod .. ' + mouse:273', hl.dsp.window.resize())
 for i = 1, 10 do
   local key = i % 10 -- 10 maps to key 0
   hl.bind(mainMod .. ' + ' .. key, hl.dsp.focus({ workspace = i, on_current_monitor = true }))
-  hl.bind(mainMod .. ' + SHIFT + ' .. key, hl.dsp.window.move({ workspace = i, follow = true }))
+  hl.bind(secondMod .. ' + ' .. key, hl.dsp.window.move({ workspace = i, follow = true }))
 end
 
 hl.bind(mainMod .. ' + N', hl.dsp.focus({ workspace = '+1' }))
@@ -79,7 +79,7 @@ hl.bind(mainMod .. ' + Tab', hl.dsp.focus({ workspace = 'previous_per_monitor' }
 
 -- Special workspace (scratchpad)
 hl.bind(mainMod .. ' + C', hl.dsp.workspace.toggle_special('magic'))
-hl.bind(mainMod .. ' + SHIFT + C', hl.dsp.window.move({ workspace = 'special:magic' }))
+hl.bind(secondMod .. ' + C', hl.dsp.window.move({ workspace = 'special:magic' }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. ' + mouse_down', hl.dsp.focus({ workspace = 'e-1' }))
@@ -117,7 +117,7 @@ hl.bind(mainMod .. ' + ALT + L', function()
 end, { desc = 'Cycle layouts per workspace' })
 
 -- Change global layout
-hl.bind(mainMod .. ' + SHIFT + ALT + L', function()
+hl.bind(secondMod .. ' + ALT + L', function()
   local new_layout = next_layout()
   if not new_layout then return end
   hl.notification.create({ text = 'Layout changed to ' .. new_layout, duration = 5000, icon = 1, font_size = 25 })

@@ -1,3 +1,6 @@
+-- █░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄
+-- █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀
+
 -- See https://wiki.hypr.land/Configuring/Start/
 
 require('modules.monitors')

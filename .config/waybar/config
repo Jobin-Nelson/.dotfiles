@@ -30,7 +30,7 @@
         "group/tray-expander",
         "bluetooth",
         "network",
-        "pulseaudio", 
+        "pulseaudio",
         "cpu",
         "battery"
     ]
