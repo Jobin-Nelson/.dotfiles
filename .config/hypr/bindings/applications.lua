@@ -12,7 +12,7 @@ local mainMod = 'SUPER'
 local terminal = 'uwsm app -- kitty --single-instance'
 local menu = 'walker'
 local browser =
-'uwsm app -- google-chrome-stable --new-window --ozone-platform=wayland --ozone-platform-hint=wayland --disable-features=WaylandWpColorManagerV1 --enable-features=WaylandWindowDecorations'
+'uwsm app -- chromium --new-window --ozone-platform=wayland --ozone-platform-hint=wayland --disable-features=WaylandWpColorManagerV1 --enable-features=WaylandWindowDecorations'
 local webapp = browser .. ' --app='
 
 -- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓

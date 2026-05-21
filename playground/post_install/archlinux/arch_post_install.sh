@@ -677,6 +677,42 @@ setup_done() {
   echo $'\nRestart System for changes to take effect\n'
 }
 
+set_chromium_extensions() {
+  banner 'Setting Chromium Extensions...'
+
+  sudo mkdir -p /etc/chromium/policies/managed
+
+  cat <<'EOF' | sudo tee /etc/chromium/policies/managed/extensions.json >/dev/null
+{
+  "ExtensionInstallForcelist": [
+    "nngceckbapebfimnlniiiahkandclblb;https://clients2.google.com/service/update2/crx",
+    "dbepggeogbaibhgnhhndojpepiihcmeb;https://clients2.google.com/service/update2/crx",
+    "eimadpbcbfnmbkopoojfekhnkhdbieeh;https://clients2.google.com/service/update2/crx"
+  ],
+  "RestoreOnStartup": 1,
+  "SiteSearchSettings": [
+    {
+      "name": "YouTube",
+      "shortcut": "!you",
+      "url": "https://www.youtube.com/results?search_query={searchTerms}"
+    },
+    {
+      "name": "Google Drive",
+      "shortcut": "!drive",
+      "url": "https://drive.google.com/drive/search?q={searchTerms}",
+      "allow_user_override": true
+    },
+    {
+      "name": "Pirate Bay",
+      "shortcut": "!pb",
+      "url": "https://thepibay.online/search/{searchTerms}/1/99/0",
+      "allow_user_override": true
+    }
+  ]
+}
+EOF
+}
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                        Hyprland                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
@@ -692,6 +728,7 @@ install_hyprland() {
   increase_sudo_tries
   hypr_battery_optimize
   increase_file_watchers
+  set_chromium_extensions
 }
 
 hypr_install_packages() {
@@ -826,6 +863,7 @@ parse_params() {
     -w | --wallpapers) download_wallpapers ;;
     -a | --all) main ;;
     -f | --firewall) setup_firewall ;;
+    --set-chromium-extensions) set_chromium_extensions ;;
     --nvidia) install_nvidia ;;
     --hyprland) install_hyprland ;;
     -?*) die "Unknown option: $1" ;;
