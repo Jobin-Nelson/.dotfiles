@@ -28,6 +28,7 @@ Class:       \(.class)
 Title:       \(.title)
 Workspace:   \(.workspace.name)
 Monitor:     \(.monitor)
+Address:     \(.address)
 
 Floating:    \(.floating)
 Fullscreen:  \(.fullscreen)
@@ -39,12 +40,12 @@ Grouped:     \(.grouped)
 
 kill_window() {
   local addr="$1"
-  hyprctl dispatch closewindow "address:$addr"
+  hyprctl dispatch "hl.dsp.window.close({window='address:${addr}'})"
 }
 
 focus_window() {
   local addr="$1"
-  hyprctl dispatch focuswindow "address:$addr"
+  hyprctl dispatch "hl.dsp.focus({window='address:${addr}'})"
 }
 
 # -----------------------------
