@@ -407,7 +407,7 @@ eval "$(starship init bash)"
 fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 
 # MY THEME
-[[ -f ~/.config/my_theme/current/fzf.sh ]] && source ~/.config/my_theme/current/fzf.sh
+# [[ -f ~/.config/my_theme/current/fzf.sh ]] && source ~/.config/my_theme/current/fzf.sh
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Language Configs                      ┃
