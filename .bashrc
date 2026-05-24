@@ -93,8 +93,6 @@ bind -m vi-insert '"\C-e": "\C-z\e\C-e\er\C-z"'
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 # General
-alias com='history | awk '"'"'{$1=$2=$3=""; print}'"'"' | sed '"'"'s/^[ \t]*//'"'"' | sort | uniq -c | sort -rn | head '
-alias ipython='uvx --with ipython-icat,scipy,pandas,matplotlib ipython --profile icat'
 alias ls='ls --color=auto --hyperlink=auto'
 alias ll='ls -alFh --group-directories-first --color=auto --hyperlink=auto'
 alias rm='rm -I --preserve-root'
@@ -118,6 +116,8 @@ alias wl='nsxiv $HOME/Pictures/wallpapers/**/*'
 alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 
 # Custom
+alias com='history | awk '"'"'{$1=$2=$3=""; print}'"'"' | sed '"'"'s/^[ \t]*//'"'"' | sort | uniq -c | sort -rn | head '
+alias ipython='uvx --with ipython-icat,scipy,pandas,matplotlib ipython --profile icat'
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias lazydot='lazygit --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias eup='${EDITOR:-vim} \
@@ -405,9 +405,6 @@ eval "$(starship init bash)"
 
 # Greeting
 fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
-
-# MY THEME
-# [[ -f ~/.config/my_theme/current/fzf.sh ]] && source ~/.config/my_theme/current/fzf.sh
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                    Language Configs                      ┃

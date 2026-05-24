@@ -12,14 +12,14 @@ local secondMod = mainMod .. ' + SHIFT'
 -- Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
 hl.bind(secondMod .. '+ ALT + Q', hl.dsp.exec_cmd('uwsm stop'))
 hl.bind(mainMod .. ' + Q', hl.dsp.window.close())
-hl.bind(mainMod .. ' + v', hl.dsp.window.float({ action = 'toggle' }))
+hl.bind(mainMod .. ' + V', hl.dsp.window.float({ action = 'toggle' }))
 hl.bind(mainMod .. ' + F11', hl.dsp.window.fullscreen({ action = 'toggle' }))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. ' + H', hl.dsp.focus({ direction = 'l' }))
 hl.bind(mainMod .. ' + L', hl.dsp.focus({ direction = 'r' }))
-hl.bind(mainMod .. ' + k', hl.dsp.focus({ direction = 'u' }))
-hl.bind(mainMod .. ' + j', hl.dsp.focus({ direction = 'd' }))
+hl.bind(mainMod .. ' + K', hl.dsp.focus({ direction = 'u' }))
+hl.bind(mainMod .. ' + J', hl.dsp.focus({ direction = 'd' }))
 
 -- Cycle windows
 hl.bind('ALT + Tab', function()

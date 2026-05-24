@@ -703,6 +703,12 @@ set_chromium_extensions() {
       "allow_user_override": true
     },
     {
+      "name": "Rust Docs",
+      "shortcut": "!docs.rs",
+      "url": "https://docs.rs/releases/search?query={searchTerms}",
+      "allow_user_override": true
+    },
+    {
       "name": "Pirate Bay",
       "shortcut": "!pb",
       "url": "https://thepibay.online/search/{searchTerms}/1/99/0",
