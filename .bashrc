@@ -424,7 +424,7 @@ fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 # Android Studio
 if [[ -d $HOME/Android/Sdk && ! $PATH =~ $HOME/Android/Sdk ]]; then
