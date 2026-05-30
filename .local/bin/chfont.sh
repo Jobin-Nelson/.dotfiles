@@ -136,8 +136,8 @@ function set_hyprlock_font() {
 }
 
 function set_hyprland_font() {
-  local looknfeel_file="${HOME}/.config/hypr/modules/looknfeel.conf"
-  sed -i "s/font_family = .*/font_family = ${FONT}/" "${looknfeel_file}"
+  local looknfeel_file="${HOME}/.config/hypr/modules/looknfeel.lua"
+  sed -i "s/font_family = .*/font_family = \"${FONT}\",/" "${looknfeel_file}"
 }
 
 function main() {
