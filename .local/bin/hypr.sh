@@ -17,5 +17,5 @@ find . -maxdepth 1 -type f -executable \
     --prompt="Hypr Scripts ❯ " \
     --height=40% \
     --preview='bat --style=numbers --color=always {} || less {}' \
-    --preview-window=right:60% \
+    --preview-window='right:60%,nohidden' \
     --bind "enter:become($SCRIPTS_DIR/{})"

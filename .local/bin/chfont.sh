@@ -140,6 +140,11 @@ function set_hyprland_font() {
   sed -i "s/font_family = .*/font_family = \"${FONT}\",/" "${looknfeel_file}"
 }
 
+function set_mako_font() {
+  sed -i "s/font=.*/font=${FONT}/" "$HOME/.config/mako/config"
+  makoctl reload || true
+}
+
 function main() {
   [[ -z $FONT ]] && get_font
 
@@ -154,6 +159,7 @@ function main() {
   set_waybar_font
   set_hyprlock_font
   set_hyprland_font
+  set_mako_font
   echo "Font changed to $FONT"
 }
 
