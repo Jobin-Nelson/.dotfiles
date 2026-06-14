@@ -27,6 +27,8 @@ function get_font() {
     'ZedMono Nerd Font'
     'Terminess Nerd Font'
     'IoskeleyMono Nerd Font'
+    'IosevkaTerm Nerd Font'
+    'IosevkaTermSlab Nerd Font'
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" |
@@ -75,11 +77,12 @@ function set_alacritty_size() {
 function set_kitty_style() {
   sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Regular"/' "${kitty_file}"
   sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Italic"/' "${kitty_file}"
-  if [[ $FONT == 'JetBrainsMono Nerd Font' ]] ||
-    [[ $FONT == 'SauceCodePro Nerd Font' ]] ||
-    [[ $FONT == 'IoskeleyMono Nerd Font' ]] ||
-    [[ $FONT == 'Hasklug Nerd Font' ]] ||
-    [[ $FONT == 'FiraCode Nerd Font' ]]; then
+  if [[ $FONT == 'JetBrainsMono Nerd Font' ||
+    $FONT == 'SauceCodePro Nerd Font' ||
+    $FONT == 'IoskeleyMono Nerd Font' ||
+    $FONT == 'IosevkaTerm Nerd Font' ||
+    $FONT == 'Hasklug Nerd Font' ||
+    $FONT == 'FiraCode Nerd Font' ]]; then
     sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Medium"/' "${kitty_file}"
     sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/' "${kitty_file}"
   fi
@@ -92,6 +95,7 @@ function set_kitty_size() {
   'CaskaydiaCove Nerd Font') sed -i 's/^\(font_size\) .*/\1 12.3/' "${kitty_file}" ;;
   'RobotoMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
   'IoskeleyMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
+  'IosevkaTerm Nerd Font') sed -i 's/^\(font_size\) .*/\1 14/' "${kitty_file}" ;;
   Rec*\ Nerd\ Font) sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
   *) sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
   esac
