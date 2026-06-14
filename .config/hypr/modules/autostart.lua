@@ -1,8 +1,9 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Autostart/
 
-hl.on("hyprland.start", function ()
+hl.on("hyprland.start", function()
   local uwsm_apps = {
     'hypridle',
+    'hyprsunset',
     'mako',
     'waybar',
     'swaybg -i $(find ~/Wallpapers -type f | shuf -n 1) -m fill',
