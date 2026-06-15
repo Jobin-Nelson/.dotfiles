@@ -29,6 +29,7 @@ function get_font() {
     'IoskeleyMono Nerd Font'
     'IosevkaTerm Nerd Font'
     'IosevkaTermSlab Nerd Font'
+    'MartianMono Nerd Font'
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" |
@@ -75,16 +76,32 @@ function set_alacritty_size() {
 }
 
 function set_kitty_style() {
-  sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Regular"/' "${kitty_file}"
-  sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Italic"/' "${kitty_file}"
   if [[ $FONT == 'JetBrainsMono Nerd Font' ||
     $FONT == 'SauceCodePro Nerd Font' ||
     $FONT == 'IoskeleyMono Nerd Font' ||
     $FONT == 'IosevkaTerm Nerd Font' ||
     $FONT == 'Hasklug Nerd Font' ||
     $FONT == 'FiraCode Nerd Font' ]]; then
-    sed -i 's/^\(font_family.*style=\)"[^"]*"/\1"Medium"/' "${kitty_file}"
-    sed -i 's/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/' "${kitty_file}"
+    sed -i '
+    s/^\(font_family.*style=\)"[^"]*"/\1"Medium"/
+    s/^\(italic_font.*style=\)"[^"]*"/\1"Medium Italic"/
+    s/^\(bold_font.*style=\)"[^"]*"/\1"Bold"/
+    s/^\(bold_italic_font.*style=\)"[^"]*"/\1"Bold Italic"/
+    ' "${kitty_file}"
+  elif [[ $FONT == 'MartianMono Nerd Font' ]]; then
+    sed -i '
+    s/^\(font_family.*style=\)"[^"]*"/\1"Condensed Regular"/
+    s/^\(italic_font.*style=\)"[^"]*"/\1"Condensed Regular"/
+    s/^\(bold_font.*style=\)"[^"]*"/\1"Condensed Bold"/
+    s/^\(bold_italic_font.*style=\)"[^"]*"/\1"Condensed Bold"/
+    ' "${kitty_file}"
+  else
+    sed -i '
+    s/^\(font_family.*style=\)"[^"]*"/\1"Regular"/
+    s/^\(italic_font.*style=\)"[^"]*"/\1"Italic"/
+    s/^\(bold_font.*style=\)"[^"]*"/\1"Bold"/
+    s/^\(bold_italic_font.*style=\)"[^"]*"/\1"Bold Italic"/
+    ' "${kitty_file}"
   fi
 }
 
