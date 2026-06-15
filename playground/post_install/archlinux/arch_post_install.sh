@@ -173,6 +173,7 @@ install_font_packages() {
     ttf-meslo-nerd \
     ttf-sourcecodepro-nerd \
     ttf-cascadia-code-nerd \
+    ttf-martian-mono-nerd \
     ttf-firacode-nerd
 }
 

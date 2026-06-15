@@ -113,6 +113,7 @@ function set_kitty_size() {
   'RobotoMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
   'IoskeleyMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
   'IosevkaTerm Nerd Font') sed -i 's/^\(font_size\) .*/\1 14/' "${kitty_file}" ;;
+  'MartianMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
   Rec*\ Nerd\ Font) sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
   *) sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
   esac
