@@ -13,6 +13,7 @@ local terminal = 'uwsm app -- kitty --single-instance'
 local menu = 'walker'
 local browser =
 'uwsm app -- chromium --new-window --ozone-platform=wayland --ozone-platform-hint=wayland --disable-features=WaylandWpColorManagerV1 --enable-features=WaylandWindowDecorations'
+local browser_vpn = browser .. ' --user-data-dir="$HOME/.config/chromium-vpn" --class=chromium-vpn --incognito'
 local webapp = browser .. ' --app='
 
 -- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -22,6 +23,7 @@ local webapp = browser .. ' --app='
 hl.bind(mainMod .. ' + return', hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. ' + F', hl.dsp.exec_cmd('uwsm app -- nautilus --new-window'))
 hl.bind(mainMod .. ' + B', hl.dsp.exec_cmd(browser))
+hl.bind(mainMod .. ' + ALT + B', hl.dsp.exec_cmd(browser_vpn))
 hl.bind(mainMod .. ' + space', hl.dsp.exec_cmd(menu))
 
 -- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
