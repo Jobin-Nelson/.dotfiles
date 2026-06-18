@@ -107,7 +107,7 @@ function set_kitty_style() {
 
 function set_kitty_size() {
   case "$FONT" in
-  'SauceCodePro Nerd Font') sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
+  'SauceCodePro Nerd Font') sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
   'FiraCode Nerd Font') sed -i 's/^\(font_size\) .*/\1 15.6/' "${kitty_file}" ;;
   'CaskaydiaCove Nerd Font') sed -i 's/^\(font_size\) .*/\1 12.3/' "${kitty_file}" ;;
   'RobotoMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
@@ -115,7 +115,7 @@ function set_kitty_size() {
   'IosevkaTerm Nerd Font') sed -i 's/^\(font_size\) .*/\1 14/' "${kitty_file}" ;;
   'MartianMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
   Rec*\ Nerd\ Font) sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
-  *) sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
+  *) sed -i 's/^\(font_size\) .*/\1 11.6/' "${kitty_file}" ;;
   esac
 }
 
