@@ -64,4 +64,3 @@ C:/Users/jobin/playground/projects/second_brain /home/jobin/playground/projects/
 - [rust](https://rustup.rs/)
 - [neovim](https://github.com/neovim/neovim)
 - [starship](https://starship.rs/)
-

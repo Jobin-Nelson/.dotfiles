@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.67.68",
-  "theme": "current",
+  "theme": "dark",
   "defaultProvider": "openrouter",
   "defaultModel": "openrouter/free",
   "packages": [

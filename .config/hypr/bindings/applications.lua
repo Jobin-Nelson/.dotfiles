@@ -41,6 +41,7 @@ hl.define_submap('webapps', 'reset', function()
   hl.bind('I', hl.dsp.exec_cmd(webapp .. 'https://instagram.com'))
   hl.bind('h', hl.dsp.exec_cmd(webapp .. 'https://www.hotstar.com/in/mypage'))
   hl.bind('d', hl.dsp.exec_cmd(webapp .. 'https://discord.com/channels/@me'))
+  hl.bind('F', hl.dsp.exec_cmd(webapp .. 'https://facebook.com'))
 
   hl.bind('escape', hl.dsp.submap('reset'))
   hl.bind('catchall', hl.dsp.submap('reset'))

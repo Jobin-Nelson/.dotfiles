@@ -746,10 +746,10 @@ hypr_install_packages() {
     pipewire wireplumber pipewire-audio \
     pipewire-pulse pipewire-alsa pipewire-jack \
     xdg-desktop-portal-gtk xdg-desktop-portal-hyprland \
-    gnome-keyring \
+    gnome-keyring matugen awww \
     mako polkit-gnome waybar wl-clipboard \
     satty grim slurp brightnessctl playerctl \
-    swaybg swayosd bluetui wiremix btop \
+    swayosd bluetui wiremix btop \
     gvfs-mtp gvfs-nfs gvfs-smb \
     qt5-wayland qt6-wayland \
     nwg-look gnome-themes-extra qt6ct \

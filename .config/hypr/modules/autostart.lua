@@ -6,7 +6,8 @@ hl.on("hyprland.start", function()
     'hyprsunset',
     'mako',
     'waybar',
-    'swaybg -i $(find ~/Wallpapers -type f | shuf -n 1) -m fill',
+    -- 'swaybg -i $(find ~/Wallpapers -type f | shuf -n 1) -m fill',
+    'awww-daemon',
     'swayosd-server',
     'walker --gapplication-service',
   }
