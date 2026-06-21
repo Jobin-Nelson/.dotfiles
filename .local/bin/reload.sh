@@ -42,10 +42,7 @@ function gpg_agent() {
 }
 
 function hyprland_wallpaper() {
-  local wallpaper=$1
-
-  pkill -x swaybg
-  setsid uwsm app -- swaybg -i "${wallpaper}" -m fill &>/dev/null &
+  awww img --transition-type center "$1"
 }
 
 function set_wallpaper() {

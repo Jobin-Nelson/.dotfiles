@@ -374,6 +374,7 @@ export FZF_DEFAULT_OPTS="\
   --layout=reverse \
   --height=40% \
   --cycle \
+  --pointer='' \
   --preview='$HOME/.config/fzf/fzf-preview.sh {}' \
   --preview-window='hidden' \
   --bind='f1:toggle-header' \
