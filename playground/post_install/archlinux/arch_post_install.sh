@@ -155,7 +155,7 @@ install_base_packages() {
   systemctl enable --now cronie.service
 
   # Setup desktop ui for kitty
-  kitten desktop-ui enable-portal
+  # kitten desktop-ui enable-portal
 }
 
 install_container_packages() {
@@ -174,6 +174,7 @@ install_font_packages() {
     ttf-sourcecodepro-nerd \
     ttf-cascadia-code-nerd \
     ttf-martian-mono-nerd \
+    ttf-recursive-nerd \
     ttf-firacode-nerd
 }
 
