@@ -392,7 +392,7 @@ export FZF_DEFAULT_OPTS="\
   --bind='ctrl-e:execute($EDITOR {})' \
   --bind='ctrl-o:become($EDITOR {})' \
   --bind='ctrl-y:execute-silent(echo {+} | wl-copy)'
-  --color='fg:-1,bg:-1,hl:2,fg+:7,bg+:8,hl+:4,info:5,prompt:4,pointer:4,marker:2,spinner:5,header:4'"
+  --color='fg:-1,bg:-1,hl:2:-1:underline,fg+:7,bg+:8,hl+:1:-1:underline,info:5,prompt:4,pointer:4,marker:2,spinner:5,header:4'"
 eval "$(fzf --bash)"
 
 [[ -s ${XDG_CONFIG_HOME}/fzf/fzf-git.sh ]] && \. "${XDG_CONFIG_HOME}/fzf/fzf-git.sh"
