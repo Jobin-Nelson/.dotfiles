@@ -161,12 +161,10 @@ set_background() {
 }
 
 choose_background() {
-  local bg
-  bg=$(find "${MY_THEME_DIR}" -type f -path '*backgrounds/*' -print0 |
-    fzf --read0 --no-multi --style=full --height=90% --preview-window='60%,nohidden')
-  [[ -z $bg ]] && return 0
-
-  reload.sh -w "${bg}" || true
+  find "${MY_THEME_DIR}" -type f -path '*backgrounds/*' -print0 |
+    fzf --read0 --no-multi --style=full --height=90% --preview-window='60%,nohidden' \
+    --bind='enter:become:reload.sh -w {}' \
+    --bind='ctrl-t:become:matugen image {}'
 }
 
 choose_theme() {

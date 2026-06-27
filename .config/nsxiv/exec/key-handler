@@ -43,6 +43,11 @@ case "$1" in
     fi
   done
   ;;
+"t")
+  while read -r file; do
+    matugen --source-color-index=0 image "$file"
+  done
+  ;;
 "w")
   while read -r file; do
     ~/.local/bin/reload.sh -w "$file"
