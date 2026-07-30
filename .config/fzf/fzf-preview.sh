@@ -29,6 +29,11 @@ fi
 type=$(file --brief --dereference --mime -- "$file")
 
 if [[ ! $type =~ image/ ]]; then
+  if [[ -d $file ]]; then
+    tree -L 3 "${file}"
+    exit
+  fi
+
   if [[ $type =~ =binary ]]; then
     file "$1"
     exit

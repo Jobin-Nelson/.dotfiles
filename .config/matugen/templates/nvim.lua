@@ -37,6 +37,12 @@ vim.api.nvim_set_hl(0, 'Visual', {
   fg = '{{colors.on_primary_container.default.hex}}', -- normal text contrast
 })
 
+-- -- Fix completion menu selection visibility for native popup and blink.cmp
+-- vim.api.nvim_set_hl(0, 'PmenuSel', {
+--   bg = '{{colors.surface_variant.default.hex}}',
+--   bold = true
+-- })
+
 -- Make statusline transparent
 vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'none' })
 

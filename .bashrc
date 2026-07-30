@@ -116,6 +116,7 @@ alias wl='nsxiv $HOME/Wallpapers/**/*'
 alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 
 # Custom
+alias inhibit='systemd-inhibit sleep'
 alias com='history | awk '"'"'{$1=$2=$3=""; print}'"'"' | sed '"'"'s/^[ \t]*//'"'"' | sort | uniq -c | sort -rn | head '
 alias ipython='uvx --with ipython-icat,scipy,pandas,matplotlib ipython --profile icat'
 alias dot='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -404,6 +405,9 @@ eval "$(zoxide init bash)"
 
 # Starship prompt
 eval "$(starship init bash)"
+
+# Mise
+eval "$(mise activate bash)"
 
 # Greeting
 fastfetch --config "$HOME/.config/fastfetch/13.jsonc"

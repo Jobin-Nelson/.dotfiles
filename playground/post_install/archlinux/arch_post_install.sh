@@ -112,7 +112,7 @@ install_dev_packages() {
   banner 'Installing Dev packages'
   sudo pacman -Sy --noconfirm --needed \
     git tmux vim neovim zoxide fzf ripgrep fd bat jq \
-    github-cli delta lazydocker lazygit just \
+    github-cli delta lazydocker lazygit mise \
     tree-sitter-cli bash-completion
 
   paru -S --noconfirm --needed --sudoloop \
@@ -690,7 +690,6 @@ set_chromium_extensions() {
     "nngceckbapebfimnlniiiahkandclblb;https://clients2.google.com/service/update2/crx",
     "dbepggeogbaibhgnhhndojpepiihcmeb;https://clients2.google.com/service/update2/crx",
     "eimadpbcbfnmbkopoojfekhnkhdbieeh;https://clients2.google.com/service/update2/crx",
-    "jplgfhpmjnbigmhklmmbgecoobifkmpa;https://clients2.google.com/service/update2/crx"
   ],
   "RestoreOnStartup": 1,
   "SiteSearchSettings": [

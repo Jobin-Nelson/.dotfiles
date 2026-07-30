@@ -43,6 +43,7 @@ class Git:
         commit_args = [
             'commit',
             '--no-gpg-sign',
+            '--no-verify',
             '-a',
             '-m',
             'chore: bbw.py backup commit',

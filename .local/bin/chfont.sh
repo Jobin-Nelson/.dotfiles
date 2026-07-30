@@ -33,7 +33,7 @@ function get_font() {
   )
 
   FONT=$(printf '%s\n' "${FONTS[@]}" |
-    fzf --style=full --prompt 'Edit font: ' --height='50%')
+    fzf --style=full --prompt 'Edit font: ' --height='50%' --preview-window='hidden')
 }
 
 function set_alacritty_font() {
@@ -109,7 +109,7 @@ function set_kitty_size() {
   case "$FONT" in
   'SauceCodePro Nerd Font') sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
   'FiraCode Nerd Font') sed -i 's/^\(font_size\) .*/\1 15.6/' "${kitty_file}" ;;
-  'CaskaydiaCove Nerd Font') sed -i 's/^\(font_size\) .*/\1 12.3/' "${kitty_file}" ;;
+  'CaskaydiaCove Nerd Font') sed -i 's/^\(font_size\) .*/\1 12.6/' "${kitty_file}" ;;
   'RobotoMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
   'IoskeleyMono Nerd Font') sed -i 's/^\(font_size\) .*/\1 12/' "${kitty_file}" ;;
   'IosevkaTerm Nerd Font') sed -i 's/^\(font_size\) .*/\1 14.3/' "${kitty_file}" ;;
