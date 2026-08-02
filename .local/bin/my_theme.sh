@@ -144,7 +144,7 @@ unset_default() {
 
 restart_apps() {
   pkill -SIGUSR2 btop || true
-  kitty +kitten themes --reload-in=all my_theem
+  kitty +kitten themes --reload-in=all my_theme || true
   makoctl reload || true
 
   local server
@@ -180,6 +180,32 @@ current_theme() {
   cat "${CURRENT_THEME_DIR}/theme.name"
 }
 
+minimal_themes() {
+  local -a themes
+  themes=(
+    catppuccin
+    j_red
+  )
+  local selected_theme
+  selected_theme=$(printf '%s\n' "${themes[@]}" | fzf --no-multi --style=full)
+
+  [[ -z $selected_theme ]] && return
+
+  case "$selected_theme" in
+    catppuccin) kitty +kitten themes --reload-in=all 'Catppuccin-Mocha'
+    ;;
+    j_red) kitty +kitten themes --reload-in=all 'J Red'
+    ;;
+    *) echo "${selected_theme} not present for kitty"
+    ;;
+  esac
+
+  for server in $(find "${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}" -maxdepth 1 -name "nvim.*.0" -type s 2>/dev/null); do
+    nvim --server "$server" --remote-send "<C-\><C-n>:colorscheme ${selected_theme}<CR>" || true
+  done
+
+  sed -i "s/^\(vim.cmd('colorscheme\) .*/\1 ${selected_theme}')/" ~/.config/nvim/plugin/colorscheme.lua
+}
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                     Parse Arguments                      ┃
@@ -188,7 +214,7 @@ current_theme() {
 
 [[ $# == 0 ]] && choose_theme
 
-while getopts ":hvs:dDrbct" option; do
+while getopts ":hvs:dDrbctm" option; do
   case $option in
   h) usage ;;
   v) set -x ;;
@@ -199,6 +225,7 @@ while getopts ":hvs:dDrbct" option; do
   b) choose_background ;;
   c) choose_theme ;;
   t) current_theme ;;
+  m) minimal_themes ;;
   *) bail "Error: Invalid option" ;;
   esac
 done
