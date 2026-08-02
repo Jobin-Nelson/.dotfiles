@@ -27,6 +27,7 @@ declare -A MY_THEME_CONFIGS=(
   [pi.json]=$HOME/.config/pi/agent/themes/current.json
   [nvim.vim]=$HOME/.config/nvim/colors/current.vim
   [aerc.ini]=$HOME/.config/aerc/stylesets/current
+  [kitty.conf]=$HOME/.config/kitty/themes/my_theme.conf
 )
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -114,7 +115,7 @@ set_default() {
   sed -i 's/\(color_theme\).*/\1 = "default"/' ~/.config/btop/btop.conf
   sed -i "/${MARKER}/,+2 { /${MARKER}/! s/^/# / }" ~/.config/delta/delta.gitconfig
   sed -i "/${MARKER}/,+1 { /${MARKER}/! s/^/# / }" ~/.bashrc
-  sed -i 's/^\(include\).*/\1 current-theme.conf/' ~/.config/kitty/kitty.conf
+  # sed -i 's/^\(include\).*/\1 current-theme.conf/' ~/.config/kitty/kitty.conf
   sed -i 's/\("theme"\).*/\1: "opencode",/' ~/.config/opencode/tui.json
   sed -i 's/\("theme"\).*/\1: "dark",/' ~/.config/pi/agent/settings.json
   sed -i 's/^\(styleset-name\).*/\1=default/' ~/.config/aerc/aerc.conf
@@ -133,7 +134,7 @@ unset_default() {
   sed -i 's/\(color_theme\).*/\1 = "current"/' ~/.config/btop/btop.conf
   sed -i "/${MARKER}/,+2 { /${MARKER}/! s/^# // }" ~/.config/delta/delta.gitconfig
   sed -i "/${MARKER}/,+1 { /${MARKER}/! s/^# // }" ~/.bashrc
-  sed -i 's!^\(include\).*!\1 ~/.config/my_theme/current/kitty.conf!' ~/.config/kitty/kitty.conf
+  # sed -i 's!^\(include\).*!\1 ~/.config/my_theme/current/kitty.conf!' ~/.config/kitty/kitty.conf
   sed -i 's/\("theme"\).*/\1: "current",/' ~/.config/opencode/tui.json
   sed -i 's/\("theme"\).*/\1: "current",/' ~/.config/pi/agent/settings.json
   sed -i 's/^\(styleset-name\).*/\1=current/' ~/.config/aerc/aerc.conf
@@ -143,7 +144,7 @@ unset_default() {
 
 restart_apps() {
   pkill -SIGUSR2 btop || true
-  pkill -SIGUSR1 kitty || true
+  kitty +kitten themes --reload-in=all my_theem
   makoctl reload || true
 
   local server
