@@ -9,6 +9,10 @@ $character\
 $status\
 $sudo"""
 
+[custom.apienv]
+when = "test -n \"$API_ENV_ACTIVE\""
+format = "[🔑 api-env](bold yellow) "
+
 [aws]
 symbol = "  "
 

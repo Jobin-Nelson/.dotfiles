@@ -119,23 +119,37 @@ install_dev_packages() {
     lazysql-bin resterm-bin
 }
 
+install_android_dev_packages() {
+  banner 'Installing Android Dev packages'
+  sudo pacman -Sy --noconfirm --needed \
+    jdk-openjdk
+
+  paru -S --noconfirm --needed --sudoloop \
+    android-studio
+}
+
 install_ai_packages() {
   banner 'Installing AI packages'
-  sudo pacman -Sy --noconfirm --needed \
-    opencode
+  # Install nvm
+  install_nvm
+
+  # opencode
+  npm install -g opencode-ai@latest
 
   # claude code
-  curl -fsSL https://claude.ai/install.sh | bash
+  npm install -g @anthropic-ai/claude-code
 
   # openspec
-  install_nvm
-  npm install -g @fission-ai/openspec@latest
+  # npm install -g @fission-ai/openspec@latest
 
   # pi
   npm install -g @mariozechner/pi-coding-agent
   pi install npm:pi-plan-mode
   pi install npm:@aliou/pi-guardrails
   pi install npm:@juicesharp/rpiv-ask-user-question
+
+  # omniroute
+  npm install -g omniroute@latest
 }
 
 install_base_packages() {
