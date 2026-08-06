@@ -193,7 +193,7 @@ attach_worktree() {
   local repo_name
   repo_name=$(get_session_name "$(git -C "${current_pane_path}" config remote.origin.url)")
 
-  local target_session="${repo_name}--${branch}"
+  local target_session="${repo_name} (${branch})"
   attach_session_with_name "${target_session}" "${worktree}"
 }
 

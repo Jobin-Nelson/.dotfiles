@@ -75,7 +75,8 @@ end
 
 hl.bind(mainMod .. ' + N', hl.dsp.focus({ workspace = '+1' }))
 hl.bind(mainMod .. ' + P', hl.dsp.focus({ workspace = '-1' }))
-hl.bind(mainMod .. ' + Tab', hl.dsp.focus({ workspace = 'previous_per_monitor' }))
+-- hl.bind(mainMod .. ' + Tab', hl.dsp.focus({ workspace = 'previous_per_monitor' }))
+hl.bind(mainMod .. ' + Tab', hl.dsp.focus({ workspace = 'previous' }))
 
 -- Special workspace (scratchpad)
 hl.bind(mainMod .. ' + C', hl.dsp.workspace.toggle_special('magic'))

@@ -183,6 +183,7 @@ current_theme() {
 minimal_themes() {
   local -a themes
   themes=(
+    tokyonight
     catppuccin
     j_red
   )
@@ -192,6 +193,8 @@ minimal_themes() {
   [[ -z $selected_theme ]] && return
 
   case "$selected_theme" in
+    tokyonight) kitty +kitten themes --reload-in=all 'Tokyo Night'
+    ;;
     catppuccin) kitty +kitten themes --reload-in=all 'Catppuccin-Mocha'
     ;;
     j_red) kitty +kitten themes --reload-in=all 'J Red'
@@ -204,7 +207,7 @@ minimal_themes() {
     nvim --server "$server" --remote-send "<C-\><C-n>:colorscheme ${selected_theme}<CR>" || true
   done
 
-  sed -i "s/^\(vim.cmd('colorscheme\) .*/\1 ${selected_theme}')/" ~/.config/nvim/plugin/colorscheme.lua
+  # sed -i "s/^\(vim.cmd('colorscheme\) .*/\1 ${selected_theme}')/" ~/.config/nvim/plugin/colorscheme.lua
 }
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
