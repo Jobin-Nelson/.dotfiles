@@ -29,9 +29,11 @@ hl.bind(secondMod .. ' + escape', hl.dsp.exec_cmd('~/.config/hypr/bin/menu-power
 hl.bind(mainMod .. ' + CTRL + i', hl.dsp.exec_cmd('~/.config/hypr/bin/toggle-idle.sh'))
 
 -- Screenshots
-hl.bind('PRINT', hl.dsp.exec_cmd('~/.config/hypr/bin/hypr-cmd-screenshot.sh'))
-hl.bind('ALT + PRINT', hl.dsp.exec_cmd('~/.config/hypr/bin/hypr-cmd-screenshot.sh window'))
-hl.bind('CTRL + PRINT', hl.dsp.exec_cmd('~/.config/hypr/bin/hypr-cmd-screenshot.sh output'))
+hl.bind('PRINT', hl.dsp.exec_cmd('hyprshot -m region --silent'))
+hl.bind('ALT + PRINT', hl.dsp.exec_cmd('hyprshot -m window --silent'))
+hl.bind('SHIFT + PRINT', hl.dsp.exec_cmd('~/.config/hypr/bin/hypr-cmd-screenshot.sh'))
+hl.bind('SHIFT + ALT + PRINT', hl.dsp.exec_cmd('~/.config/hypr/bin/hypr-cmd-screenshot.sh window'))
+hl.bind('SHIFT + CTRL + PRINT', hl.dsp.exec_cmd('~/.config/hypr/bin/hypr-cmd-screenshot.sh output'))
 
 -- Color picker
 hl.bind(mainMod .. ' + PRINT', hl.dsp.exec_cmd('hyprpicker -a'))
