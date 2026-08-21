@@ -87,6 +87,7 @@ update_packages() {
 }
 
 install_rust() {
+  command -v rustup &>/dev/null && return 0
   banner 'Installing rust'
   sudo pacman -Sy --needed --noconfirm \
     rustup
@@ -117,6 +118,9 @@ install_dev_packages() {
 
   paru -S --noconfirm --needed --sudoloop \
     lazysql-bin resterm-bin
+
+  # gh extension install dlvhdr/gh-dash
+  # cargo install workmux
 }
 
 install_android_dev_packages() {
@@ -279,8 +283,8 @@ install_python() {
 }
 
 install_nvm() {
-  banner 'Installing Node Version Manager'
   command -v nvm &>/dev/null && return 0
+  banner 'Installing Node Version Manager'
   sudo pacman -S --noconfirm --needed \
     nvm
   # shellcheck disable=SC1091
