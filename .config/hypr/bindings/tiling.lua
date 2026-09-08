@@ -114,14 +114,14 @@ hl.bind(mainMod .. ' + ALT + L', function()
   local new_layout, id = next_layout()
   if not new_layout then return end
   hl.workspace_rule({ workspace = tostring(id), layout = new_layout })
-  hl.notification.create({ text = 'Layout changed to ' .. new_layout, duration = 5000, icon = 1, font_size = 25 })
+  hl.notification.create({ text = 'Layout changed to ' .. new_layout, timeout = 5000, icon = 1, font_size = 25 })
 end, { desc = 'Cycle layouts per workspace' })
 
 -- Change global layout
 hl.bind(secondMod .. ' + ALT + L', function()
   local new_layout = next_layout()
   if not new_layout then return end
-  hl.notification.create({ text = 'Layout changed to ' .. new_layout, duration = 5000, icon = 1, font_size = 25 })
+  hl.notification.create({ text = 'Layout changed to ' .. new_layout, timeout = 5000, icon = 1, font_size = 25 })
   hl.config({ general = { layout = new_layout } })
 end, { desc = 'Cycle layouts' })
 
