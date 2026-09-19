@@ -6,7 +6,7 @@
 # yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --embed-thumbnail -o "%(title)s.%(ext)s" -a music_links.txt
 
 # To download just a single url
-# yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --embed-thumbnail -o "%(title)s.%(ext)s" '<URL>'
+# yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-metadata --embed-thumbnail --no-playlist -o "%(title)s.%(ext)s" '<URL>'
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                       Music Urls                         ┃

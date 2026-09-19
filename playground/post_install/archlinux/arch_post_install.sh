@@ -103,7 +103,8 @@ install_language_server_packages() {
     bash-language-server shfmt shellcheck \
     lua-language-server \
     vscode-json-languageserver yaml-language-server \
-    prettier tailwindcss-language-server
+    prettier tailwindcss-language-server \
+    typst tinymist
 
   paru -S --noconfirm --needed --sudoloop \
     emmet-language-server vtsls
@@ -761,6 +762,7 @@ hypr_install_packages() {
   sudo pacman -S --noconfirm --needed \
     hyprland hyprpaper hyprshot hypridle hyprpicker \
     hyprland-guiutils hyprpicker hyprsunset hyprlock \
+    xdg-desktop-portal-gtk xdg-desktop-portal-hyprland \
     pipewire wireplumber pipewire-audio \
     pipewire-pulse pipewire-alsa pipewire-jack \
     xdg-desktop-portal-gtk xdg-desktop-portal-hyprland \

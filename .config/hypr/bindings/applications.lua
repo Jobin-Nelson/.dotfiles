@@ -11,10 +11,17 @@ local mainMod = 'SUPER'
 
 local terminal = 'uwsm app -- kitty --single-instance'
 local menu = 'walker'
-local browser =
-'uwsm app -- chromium --new-window --ozone-platform=wayland --ozone-platform-hint=wayland --disable-features=WaylandWpColorManagerV1 --enable-features=WaylandWindowDecorations'
+-- local browser =
+-- 'uwsm app -- chromium --new-window --ozone-platform=wayland --ozone-platform-hint=wayland --disable-features=WaylandWpColorManagerV1 --enable-features=WaylandWindowDecorations'
+local browser = 'uwsm app -- firefox --new-window'
+
 local browser_vpn = browser .. ' --user-data-dir="$HOME/.config/chromium-vpn" --class=chromium-vpn --incognito'
 local webapp = browser .. ' --app='
+
+if browser:match('firefox') then
+  browser_vpn = browser .. ' --private-window'
+  webapp = browser .. ' --kiosk '
+end
 
 -- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 -- ┃                          Binds                           ┃
