@@ -20,7 +20,7 @@ local webapp = browser .. ' --app='
 
 if browser:match('firefox') then
   browser_vpn = browser .. ' --private-window'
-  webapp = browser .. ' --kiosk '
+  webapp = browser .. ' '
 end
 
 -- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓

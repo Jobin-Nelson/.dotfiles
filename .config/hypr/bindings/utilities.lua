@@ -78,12 +78,12 @@ local function toggle_gamemode()
       }
     })
 
-    hl.notification.create({ text = 'Gamemode [ON]', duration = 5000, icon = 1, color = 'rgb(40a02b)', font_size = 20 })
+    hl.notification.create({ text = 'Gamemode [ON]', timeout = 5000, icon = 1, color = 'rgb(40a02b)', font_size = 20 })
     is_gamemode_active = true
   else
     -- Gamemode OFF: Force a config reload to clear runtime overrides and restore your defaults
     hl.dispatch(hl.dsp.exec_cmd("hyprctl reload"))
-    hl.notification.create({ text = 'Gamemode [OFF]', duration = 5000, icon = 1, color = 'rgb(40a02b)', font_size = 20 })
+    hl.notification.create({ text = 'Gamemode [OFF]', timeout = 5000, icon = 1, color = 'rgb(40a02b)', font_size = 20 })
     is_gamemode_active = false
   end
 end
