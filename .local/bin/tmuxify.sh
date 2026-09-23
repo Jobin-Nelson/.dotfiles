@@ -123,6 +123,13 @@ sessionizer() {
   attach_session "${selected_dir}"
 }
 
+attach_existing_session() {
+  tmux list-sessions -F '#{session_name} #{?session_attached,󱘖 ,}' |
+    fzf --style=full --tmux --border=none --prompt='Select session: ' --ansi \
+      --bind='enter:become(echo {1} | cut -d"󱘖" -f1 | xargs -r tmux switch-client -t)' \
+      --bind='ctrl-x:execute-silent(echo {+} | cut -d"󱘖" -f1 | xargs -r -n 1 tmux kill-session -t)+reload(tmux list-sessions -F "#{session_name} #{?session_attached,󱘖 ,}")'
+}
+
 run_cmd() {
   local cmd="${1-}"
 
@@ -243,6 +250,7 @@ parse_params() {
     -v | --verbose) set -x ;;
     -s | --session) sessionizer ;;
     -w | --worktree) attach_worktree ;;
+    -A) attach_existing_session ;;
     -a | --attach)
       attach_session "${2}"
       shift
