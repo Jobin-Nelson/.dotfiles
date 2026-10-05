@@ -2,11 +2,11 @@
 
 hl.on("hyprland.start", function()
   local uwsm_apps = {
-    'hypridle',
-    'hyprsunset',
-    'mako',
-    'waybar',
+    -- 'hypridle', -- use systemctl service
+    -- 'hyprsunset', -- use systemctl service
+    -- 'waybar', -- use systemctl service
     -- 'swaybg -i $(find ~/Wallpapers -type f | shuf -n 1) -m fill',
+    -- 'mako', -- systemctl service
     'awww-daemon',
     'swayosd-server',
     'walker --gapplication-service',

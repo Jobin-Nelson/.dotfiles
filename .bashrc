@@ -132,7 +132,7 @@ alias gcc='gcc -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable \
 alias starwars='nc towel.blinkenlights.nl 23'
 alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' -o -path '*/.git' \) \
   -prune -o -type f -printf '%T@ %p\n' | sort -k1 -nr \
-  | awk '{ print \$NF; }; NR == 10 { exit; }'"
+  | awk '{ print \$NF; }' | head"
 alias rr='until eval $(history -p '"'"'!!'"'"'); do \
   sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
 
