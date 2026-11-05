@@ -442,6 +442,18 @@ install_steam() {
   paru -S --needed --noconfirm --sudoloop protonplus
 }
 
+# https://wiki.archlinux.org/title/KVM
+install_virt_manager() {
+  # - `LC_ALL=C.UTF-8 lscpu | grep Virtualization`: Check KVM virtualization is available (VT-x/AMD-V)
+  # - `grep -E --color=auto 'vmx|svm|0xc0f' /proc/cpuinfo`: Check virtualization is enabled (>0)
+  # - `zgrep CONFIG_KVM= /proc/config.gz`: kernel support
+  # - `https://www.microsoft.com/en-in/software-download/windows11`: Download windows ISO
+  # - `https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md`: Download windows drivers
+  # - `start ms-cxh:localonly`: shift-f10 to skip account login
+  curl -fsSL christitus.com/linux | sh
+  sudo pacman -Sy --needed --noconfirm qemu-img qemu-full qemu-guest-agent
+}
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                         Setups                           ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
