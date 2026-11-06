@@ -34,6 +34,8 @@ OPTIONS
     -f, --firewall      Setup firewall
     --nvidia            Install nvidia drivers
     --hyprland          Install hyprland
+    --dev-packages      Install dev packages
+    --wsl               Setup WSL
 
 EXAMPLES
     ${script} -d
@@ -114,11 +116,11 @@ install_dev_packages() {
   banner 'Installing Dev packages'
   sudo pacman -Sy --noconfirm --needed \
     git tmux vim neovim zoxide fzf ripgrep fd bat jq \
-    github-cli delta lazydocker lazygit mise \
+    github-cli git-delta lazygit mise \
     tree-sitter-cli bash-completion
 
-  paru -S --noconfirm --needed --sudoloop \
-    lazysql-bin resterm-bin
+  # paru -S --noconfirm --needed --sudoloop \
+  #   lazysql-bin resterm-bin
 
   # gh extension install dlvhdr/gh-dash
   # cargo install workmux
@@ -155,6 +157,15 @@ install_ai_packages() {
 
   # omniroute
   npm install -g omniroute@latest
+}
+
+install_wsl_base_packages() {
+  sudo pacman -Sy --noconfirm --needed \
+    man-db man-pages curl unzip tree pass \
+    starship rsync pacman-contrib netcat fastfetch zip
+
+  # To setup man pages
+  mandb
 }
 
 install_base_packages() {
@@ -503,7 +514,7 @@ setup_aur() {
 
   sudo pacman -Sy --needed --noconfirm base-devel git
 
-  git clone --depth 1 'https://aur.archlinux.org/paru.git' "${paru_dir}"
+  [[ -d $paru_dir ]] || git clone --depth 1 'https://aur.archlinux.org/paru.git' "${paru_dir}"
   cd "${paru_dir}" && makepkg -si
 }
 
@@ -710,7 +721,7 @@ setup_done() {
   echo $'\nRestart System for changes to take effect\n'
 }
 
-set_chromium_extensions() {
+setup_chromium_extensions() {
   banner 'Setting Chromium Extensions...'
 
   sudo mkdir -p /etc/chromium/policies/managed
@@ -752,6 +763,15 @@ set_chromium_extensions() {
 EOF
 }
 
+setup_wsl() {
+  update_packages
+  setup_aur
+  install_python
+  install_dev_packages
+  install_language_server_packages
+  install_wsl_base_packages
+}
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                        Hyprland                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
@@ -767,7 +787,7 @@ install_hyprland() {
   increase_sudo_tries
   hypr_battery_optimize
   increase_file_watchers
-  set_chromium_extensions
+  setup_chromium_extensions
 }
 
 hypr_install_packages() {
@@ -903,9 +923,11 @@ parse_params() {
     -w | --wallpapers) download_wallpapers ;;
     -a | --all) main ;;
     -f | --firewall) setup_firewall ;;
-    --set-chromium-extensions) set_chromium_extensions ;;
+    --setup-chromium-extensions) setup_chromium_extensions ;;
     --nvidia) install_nvidia ;;
     --hyprland) install_hyprland ;;
+    --dev-packages) install_dev_packages ;;
+    --wsl) setup_wsl ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac

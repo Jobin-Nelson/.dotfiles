@@ -1,6 +1,7 @@
 # Arch Notes
 
 <!--toc:start-->
+
 - [Arch Notes](#arch-notes)
   - [Rclone](#rclone)
   - [Cronjobs](#cronjobs)
@@ -8,21 +9,21 @@
   - [Emacs](#emacs)
   - [Snapshots](#snapshots)
   - [Screensharing](#screensharing)
-<!--toc:end-->
+  <!--toc:end-->
 
 - `rfkill unblock all`: iwctl device to power on
 - `iwctl`
-    - `device list`
-    - `adapter ph0 set-property Powered on`
-    - `device wlan0 set-property Powered on`
-    - `device wlan0 show`
-    - `station wlan0 scan`
-    - `station wlan0 get-networks`
-    - `station wlan0 connect BatCave`
-    - `exit`
-    - `ping google.com`
+  - `device list`
+  - `adapter ph0 set-property Powered on`
+  - `device wlan0 set-property Powered on`
+  - `device wlan0 show`
+  - `station wlan0 scan`
+  - `station wlan0 get-networks`
+  - `station wlan0 connect BatCave`
+  - `exit`
+  - `ping google.com`
 - `git clone https://aur.archlinux.org/yay.git`: AUR helper
-    - `cd yay && makepkg -si`: installing yay
+  - `cd yay && makepkg -si`: installing yay
 - `yay -s envycontrol`: install envycontrol
 - `envycontrol -s integrated`: switch graphics to integrated only
 - `sudoedit /usr/share/X11/xorg.conf.d/40-libinput.conf`: add options for touchpad
@@ -40,7 +41,7 @@ EndSection
 
 ## Terminal settings
 
-- `stty icrnl`: to fix keyboard enter issue of typing ^M 
+- `stty icrnl`: to fix keyboard enter issue of typing ^M
 
 ## Rclone
 
@@ -55,8 +56,8 @@ rclone -v copy 'second_brain:01 - Personal/second_brain' "$HOME/playground/proje
 
 - `localhost:8384`: syncthing page
 - Add folders to be synced with phone:
-    - org_files
-    - second_brain
+  - org_files
+  - second_brain
 
 ## Cronjobs
 
@@ -64,7 +65,7 @@ rclone -v copy 'second_brain:01 - Personal/second_brain' "$HOME/playground/proje
 
 ```
 0 18 * * Mon-Fri /home/jobin/playground/projects/email_updater/venv/bin/python3 /home/jobin/playground/projects/email_updater/updater.py >> /home/jobin/playground/projects/email_updater/cronjob.logs 2>&1
-0 12 * * Sat /home/jobin/.local/bin/paclear.sh 
+0 12 * * Sat /home/jobin/.local/bin/paclear.sh
 0 12 * * Sun /home/jobin/.local/bin/weekly_jobs.sh
 30 18 * * * /home/jobin/.local/bin/gclone.sh
 ```
@@ -72,10 +73,10 @@ rclone -v copy 'second_brain:01 - Personal/second_brain' "$HOME/playground/proje
 ## I3WM
 
 - Disable dunst notification shortcut `cntrl+tilde`
-    - `sudo vi /etc/xdg/dunst/dunstrc`
-    - change history line to `mod4+shift+grave`
-    - `pkill dunst`
-    - `dunstctl set-paused false`
+  - `sudo vi /etc/xdg/dunst/dunstrc`
+  - change history line to `mod4+shift+grave`
+  - `pkill dunst`
+  - `dunstctl set-paused false`
 
 ## Emacs
 
@@ -212,11 +213,16 @@ dev=/dev/sda
 ## Screensharing
 
 - It is hard to screen share on wayland, switch to X11 to solve this issue
-- `sudoedit /etc/gdm/custom.conf`: uncomment the line "#WaylandEnable = False" 
+- `sudoedit /etc/gdm/custom.conf`: uncomment the line "#WaylandEnable = False"
 - Restart to switch to X11
-
 
 ## Awesome WM
 
 - Install `flameshot` for screenshots
 - Install `xautolock` and `i3lock` for locking
+
+## WSL
+
+### Mount LuksEncrypted Device
+
+- https://gist.github.com/dreamfarer/851e792c2f36de08ad8ff287e79c87ff

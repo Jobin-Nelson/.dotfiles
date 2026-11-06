@@ -135,6 +135,7 @@ alias rf="find . \( -path '*/venv' -o -path '*/__pycache__' -o -path '*/.git' \)
   | awk '{ print \$NF; }' | head"
 alias rr='until eval $(history -p '"'"'!!'"'"'); do \
   sleep 1; echo $'"'"'\nTrying again...\n'"'"'; done'
+alias psm='ps -eo pid,%mem,cmd --sort=-%mem | head '
 
 # FZF
 alias dgf='GIT_DIR=$HOME/.dotfiles GIT_WORK_TREE=$HOME fgf true'
@@ -206,6 +207,7 @@ alias fpods="fzf \
 # export SCREENDIR=$HOME/.screen
 # service cron status &> /dev/null || sudo service cron start
 # alias wpwd='pwsh.exe -Command "Get-Location"'
+export TERM=xterm-256color
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                        Functions                         ┃
