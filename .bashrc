@@ -422,7 +422,7 @@ fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 [[ -s /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
 
 # Cargo [Rust]
-[[ -s $HOME/.cargo/env ]] && \. "$HOME/.cargo/env"
+[[ -d $HOME/.cargo/bin && ! $PATH =~ $HOME/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:${PATH}"
 
 # Go
 [[ -d $HOME/go/bin && ! $PATH =~ $HOME/go/bin ]] && export PATH="$HOME/go/bin:${PATH}"
