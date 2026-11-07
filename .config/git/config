@@ -86,6 +86,8 @@
   rebase = true
 [url "git@github.com:/Jobin-Nelson/"]
   insteadOf = "jn:"
+[url "ssh://git@codeberg.org/jobin-nelson/"]
+  insteadOf = "cjn:"
 [grep]
   lineNumber = true
 
