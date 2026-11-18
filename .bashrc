@@ -204,9 +204,10 @@ alias fpods="fzf \
 # WSL
 # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
 # alias brave='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
+alias firefox="/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe"
 # export SCREENDIR=$HOME/.screen
 # service cron status &> /dev/null || sudo service cron start
-# alias wpwd='pwsh.exe -Command "Get-Location"'
+alias wpwd='pwsh.exe -Command "Get-Location"'
 export TERM=xterm-256color
 
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓

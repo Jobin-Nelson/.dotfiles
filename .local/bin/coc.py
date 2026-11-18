@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+#
+# █▀▀ █▀█ █▀▀
+# █▄▄ █▄█ █▄▄
+#
 """
 Script to calculate boost time.
 All units are in minutes
@@ -58,6 +62,9 @@ class Boost:
 
     def get_boosted_time(self) -> timedelta:
         return self.duration * self.value
+
+    def __mul__(self, x: int) -> Boost:
+        return Boost(self.value, self.duration * x)
 
 
 @dataclass
@@ -128,7 +135,7 @@ def td2str(t: timedelta) -> str:
         parts.append(f'{hours}h')
     if minutes > 0:
         parts.append(f'{minutes}m')
-    return ', '.join(parts) if parts else '0 minutes'
+    return ' '.join(parts) if parts else '0m'
 
 
 def parse_timedelta(time_str: str) -> timedelta:
@@ -156,7 +163,7 @@ def upgrade_times(upgrade_type: UpgradeType, args: argparse.Namespace) -> None:
     rem_upgrade = upgrade.rem_upgrade(rem_boost)
 
     rem_boost_time_left = upgrade.apply_boost(rem_boost).time_left
-    boosted_time_left = upgrade.apply_boost(boost + rem_boost).time_left
+    boosted_time_left = upgrade.apply_boost((boost * args.number) + rem_boost).time_left
     max_boosted_time_left = upgrade.max_boost_time(boost).time_left
     max_boosts_required = rem_upgrade.boosts_required(boost)
 
