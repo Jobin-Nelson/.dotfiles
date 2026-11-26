@@ -142,23 +142,22 @@ install_ai_packages() {
   install_nvm
 
   # opencode
-  npm install -g opencode-ai@latest
+  pnpm add -g --allow-build=@opencode/cli @opencode/cli
 
   # claude code
-  npm config set "allow-scripts=@anthropic-ai/claude-code" --location=user
-  npm install -g @anthropic-ai/claude-code
+  pnpm install -g @anthropic-ai/claude-code --allow-build=@anthropic-ai/claude-code
 
   # openspec
   # npm install -g @fission-ai/openspec@latest
 
   # pi
-  npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+  pnpm add -g --ignore-scripts @earendil-works/pi-coding-agent
   pi install npm:pi-plan-mode
   pi install npm:@aliou/pi-guardrails
   pi install npm:@juicesharp/rpiv-ask-user-question
 
   # omniroute
-  npm install -g omniroute@latest
+  pnpm install -g --ignore-scripts omniroute@latest
   # create c1 combo and then setup `omniroute setup-claude --only c1`
 }
 
@@ -302,10 +301,12 @@ install_nvm() {
   command -v nvm &>/dev/null && return 0
   banner 'Installing Node Version Manager'
   sudo pacman -S --noconfirm --needed \
-    nvm pnpm
+    nvm
   # shellcheck disable=SC1091
   source /usr/share/nvm/init-nvm.sh
   nvm install --lts --latest-npm
+
+  curl -fsSL https://get.pnpm.io | sh -
 }
 
 install_fonts() {

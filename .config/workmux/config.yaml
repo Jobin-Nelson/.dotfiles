@@ -18,3 +18,4 @@ panes:
     split: vertical
     percentage: 30
     target: 0
+  - split: horizontal

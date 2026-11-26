@@ -423,6 +423,14 @@ fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 # NVM [Node version manager]
 [[ -s /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
 
+# pnpm
+export PNPM_HOME='/home/jobin/.local/share/pnpm'
+case ":$PATH:" in
+  ":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
+
 # Cargo [Rust]
 [[ -d $HOME/.cargo/bin && ! $PATH =~ $HOME/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:${PATH}"
 
@@ -432,13 +440,13 @@ fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 # Haskell
 [[ -s "${HOME}/.ghcup/env" ]] && . "${HOME}/.ghcup/env"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
-
 # Android Studio
 if [[ -d $HOME/Android/Sdk && ! $PATH =~ $HOME/Android/Sdk ]]; then
   export ANDROID_HOME="${HOME}/Android/Sdk"
   export PATH="$PATH:$ANDROID_HOME/emulator"
   export PATH="$PATH:$ANDROID_HOME/platform-tools"
 fi
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
