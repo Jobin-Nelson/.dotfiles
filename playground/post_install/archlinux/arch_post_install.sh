@@ -36,6 +36,7 @@ OPTIONS
     --hyprland          Install hyprland
     --dev-packages      Install dev packages
     --wsl               Setup WSL
+    --ai                Install AI packages
 
 EXAMPLES
     ${script} -d
@@ -123,7 +124,7 @@ install_dev_packages() {
   #   lazysql-bin resterm-bin
 
   # gh extension install dlvhdr/gh-dash
-  # cargo install workmux
+  cargo install --locked workmux
 }
 
 install_android_dev_packages() {
@@ -144,25 +145,28 @@ install_ai_packages() {
   npm install -g opencode-ai@latest
 
   # claude code
+  npm config set "allow-scripts=@anthropic-ai/claude-code" --location=user
   npm install -g @anthropic-ai/claude-code
 
   # openspec
   # npm install -g @fission-ai/openspec@latest
 
   # pi
-  npm install -g @mariozechner/pi-coding-agent
+  npm install -g --ignore-scripts @earendil-works/pi-coding-agent
   pi install npm:pi-plan-mode
   pi install npm:@aliou/pi-guardrails
   pi install npm:@juicesharp/rpiv-ask-user-question
 
   # omniroute
   npm install -g omniroute@latest
+  # create c1 combo and then setup `omniroute setup-claude --only c1`
 }
 
 install_wsl_base_packages() {
   sudo pacman -Sy --noconfirm --needed \
     man-db man-pages curl unzip tree pass \
-    starship rsync pacman-contrib netcat fastfetch zip
+    starship rsync pacman-contrib netcat fastfetch zip \
+    wl-clipboard kitty-terminfo
 
   # To setup man pages
   mandb
@@ -298,10 +302,10 @@ install_nvm() {
   command -v nvm &>/dev/null && return 0
   banner 'Installing Node Version Manager'
   sudo pacman -S --noconfirm --needed \
-    nvm
+    nvm pnpm
   # shellcheck disable=SC1091
   source /usr/share/nvm/init-nvm.sh
-  nvm install node --latest-npm
+  nvm install --lts --latest-npm
 }
 
 install_fonts() {
@@ -928,6 +932,7 @@ parse_params() {
     --hyprland) install_hyprland ;;
     --dev-packages) install_dev_packages ;;
     --wsl) setup_wsl ;;
+    --ai) install_ai_packages ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac

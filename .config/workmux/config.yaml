@@ -1,0 +1,20 @@
+nerdfont: true
+merge_strategy: rebase
+agent: ccf
+agents:
+  ccf:
+    type: claude
+    command: omniroute
+    args:
+      - launch
+      - --profile
+      - c1
+panes:
+  - command: nvim
+  - command: <agent:ccf>
+    focus: true
+    split: horizontal
+  - command: pnpm install && pnpm run dev
+    split: vertical
+    percentage: 30
+    target: 0

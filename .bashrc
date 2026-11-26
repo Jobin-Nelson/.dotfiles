@@ -116,6 +116,7 @@ alias wl='nsxiv $HOME/Wallpapers/**/*'
 alias twl='nsxiv $HOME/Pictures/wallpapers/$(date +%F)'
 
 # Custom
+alias ccf='omniroute launch --profile c1'
 alias inhibit='systemd-inhibit sleep'
 alias com='history | awk '"'"'{$1=$2=$3=""; print}'"'"' | sed '"'"'s/^[ \t]*//'"'"' | sort | uniq -c | sort -rn | head '
 alias ipython='uvx --with ipython-icat,scipy,pandas,matplotlib ipython --profile icat'
