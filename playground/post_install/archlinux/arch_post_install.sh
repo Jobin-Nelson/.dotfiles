@@ -148,7 +148,7 @@ install_ai_packages() {
   pnpm install -g @anthropic-ai/claude-code --allow-build=@anthropic-ai/claude-code
 
   # openspec
-  # npm install -g @fission-ai/openspec@latest
+  # pnpm install -g @fission-ai/openspec@latest
 
   # pi
   pnpm add -g --ignore-scripts @earendil-works/pi-coding-agent
@@ -159,6 +159,10 @@ install_ai_packages() {
   # omniroute
   pnpm install -g --ignore-scripts omniroute@latest
   # create c1 combo and then setup `omniroute setup-claude --only c1`
+
+  # Playwright
+  pnpm add -g @playwright/cli@latest
+  sudo pacman -Sy --noconfirm --needed chromium
 }
 
 install_wsl_base_packages() {

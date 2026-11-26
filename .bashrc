@@ -59,6 +59,9 @@ export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 # AI
 export PI_CODING_AGENT_DIR="${XDG_CONFIG_HOME}/pi/agent"
 
+# Playwright
+export PLAYWRIGHT_MCP_EXECUTABLE_PATH=/usr/bin/chromium
+
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 # ┃                         Options                          ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
@@ -426,8 +429,8 @@ fastfetch --config "$HOME/.config/fastfetch/13.jsonc"
 # pnpm
 export PNPM_HOME='/home/jobin/.local/share/pnpm'
 case ":$PATH:" in
-  ":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+":$PNPM_HOME/bin:"*) ;;
+*) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
 
